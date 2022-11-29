@@ -2,7 +2,10 @@ package com.i2i.ibus.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-
+/**
+ * @author Ragul
+ *
+ */
 @Getter
 @Setter
 public class AddressDto {

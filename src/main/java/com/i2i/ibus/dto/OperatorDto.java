@@ -4,7 +4,10 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
-
+/**
+ * @author Ragul
+ *
+ */
 @Getter
 @Setter
 public class OperatorDto {
@@ -12,9 +15,9 @@ public class OperatorDto {
     private int id;
     private String travelsName;
     private String ownerName;
-    private String phoneNo;
+    private String phoneNumber;
     private String mailId;
-    private String panNo;
-    private String gstNo;
+    private String panNumber;
+    private String gstNumber;
     private List<AddressDto> addresses;
 }

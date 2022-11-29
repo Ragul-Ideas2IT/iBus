@@ -1,36 +1,42 @@
 package com.i2i.ibus.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * @author Ragul
+ *
+ */
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "address")
+@Table
 public class Address {
     
     @Id
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column
+    @NotNull
     private String landmark;
-    @Column
+    @NotNull
     private String street;
-    @Column
+    @NotNull
     private String city;
-    @Column
+    @NotNull
     private String district;
-    @Column
+    @NotNull
     private String state;
-    @Column
+    @NotNull
     private int pincode;
-    @Column
-    private boolean isActive;
+    @NotNull
+    private boolean isDeleted;
     
 }

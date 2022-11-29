@@ -3,41 +3,47 @@ package com.i2i.ibus.model;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * @author Ragul
+ *
+ */
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "operator")
+@Table
 public class Operator {
     
     @Id
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column
+    @NotNull
     private String travelsName;
-    @Column
+    @NotNull
     private String ownerName;
-    @Column
-    private String phoneNo;
-    @Column
+    @NotNull
+    private String phoneNumber;
+    @NotNull
     private String mailId;
-    @Column
-    private String panNo;
-    @Column
-    private String gstNo;
-    @Column
-    private boolean isActive;
+    @NotNull
+    private String panNumber;
+    @NotNull
+    private String gstNumber;
+    @NotNull
+    private boolean isDeleted;
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn
+    @JoinColumn(name = "operator")
     private List<Address> addresses;
 }
