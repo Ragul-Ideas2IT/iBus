@@ -57,8 +57,8 @@ public class BusController {
      * @return
      * @throws IBusException
      */
-    @GetMapping
-    private ResponseEntity<List<BusDto>> getBusByName(String busName) throws IBusException {
+    @GetMapping("/{name}")
+    private ResponseEntity<List<BusDto>> getBusByName(@PathVariable String busName) throws IBusException {
 
 	return new ResponseEntity<List<BusDto>>(busService.getBusByName(busName), HttpStatus.OK);
     }

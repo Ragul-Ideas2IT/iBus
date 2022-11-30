@@ -19,10 +19,10 @@ public interface BusRepository extends JpaRepository<Bus, Integer> {
     @Query("From Bus Where busNumber = :busNumber and id != :id")
     public Bus checkForUpdateDuplicates(String busNumber, int id);
     
-    @Query("from Operator where isDeleted = false")
+    @Query("from Bus where isDeleted = false")
     public List<Bus> findAll();
 
-    @Query("from Operator where isDeleted = false and busName = :busName")
+    @Query("from Bus where isDeleted = false and busName = :busName")
     public List<Bus> findByBusName(String busName);
 	
     }
