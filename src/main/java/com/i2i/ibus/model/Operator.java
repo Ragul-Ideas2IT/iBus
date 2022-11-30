@@ -17,6 +17,9 @@ import lombok.Setter;
 
 /**
  * @author Ragul
+ * @version 1.0
+ * 
+ * @since 28 Nov 2022
  *
  */
 @Getter
@@ -25,7 +28,7 @@ import lombok.Setter;
 @Entity
 @Table
 public class Operator {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -41,9 +44,8 @@ public class Operator {
     private String panNumber;
     @NotNull
     private String gstNumber;
-    @NotNull
     private boolean isDeleted;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "operator")
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "operator_id")
     private List<Address> addresses;
 }

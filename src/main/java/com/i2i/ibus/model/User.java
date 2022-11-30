@@ -1,15 +1,16 @@
 package com.i2i.ibus.model;
 
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
+import java.util.List;
+
 import org.hibernate.annotations.SQLDelete;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -18,6 +19,9 @@ import lombok.Setter;
 
 /**
  * @author Ragul
+ * @version 1.0
+ * 
+ * @since 28 Nov 2022
  *
  */
 @Getter
@@ -26,8 +30,6 @@ import lombok.Setter;
 @Entity
 @Table
 @SQLDelete(sql = "UPDATE user SET is_deleted = true WHERE id=?")
-@FilterDef(name = "deletedProductFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
-@Filter(name = "deletedProductFilter", condition = "deleted = :isDeleted")
 public class User {
 
     @Id 
@@ -43,7 +45,8 @@ public class User {
     private String gender;
     @NotNull
     private int age;
-    @Column(columnDefinition = "bit default 0")
-    @NotNull
-    private boolean isDeleted;    
+    private boolean isDeleted; 
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_id")
+    private List<Booking> bookings;
 }
