@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.i2i.ibus.dto.MessageDto;
 import com.i2i.ibus.dto.UserDto;
 import com.i2i.ibus.service.UserService;
 
@@ -21,6 +22,9 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * @author Ragul
+ * @version 1.0
+ * 
+ * @created Nov 29 2022
  *
  */
 @RestController
@@ -50,15 +54,15 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    private UserDto updateUser(@PathVariable int id,
-	    @RequestBody @Validated UserDto userDto) {
+    private UserDto updateUser(@PathVariable int id, @RequestBody @Validated UserDto userDto) {
 	return userService.updateUserById(userDto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    private void deleteUser(@PathVariable int id) {
+    private MessageDto deleteUser(@PathVariable int id) {
 	userService.deleteUserById(id);
+	return new MessageDto("202", "Deleted Successfully");
     }
 
 }
