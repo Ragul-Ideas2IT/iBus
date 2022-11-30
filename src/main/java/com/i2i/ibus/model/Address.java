@@ -12,6 +12,9 @@ import lombok.Setter;
 
 /**
  * @author Ragul
+ * @version 1.0
+ * 
+ * @since 28 Nov 2022
  *
  */
 @Getter
@@ -36,7 +39,6 @@ public class Address {
     private String state;
     @NotNull
     private int pincode;
-    @NotNull
     private boolean isDeleted;
     
 }

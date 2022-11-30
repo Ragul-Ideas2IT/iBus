@@ -21,6 +21,9 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * @author Ragul
+ * @version 1.0
+ * 
+ * @created Nov 29 2022
  *
  */
 @RestController
@@ -29,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class OperatorController {
 
     private final OperatorService operatorService;
-    
+
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     private OperatorDto createOperator(@RequestBody @Validated OperatorDto operatorDto) {
@@ -50,8 +53,7 @@ public class OperatorController {
 
     @PutMapping("/{id}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    private OperatorDto updateOperator(@PathVariable int id,
-	    @RequestBody @Validated OperatorDto operatorDto) {
+    private OperatorDto updateOperator(@PathVariable int id, @RequestBody @Validated OperatorDto operatorDto) {
 	return operatorService.updateOperatorById(operatorDto);
     }
 
@@ -60,5 +62,5 @@ public class OperatorController {
     private void deleteOperator(@PathVariable int id) {
 	operatorService.deleteOperatorById(id);
     }
-    
+
 }

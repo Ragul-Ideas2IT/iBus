@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 /**
  * @author Ragul
+ * @version 1.0
+ * 
+ * @since 28 Nov 2022
  *
  */
 @Getter
