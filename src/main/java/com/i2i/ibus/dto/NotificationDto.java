@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class NotificationDto {
 
-    private boolean status;
-    private String type;
-    private String message;
+	private Boolean status;
+	private String type;
+	private String message;
 
 }

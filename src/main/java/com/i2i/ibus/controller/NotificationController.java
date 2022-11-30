@@ -6,20 +6,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.i2i.ibus.service.NotificationService;
 
 /**
- * @author Tamilmani
- * @version 1.0
  * 
- * @created Nov 30 2022
+ * @author Tamilmani
  *
  */
 @RestController
 public class NotificationController {
 
-    private NotificationService notificationService;
+	private NotificationService notificationService;
 
-    @Autowired
-    private NotificationController(NotificationService notificationService) {
-	this.notificationService = notificationService;
-    }
+	@Autowired
+	private NotificationController(NotificationService notificationService) {
+		this.notificationService = notificationService;
+	}
 
 }

@@ -11,9 +11,9 @@ import lombok.Setter;
 @Setter
 public class SeatDto {
 
-    private int id;
-    private String seatType;
-    private String seatNumber;
-    private String gender;
-    private double fare;
+	private int id;
+	private String seatType;
+	private String seatNumber;
+	private String gender;
+	private double fare;
 }
