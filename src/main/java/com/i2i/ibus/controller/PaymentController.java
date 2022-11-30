@@ -3,7 +3,7 @@ package com.i2i.ibus.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.i2i.ibus.service.NotificationService;
+import com.i2i.ibus.service.PaymentService;
 
 /**
  * @author Tamilmani
@@ -13,13 +13,17 @@ import com.i2i.ibus.service.NotificationService;
  *
  */
 @RestController
-public class NotificationController {
+public class PaymentController {
 
-    private NotificationService notificationService;
+    private PaymentService paymentService;
 
     @Autowired
-    private NotificationController(NotificationService notificationService) {
-	this.notificationService = notificationService;
+    private PaymentController(PaymentService paymentService) {
+	this.paymentService = paymentService;
+    }
+
+    public void createPayment() {
+	
     }
 
 }
