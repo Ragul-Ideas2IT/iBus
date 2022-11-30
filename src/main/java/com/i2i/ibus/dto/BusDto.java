@@ -13,10 +13,10 @@ import lombok.Setter;
 @Setter
 public class BusDto {
 
-    private int id;
-    private String busNumber;
-    private int numberOfSeats;
-    private int type;
-    private List<BusHistoryDto> busHistories;
-    private List<PickupPointDto> pickupPoints;
+	private int id;
+	private String busNumber;
+	private int numberOfSeats;
+	private int type;
+	private List<BusHistoryDto> busHistories;
+	private List<PickupPointDto> pickupPoints;
 }

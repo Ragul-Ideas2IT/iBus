@@ -6,20 +6,18 @@ import org.springframework.stereotype.Service;
 import com.i2i.ibus.repository.NotificationRepository;
 
 /**
- * @author Tamilmani
- * @version 1.0
  * 
- * @created Nov 30 2022
+ * @author Tamilmani
  *
  */
 @Service
 public class NotificationService {
 
-    private NotificationRepository notificationRepository;
+	private NotificationRepository notificationRepository;
 
-    @Autowired
-    private NotificationService(NotificationRepository notificationRepository) {
-	this.notificationRepository = notificationRepository;
-    }
+	@Autowired
+	private NotificationService(NotificationRepository notificationRepository) {
+		this.notificationRepository = notificationRepository;
+	}
 
 }

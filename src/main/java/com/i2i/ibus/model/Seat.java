@@ -1,6 +1,5 @@
 package com.i2i.ibus.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,15 +19,13 @@ import lombok.Setter;
 @Entity
 @Table
 public class Seat {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String seatType;
-    private String seatNumber;
-    private String gender;
-    private double fare;
-    @Column(columnDefinition = "bit default 0")
-    private boolean isDeleted;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+	private String seatType;
+	private String seatNumber;
+	private String gender;
+	private double fare;
 
 }

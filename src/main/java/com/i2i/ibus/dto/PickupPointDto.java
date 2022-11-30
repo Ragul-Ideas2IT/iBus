@@ -12,11 +12,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PickupPointDto {
-
-    private int id;
-    private String stopName;
-    private String landMark;
-    private LocalDate arrivingTime;
-    private LocalDate departureTime;
+	
+	private String stopName;
+	private String landMark;
+	private LocalDate arrivingTime;
+	private LocalDate departureTime;
 
 }

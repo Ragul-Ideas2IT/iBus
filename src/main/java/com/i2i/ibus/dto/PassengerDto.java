@@ -10,17 +10,15 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PassengerDto {
 
-    private int age;
+	private Integer age;
 
-    @Pattern(regexp = "^[a-z]{2,30}$",
-	    message = "Please enter the valid format name")
-    private String name;
+	@Pattern(regexp = "^[a-z]{2,30}$", message = "Please enter the valid format name")
+	private String name;
 
-    @Pattern(regexp = "(?i)^(male)|(female)|(others)$",
-	    message = "Please enter the valid format gender")
-    private String gender;
+	@Pattern(regexp = "(?i)^(male)|(female)|(others)$", message = "Please enter the valid format gender")
+	private String gender;
 
-    private String seatNumber;
-    private String busNumber;
+	private String seatNumber;
+	private String busNumber;
 
 }
