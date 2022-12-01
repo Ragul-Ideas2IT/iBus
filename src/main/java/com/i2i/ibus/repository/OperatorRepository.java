@@ -13,7 +13,7 @@ import com.i2i.ibus.model.User;
  * @author Ragul
  * @version 1.0
  * 
- * @since 29 Nov 2022
+ * @created Nov 29 2022
  *
  */
 @Repository
@@ -24,7 +24,6 @@ public interface OperatorRepository extends JpaRepository<Operator, Integer>{
     @Query("from Operator where isDeleted = false")
     Optional<Operator> findByPhoneNumber(String phoneNumber);
 
-    @Override
     @Query("from Operator where isDeleted = false")
     List<Operator> findAll();
 

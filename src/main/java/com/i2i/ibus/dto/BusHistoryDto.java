@@ -7,7 +7,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * 
  * @author Ananth.
+ * @version 1.0.
+ * 
+ * @created Nov 29 2022
  *
  */
 @Getter
@@ -15,7 +19,8 @@ import lombok.Setter;
 public class BusHistoryDto {
 
     private int id;
-    private LocalTime busTiming;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private LocalDate busDate;
     private String source;
     private String destination;

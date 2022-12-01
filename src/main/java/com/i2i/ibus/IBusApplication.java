@@ -19,6 +19,7 @@ public class IBusApplication {
     public ModelMapper mapper() {
 	return new ModelMapper();
     }
+    
     public static void main(String[] args) {
 	SpringApplication.run(IBusApplication.class, args);
     }

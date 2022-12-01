@@ -1,6 +1,5 @@
 package com.i2i.ibus.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,7 +10,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
+ * 
  * @author Ananth.
+ * @version 1.0.
+ * 
+ * @created Nov 29 2022
  *
  */
 @Getter
@@ -28,7 +31,6 @@ public class Seat {
     private String seatNumber;
     private String gender;
     private double fare;
-    @Column(columnDefinition = "bit default 0")
     private boolean isDeleted;
 
 }
