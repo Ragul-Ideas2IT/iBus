@@ -6,7 +6,6 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import com.i2i.ibus.dto.BusDto;
 import com.i2i.ibus.dto.BusHistoryDto;
@@ -18,7 +17,11 @@ import com.i2i.ibus.model.PickupPoint;
 import com.i2i.ibus.repository.BusRepository;
 
 /**
+ * 
  * @author Ananth.
+ * @version 1.0.
+ * 
+ * @created nov 30 2022
  *
  */
 @Service
@@ -30,7 +33,13 @@ public class BusService {
     @Autowired
     private ModelMapper mapper;
 
-    public BusDto addBus(BusDto busDto) throws IBusException {
+    /**
+     * 
+     * @param busDto
+     * @return
+     * @throws IBusException
+     */
+    public BusDto addBus(BusDto busDto, int operatorId) throws IBusException {
 	BusDto busDTO = null;
 	List<BusHistory> busHistories = busDto.getBusHistories().stream()
 		.map(busHistoryDto -> mapper.map(busHistoryDto, BusHistory.class)).toList();
@@ -54,6 +63,10 @@ public class BusService {
 	return busDTO;
     }
 
+    /**
+     * 
+     * @return
+     */
     public List<BusDto> getAllBuses() {
 	List<Bus> buses = busRepository.findAll();
 	List<BusDto> busesDto = new ArrayList<BusDto>();
@@ -70,25 +83,14 @@ public class BusService {
 	}
 	return busesDto;
     }
-    
-    public List<BusDto> getBusByName(String busName) {
-	List<Bus> buses = busRepository.findAll();
-	List<BusDto> busesDto = new ArrayList<BusDto>();
-	for (Bus bus : buses) {
-	    BusDto busDto = null;
-	    List<BusHistoryDto> busHistoriesDto = bus.getBusHistories().stream()
-		    .map(busHistory -> mapper.map(busHistory, BusHistoryDto.class)).toList();
-	    List<PickupPointDto> pickupPointsDto = bus.getPickupPoints().stream()
-		    .map(pickupPoint -> mapper.map(pickupPoint, PickupPointDto.class)).toList();
-	    busDto = mapper.map(bus, BusDto.class);
-	    busDto.setBusHistories(busHistoriesDto);
-	    busDto.setPickupPoints(pickupPointsDto);
-	    busesDto.add(busDto);
-	}
-	return busesDto;
-    }
 
-    public BusDto updateBus(BusDto busDto) throws IBusException {
+    /**
+     * 
+     * @param busDto
+     * @return
+     * @throws IBusException
+     */
+    public BusDto updateBus(BusDto busDto, int operatorsId) throws IBusException {
 	BusDto busDTO = null;
 	List<BusHistory> busHistories = busDto.getBusHistories().stream()
 		.map(busHistoryDto -> mapper.map(busHistoryDto, BusHistory.class)).toList();
@@ -111,7 +113,11 @@ public class BusService {
 	}
 	return busDTO;
     }
-    
+
+    /**
+     * 
+     * @param busId
+     */
     public void deleteBus(int busId) {
 	busRepository.deleteById(busId);
     }
