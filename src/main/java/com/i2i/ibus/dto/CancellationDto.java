@@ -1,15 +1,19 @@
 package com.i2i.ibus.dto;
 
-import java.time.LocalDateTime;
+import java.security.Timestamp;
 
-/*
- * Author ESAKKIRAJA 
+/**
+ * @author Esakkiraja E
+ * @version 1.0
+ *
+ * @created Nov 29 2022
  */
 public class CancellationDto {
-	
-	private int id;
-	private LocalDateTime dateAndTime;
-	private double refund;
-	//private Notification notification;
+
+    private int id;
+    private Timestamp dateAndTime;
+    private double refund;
+    private boolean isCanceled;
+    // private Notification notification;
 
 }
