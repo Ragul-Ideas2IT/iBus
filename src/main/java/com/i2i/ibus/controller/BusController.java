@@ -27,7 +27,7 @@ import com.i2i.ibus.service.BusService;
  *
  */
 @RestController
-@RequestMapping("/api/v1/buses")
+@RequestMapping("api/v1/buses")
 public class BusController {
 
     private BusService busService;
@@ -68,7 +68,7 @@ public class BusController {
      * @return
      * @throws IBusException
      */
-    @PutMapping("/{id}/operators/{id}")
+    @PutMapping("/{id}/operators/{operatorid}")
     private ResponseEntity<BusDto> updateBus(@RequestBody BusDto busDto, @PathVariable int operatorId)
 	    throws IBusException {
 
