@@ -19,15 +19,24 @@ import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.service.BusService;
 
 /**
+ * 
  * @author Ananth.
+ * @version 1.0.
+ * 
+ * @created Nov 29 2022
  *
  */
 @RestController
-@RequestMapping("/api/v1/ibus/buses")
+@RequestMapping("/api/v1/buses")
 public class BusController {
 
-    @Autowired
     private BusService busService;
+
+    @Autowired
+    public BusController(BusService busService) {
+	super();
+	this.busService = busService;
+    }
 
     /**
      * 
@@ -35,43 +44,46 @@ public class BusController {
      * @return
      * @throws IBusException
      */
-    @PostMapping("/{operatorid}")
-    private ResponseEntity<BusDto> addBus(@RequestBody BusDto busDto, @PathVariable int operatorId) throws IBusException {
+    @PostMapping("/operators/{id}")
+    private ResponseEntity<BusDto> addBus(@RequestBody BusDto busDto, @PathVariable int operatorId)
+	    throws IBusException {
 
-	return new ResponseEntity<BusDto>(busService.addBus(busDto), HttpStatus.CREATED);
+	return new ResponseEntity<BusDto>(busService.addBus(busDto, operatorId), HttpStatus.CREATED);
     }
 
     /**
      * 
      * @return
-     * @throws AlreadyExistException
+     * @throws IBusExistException
      */
     @GetMapping
     private ResponseEntity<List<BusDto>> getAllBuses() throws IBusException {
 
 	return new ResponseEntity<List<BusDto>>(busService.getAllBuses(), HttpStatus.OK);
     }
-    
+
     /**
      * 
+     * @param busDto
      * @return
      * @throws IBusException
      */
-    @GetMapping("/{name}")
-    private ResponseEntity<List<BusDto>> getBusByName(@PathVariable String busName) throws IBusException {
+    @PutMapping("/{id}/operators/{id}")
+    private ResponseEntity<BusDto> updateBus(@RequestBody BusDto busDto, @PathVariable int operatorId)
+	    throws IBusException {
 
-	return new ResponseEntity<List<BusDto>>(busService.getBusByName(busName), HttpStatus.OK);
+	return new ResponseEntity<BusDto>(busService.updateBus(busDto, operatorId), HttpStatus.OK);
     }
-    
-    @PutMapping
-    private ResponseEntity<BusDto> updateBus(@RequestBody BusDto busDto) throws IBusException {
 
-	return new ResponseEntity<BusDto>(busService.updateBus(busDto), HttpStatus.OK);
-    }
-    
-    @DeleteMapping
+    /**
+     * 
+     * @param busId
+     * @return
+     * @throws IBusException
+     */
+    @DeleteMapping("/{id}")
     private ResponseEntity<String> deleteBus(@PathVariable int busId) throws IBusException {
 
-   	return new ResponseEntity<String>("Deleted Sucessfully", HttpStatus.OK);
-       }
+	return new ResponseEntity<String>("Deleted Sucessfully", HttpStatus.OK);
+    }
 }

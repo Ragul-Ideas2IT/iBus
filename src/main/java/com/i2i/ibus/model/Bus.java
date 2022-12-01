@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.hibernate.annotations.SQLDelete;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +17,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
+ * 
  * @author Ananth.
+ * @version 1.0.
+ * 
+ * @created Nov 29 2022
  *
  */
 @Getter
@@ -32,7 +35,6 @@ public class Bus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String busName;
     private String busNumber;
     private int numberOfSeats;
     private String type;
@@ -45,6 +47,8 @@ public class Bus {
     @OneToMany(cascade = { jakarta.persistence.CascadeType.PERSIST })
     @JoinColumn(name = "bus_id")
     private List<PickupPoint> pickupPoints;
-    @Column(columnDefinition = "bit default 0")
+    @OneToMany(cascade = { jakarta.persistence.CascadeType.PERSIST })
+    @JoinColumn(name = "seat_id")
+    private List<Seat> seats;
     private boolean isDeleted;
 }
