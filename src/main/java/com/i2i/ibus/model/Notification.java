@@ -9,6 +9,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * @author Tamilmani
+ * @version 1.0
+ * 
+ * @created Nov 30 2022
+ *
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,12 +23,12 @@ import lombok.Setter;
 @Table
 public class Notification {
 
-	@Id
-	@GeneratedValue (strategy=GenerationType.IDENTITY)
-	private Integer id;
-	private String type;
-	private String message;
-	private Boolean status;
-	private Boolean isDeleted;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String type;
+    private String message;
+    private Boolean status;
+    private Boolean isDeleted;
 
 }

@@ -1,7 +1,5 @@
 package com.i2i.ibus.model;
 
-import java.time.LocalDateTime;
-
 import org.hibernate.annotations.SQLDelete;
 
 import jakarta.persistence.CascadeType;
@@ -28,20 +26,21 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table
-@SQLDelete(sql = "UPDATE payment SET is_deleted = true WHERE id=?")
-public class Payment {
+@SQLDelete(sql = "UPDATE bookingdetail SET is_deleted = true WHERE id=?")
+public class BookingDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private double amount;
-    private String status;
-    private String modeOfPayment;
-    @Column(insertable = false)
-    private LocalDateTime time;
+    private Integer id;
+    private Integer age;
+    private String name;
+    private String gender;
+    private String busNumber;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Booking booking;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Seat seat;
     @Column(columnDefinition = "bit default 0")
-    private boolean isDeleted;
+    private Boolean isDeleted;
 
 }
