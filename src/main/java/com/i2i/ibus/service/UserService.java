@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
  * @author Ragul
  * @version 1.0
  * 
- * @since 29 Nov 2022
+ * @created Nov 29 2022
  *
  */
 @Service
@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
     private final UserRepository userRepository;
-    private ModelMapper mapper = new ModelMapper();
+    private final ModelMapper mapper;
 
     public void validatePhoneNo(String phoneNumber) throws IBusException {
 	Optional<User> user = userRepository.findByPhoneNumber(phoneNumber);

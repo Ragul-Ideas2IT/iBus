@@ -4,17 +4,18 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
+
 /**
  * @author Ragul
  * @version 1.0
  * 
- * @since 28 Nov 2022
+ * @created Nov 29 2022
  *
  */
 @Getter
 @Setter
 public class OperatorDto {
-    
+
     private int id;
     private String travelsName;
     private String ownerName;

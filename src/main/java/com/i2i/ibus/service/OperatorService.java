@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
  * @author Ragul
  * @version 1.0
  * 
- * @since 29 Nov 2022
+ * @created Nov 29 2022
  *
  */
 @Service
@@ -68,17 +68,15 @@ public class OperatorService {
 
     public Operator toOperator(OperatorDto operatorDto) {
 	Operator operator = mapper.map(operatorDto, Operator.class);
-	operator.setAddresses(operatorDto.getAddresses().stream().map(address -> mapper.map(address, Address.class))
-		.collect(Collectors.toList()));
+	operator.setAddresses(operatorDto.getAddresses().stream()
+		.map(addressDto -> mapper.map(addressDto, Address.class)).toList());
 	return operator;
     }
 
     public OperatorDto toOperatorDto(Operator operator) {
 	OperatorDto operatorDto = mapper.map(operator, OperatorDto.class);
-	for(Address address: operator.getAddresses()) {
-	}
-	operatorDto.setAddresses(operator.getAddresses().stream().map(address -> mapper.map(address, AddressDto.class))
-		.collect(Collectors.toList()));
+	operatorDto.setAddresses(
+		operator.getAddresses().stream().map(address -> mapper.map(address, AddressDto.class)).toList());
 	return operatorDto;
     }
 }
