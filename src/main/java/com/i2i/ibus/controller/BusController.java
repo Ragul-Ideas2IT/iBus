@@ -19,6 +19,8 @@ import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.service.BusService;
 
 /**
+ * It is used to done the CRUD operations of the bus details.
+ * In this we can manipulate the bus details by Operators.
  * 
  * @author Ananth.
  * @version 1.0.
@@ -33,8 +35,7 @@ public class BusController {
     private BusService busService;
 
     @Autowired
-    public BusController(BusService busService) {
-	super();
+    private BusController(BusService busService) {
 	this.busService = busService;
     }
 
