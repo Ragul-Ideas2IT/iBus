@@ -2,6 +2,7 @@ package com.i2i.ibus.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.i2i.ibus.dto.MessageDto;
 import com.i2i.ibus.dto.UserDto;
+import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,11 +30,15 @@ import lombok.RequiredArgsConstructor;
  *
  */
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("api/v1/users")
 public class UserController {
 
-    private final UserService userService;
+    private UserService userService;
+    
+    @Autowired
+    private UserController(UserService userService) {
+	this.userService = userService;
+    }
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
@@ -48,19 +54,19 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    private UserDto getUserDtoById(@PathVariable int id) {
+    private UserDto getUserDtoById(@PathVariable int id) throws IBusException {
 	return userService.getUserDtoById(id);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    private UserDto updateUser(@PathVariable int id, @RequestBody @Validated UserDto userDto) {
-	return userService.updateUserById(userDto);
+    private UserDto updateUser(@PathVariable int id, @RequestBody @Validated UserDto userDto) throws IBusException {
+	return userService.updateUserById(id, userDto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    private MessageDto deleteUser(@PathVariable int id) {
+    private MessageDto deleteUser(@PathVariable int id) throws IBusException {
 	userService.deleteUserById(id);
 	return new MessageDto("202", "Deleted Successfully");
     }

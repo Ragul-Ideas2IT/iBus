@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.i2i.ibus.model.Operator;
-import com.i2i.ibus.model.User;
 /**
  * @author Ragul
  * @version 1.0
@@ -21,9 +20,12 @@ public interface OperatorRepository extends JpaRepository<Operator, Integer>{
     @Query("from Operator where isDeleted = false")
     Optional<Operator> findByMailId(String mailId);
 
-    @Query("from Operator where isDeleted = false")
+    @Query("from Operator where isDeleted = false and phoneNumber = :phoneNumber")
     Optional<Operator> findByPhoneNumber(String phoneNumber);
 
+    @Query("from Operator where isDeleted = false and gstNumber = :gstNumber")
+    Optional<Operator> findByGstNumber(String gstNumber);
+    
     @Query("from Operator where isDeleted = false")
     List<Operator> findAll();
 
