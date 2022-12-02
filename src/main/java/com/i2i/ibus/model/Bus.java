@@ -48,7 +48,7 @@ public class Bus {
     @JoinColumn(name = "bus_id")
     private List<PickupPoint> pickupPoints;
     @OneToMany(cascade = { jakarta.persistence.CascadeType.PERSIST })
-    @JoinColumn(name = "seat_id")
+    @JoinColumn(name = "bus_id")
     private List<Seat> seats;
     private boolean isDeleted;
 }
