@@ -41,7 +41,6 @@ public class Payment {
     private LocalDateTime time;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Booking booking;
-    @Column(columnDefinition = "bit default 0")
     private boolean isDeleted;
 
 }

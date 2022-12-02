@@ -32,23 +32,32 @@ import com.i2i.ibus.service.BookingDetailService;
 public class BookingDetailController {
 
     private BookingDetailService bookingDetailService;
-    private ModelMapper modelMapper;
 
+    /**
+     * 
+     * @param bookingDetailService
+     */
     @Autowired
-    public BookingDetailController(BookingDetailService bookingDetailService, ModelMapper modelMapper) {
+    private BookingDetailController(BookingDetailService bookingDetailService) {
 	this.bookingDetailService = bookingDetailService;
-	this.modelMapper = modelMapper;
     }
 
-    @PostMapping(value = "/bookings/{booking_id}")
+    @PostMapping("/bookings/{bookingId}/buses/{busId}/seats/{seatId}")
+    private BookingDetailDto createBookingDetail(@PathVariable int bookingId, @PathVariable int busId,
+	    @PathVariable int seatId, @RequestBody BookingDetailDto bookingDetailDto) throws IBusException {
+	return bookingDetailService.createbookingDetail(bookingId, busId, seatId, bookingDetailDto);
+    }
+
+    @PostMapping("/bookings/{bookingId}")
     @ResponseStatus(value = HttpStatus.OK)
-    private List<BookingDetailDto> createBookingDetails(@PathVariable("booking_id") int bookingId,
+    private List<BookingDetailDto> createBookingDetails(@PathVariable int bookingId,
 	    @RequestBody List<BookingDetailDto> bookingDetailDtos) throws IBusException {
 	return bookingDetailService.createBookingDetails(bookingId, bookingDetailDtos);
     }
 
-    @PutMapping(value = "/bookings/{booking_id}")
-    private void updateBookingDetails(@PathVariable("booking_id") int bookingId,
+    @PutMapping("/bookings/{bookingId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    private void updateBookingDetails(@PathVariable int bookingId,
 	    @RequestBody List<BookingDetailDto> bookingDetailDtos) throws IBusException {
 	bookingDetailService.updateBookingDetails(bookingId, bookingDetailDtos);
     }

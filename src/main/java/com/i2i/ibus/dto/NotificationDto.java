@@ -1,7 +1,6 @@
 package com.i2i.ibus.dto;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -13,11 +12,10 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@NoArgsConstructor
 public class NotificationDto {
 
-    private Boolean status;
-    private String type;
     private String message;
+    private String reference_id;
+    private boolean reference_type;
 
 }

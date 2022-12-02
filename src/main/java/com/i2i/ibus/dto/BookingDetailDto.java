@@ -1,8 +1,9 @@
 package com.i2i.ibus.dto;
 
+import com.i2i.ibus.model.Seat;
+
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -14,13 +15,12 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@NoArgsConstructor
 public class BookingDetailDto {
 
     private int age;
-    @Pattern(regexp = "^[a-z]{2,30}$", message = "Please enter the valid format name")
     private String name;
     @Pattern(regexp = "(?i)^(male)|(female)|(others)$", message = "Please enter the valid format gender")
     private String gender;
+    private String seatId;
 
 }
