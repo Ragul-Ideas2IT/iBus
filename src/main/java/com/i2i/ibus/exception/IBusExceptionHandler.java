@@ -11,6 +11,9 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -23,8 +26,8 @@ import com.i2i.ibus.dto.MessageDto;
  * @created Nov 30 2022
  *
  */
-@ControllerAdvice
-public class IBusExceptionHandler extends ResponseEntityExceptionHandler {
+@RestControllerAdvice
+public class IBusExceptionHandler {
 
     /**
      * {@inheritDoc}
@@ -42,8 +45,9 @@ public class IBusExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = IBusException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public MessageDto exception(IBusException exception) {
-	MessageDto error = new MessageDto("208", exception.getMessage());
+	MessageDto error = new MessageDto("400", exception.getMessage());
 	return error;
     }
 }

@@ -31,6 +31,15 @@ public class OperatorService {
 
     private final ModelMapper mapper;
 
+    public void validateOperator(int id) throws IBusException {
+	Optional<Operator> operator = operatorRepository.findById(id);
+	if (operator.isPresent() && operator.get().isDeleted()) {
+	    throw new IBusException("User id doesn't exists because User details deleted");
+	} else if(!operator.isPresent()) {
+	    throw new IBusException("User Id doesn't exists");
+	}
+    } 
+    
     public void validatePhoneNo(String phoneNumber) throws IBusException {
 	Operator operator = operatorRepository.findByPhoneNumber(phoneNumber).get();
 	if (!operator.isDeleted() && (null != operator)) {
@@ -38,6 +47,13 @@ public class OperatorService {
 	}
     }
 
+    public void validateGstNumber(String gstNumber) throws IBusException {
+	Operator operator = operatorRepository.findByGstNumber(gstNumber).get();
+	if (!operator.isDeleted() && (null != operator)) {
+	    throw new IBusException(gstNumber.concat(" Already exists"));
+	}
+    }
+    
     public void validateMailId(String mailId) throws IBusException {
 	Optional<Operator> operator = operatorRepository.findByMailId(mailId);
 	if (operator.isPresent()) {
@@ -54,15 +70,19 @@ public class OperatorService {
 		.collect(Collectors.toList());
     }
 
-    public OperatorDto getOperatorDtoById(int id) {
+    public OperatorDto getOperatorDtoById(int id) throws IBusException {
+	validateOperator(id);
 	return toOperatorDto(operatorRepository.findById(id).get());
     }
 
-    public OperatorDto updateOperatorById(OperatorDto operatorDto) {
+    public OperatorDto updateOperatorById(int id, OperatorDto operatorDto) throws IBusException {
+	validateOperator(id);
+	operatorDto.setId(id);
 	return saveOperator(operatorDto);
     }
 
-    public void deleteOperatorById(int id) {
+    public void deleteOperatorById(int id) throws IBusException {
+	validateOperator(id);
 	operatorRepository.deleteById(id);
     }
 

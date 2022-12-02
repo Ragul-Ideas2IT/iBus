@@ -27,6 +27,15 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper mapper;
+    
+    public void validateUser(int id) throws IBusException {
+	Optional<User> user = userRepository.findById(id);
+	if (user.isPresent() && user.get().isDeleted()) {
+	    throw new IBusException("User id doesn't exists because User details deleted");
+	} else if(!user.isPresent()) {
+	    throw new IBusException("User Id doesn't exists");
+	}
+    }    
 
     public void validatePhoneNo(String phoneNumber) throws IBusException {
 	Optional<User> user = userRepository.findByPhoneNumber(phoneNumber);
@@ -52,15 +61,19 @@ public class UserService {
 		.collect(Collectors.toList());
     }
 
-    public UserDto getUserDtoById(int id) {
+    public UserDto getUserDtoById(int id) throws IBusException {
+	validateUser(id);
 	return mapper.map(userRepository.findById(id), UserDto.class);
     }
 
-    public UserDto updateUserById(UserDto userDto) {
+    public UserDto updateUserById(int id, UserDto userDto) throws IBusException {
+	validateUser(id);
+	userDto.setId(id);
 	return saveUser(userDto);
     }
 
-    public void deleteUserById(int id) {
+    public void deleteUserById(int id) throws IBusException {
+	validateUser(id);
 	userRepository.deleteById(id);
     }
 }
