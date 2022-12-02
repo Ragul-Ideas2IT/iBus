@@ -1,6 +1,9 @@
 package com.i2i.ibus.dto;
 
-import java.security.Timestamp;
+import java.time.LocalDateTime;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Esakkiraja E
@@ -8,12 +11,12 @@ import java.security.Timestamp;
  *
  * @created Nov 29 2022
  */
+@Getter
+@Setter
 public class CancellationDto {
 
     private int id;
-    private Timestamp dateAndTime;
-    private double refund;
-    private boolean isCanceled;
-    // private Notification notification;
-
+    private LocalDateTime dateAndTime;
+    private double refundAmount;
+    private boolean isCancelled;
 }
