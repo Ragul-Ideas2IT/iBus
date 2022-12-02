@@ -37,12 +37,8 @@ public class PaymentService {
     }
 
     public PaymentDto createPayment(int bookingId, PaymentDto paymentDto) throws IBusException {
-	Booking booking;
-	try {
-	    booking = bookingRepository.findById(bookingId).orElseThrow();
-	} catch (NoSuchElementException noBookingFound) {
-	    throw new IBusException("No booking id found...");
-	}
+	Booking booking = null;
+	booking = bookingRepository.findById(bookingId).orElseThrow(() -> new IBusException("No booking id found..."));
 	Payment payment = mapper.map(paymentDto, Payment.class);
 	payment.setBooking(booking);
 	payment.setTime(LocalDateTime.now());

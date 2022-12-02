@@ -3,12 +3,12 @@ package com.i2i.ibus.model;
 import org.hibernate.annotations.SQLDelete;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,16 +31,14 @@ public class BookingDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private Integer age;
+    private int id;
+    private int age;
     private String name;
     private String gender;
-    private String busNumber;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Booking booking;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Seat seat;
-    @Column(columnDefinition = "bit default 0")
-    private Boolean isDeleted;
+    private boolean isDeleted;
 
 }

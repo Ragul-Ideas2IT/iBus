@@ -13,11 +13,11 @@ import com.i2i.ibus.service.NotificationService;
 @RestController
 public class NotificationController {
 
-	private NotificationService notificationService;
+    private NotificationService notificationService;
 
-	@Autowired
-	private NotificationController(NotificationService notificationService) {
-		this.notificationService = notificationService;
-	}
+    @Autowired
+    private NotificationController(NotificationService notificationService) {
+	this.notificationService = notificationService;
+    }
 
 }
