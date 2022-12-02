@@ -1,6 +1,5 @@
 package com.i2i.ibus.dto;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import com.i2i.ibus.model.Cancellation;
@@ -29,5 +28,4 @@ public class BookingDto {
     private LocalDateTime travelDateAndTime;
     private LocalDateTime dateTime;
     private Cancellation cancellation;
-
 }

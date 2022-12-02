@@ -30,37 +30,37 @@ public class BookingController {
     private BookingService bookingService;
 
     @Autowired
-    public BookingController(BookingService bookingService) {
+    private BookingController(BookingService bookingService) {
 	this.bookingService = bookingService;
     }
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public BookingDto addBooking(@RequestBody BookingDto bookingDto) {
+    private BookingDto addBooking(@RequestBody BookingDto bookingDto) {
 	return bookingService.addBooking(bookingDto);
     }
 
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    public List<BookingDto> getAllBooking() {
+    private List<BookingDto> getAllBooking() {
 	return bookingService.getAllBooking();
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public BookingDto searchBooking(@PathVariable int id) {
-	return bookingService.searchBooking(id);
+    private BookingDto searchBooking(@PathVariable int id) {
+	return bookingService.getBookingDto(id);
     }
     
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    public void deleteBooking(@PathVariable int id) {
+    private void deleteBooking(@PathVariable int id) {
 	bookingService.deleteBooking(id);
     }
     
     @PutMapping("/cancellations/{bookingId}")
     @ResponseStatus(value = HttpStatus.OK)
-    public void cancellation(@PathVariable int bookingId) {
+    private void cancellation(@PathVariable int bookingId) {
 	bookingService.cancellation(bookingId);
     }
 }

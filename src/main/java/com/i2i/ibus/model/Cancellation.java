@@ -1,9 +1,7 @@
 package com.i2i.ibus.model;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 
 import jakarta.persistence.Column;
@@ -34,9 +32,8 @@ public class Cancellation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(insertable = false)
-    @ColumnDefault(value = "CURRENT_TIMESTAMP(6)")
-    private Timestamp dateAndTime;
-    private double refund;
-    private boolean status;
+    private LocalDateTime dateAndTime;
+    private double refundAmount;
+    private boolean isCancelled;
     private boolean isDeleted;
 }

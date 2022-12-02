@@ -1,11 +1,7 @@
 package com.i2i.ibus.model;
 
-import java.sql.Timestamp;
-
-
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.SQLDelete;
 
 import jakarta.persistence.CascadeType;
@@ -51,4 +47,6 @@ public class Booking {
     private User user;
     @OneToOne(cascade = CascadeType.PERSIST)
     private Cancellation cancellation;
+    @OneToOne(cascade = CascadeType.PERSIST)
+    private Bus bus;
 }
