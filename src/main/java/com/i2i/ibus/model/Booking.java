@@ -3,6 +3,7 @@ package com.i2i.ibus.model;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.SQLDelete;
+import org.springframework.beans.factory.annotation.Value;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -36,11 +37,11 @@ public class Booking {
     private int id;
     private int numberOfSeats;
     private double totalFare;
-    @Column(insertable = false)
     private LocalDateTime dateTime;
     private String pickUpPoint;
     private String dropPoint;
     private String status;
+    private String paymentStatus;
     private LocalDateTime travelDateAndTime;
     private boolean isDeleted;
     @ManyToOne(cascade = CascadeType.PERSIST)
