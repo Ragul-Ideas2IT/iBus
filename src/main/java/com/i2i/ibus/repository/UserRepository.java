@@ -20,10 +20,10 @@ import com.i2i.ibus.model.User;
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-    @Query("from User where isDeleted = false")
+    @Query("from User where isDeleted = false and mailId = :mailId")
     Optional<User> findByMailId(String mailId);
 
-    @Query("from User where isDeleted = false")
+    @Query("from User where isDeleted = false and phoneNumber = :phoneNumber")
     Optional<User> findByPhoneNumber(String phoneNumber);
 
     @Query("from User where isDeleted = false")
@@ -31,11 +31,4 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("from User where isDeleted = false and id = :id")
     Optional<User> findById(int id);
-
-    @Query(value = "Select * from booking where user_id = :id and is_expired = false", nativeQuery = true)
-    List<Booking> findAllUpcomingBookings(@Param("id") int id);
-
-    @Query(value = "Select * from booking where user_id = :id and is_expired = true", nativeQuery = true)
-    List<Booking> findAllCompletedBookings(@Param("id") int id);
-
 }

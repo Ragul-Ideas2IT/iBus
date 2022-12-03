@@ -17,7 +17,7 @@ import com.i2i.ibus.model.Operator;
  */
 @Repository
 public interface OperatorRepository extends JpaRepository<Operator, Integer>{
-    @Query("from Operator where isDeleted = false")
+    @Query("from Operator where isDeleted = false and mailId = :mailId")
     Optional<Operator> findByMailId(String mailId);
 
     @Query("from Operator where isDeleted = false and phoneNumber = :phoneNumber")
