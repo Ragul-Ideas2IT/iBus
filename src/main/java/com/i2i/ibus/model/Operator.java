@@ -32,17 +32,11 @@ public class Operator {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @NotNull
     private String travelsName;
-    @NotNull
     private String ownerName;
-    @NotNull
     private String phoneNumber;
-    @NotNull
     private String mailId;
-    @NotNull
     private String panNumber;
-    @NotNull
     private String gstNumber;
     private boolean isDeleted;
     @OneToMany(cascade = CascadeType.PERSIST)

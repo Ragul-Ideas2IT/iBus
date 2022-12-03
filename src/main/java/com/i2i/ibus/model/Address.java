@@ -27,17 +27,11 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @NotNull
     private String landmark;
-    @NotNull
     private String street;
-    @NotNull
     private String city;
-    @NotNull
     private String district;
-    @NotNull
     private String state;
-    @NotNull
     private int pincode;
     private boolean isDeleted;
     

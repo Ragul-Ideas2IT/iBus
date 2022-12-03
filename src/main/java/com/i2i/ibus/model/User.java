@@ -30,15 +30,10 @@ public class User {
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @NotNull
     private String name;
-    @NotNull
     private String phoneNumber;
-    @NotNull
     private String mailId;
-    @NotNull
     private String gender;
-    @NotNull
     private int age;
     private boolean isDeleted; 
 }
