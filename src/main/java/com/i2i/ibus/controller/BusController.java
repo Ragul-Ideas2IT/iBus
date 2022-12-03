@@ -45,7 +45,7 @@ public class BusController {
      * @return
      * @throws IBusException
      */
-    @PostMapping("/operators/{id}")
+    @PostMapping("/operators/{operatorId}")
     private ResponseEntity<BusDto> addBus(@RequestBody BusDto busDto, @PathVariable int operatorId)
 	    throws IBusException {
 
@@ -82,7 +82,7 @@ public class BusController {
      * @return
      * @throws IBusException
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{busId}")
     private ResponseEntity<String> deleteBus(@PathVariable int busId) throws IBusException {
 
 	return new ResponseEntity<String>("Deleted Sucessfully", HttpStatus.OK);
