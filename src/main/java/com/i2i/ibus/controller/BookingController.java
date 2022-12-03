@@ -34,10 +34,10 @@ public class BookingController {
 	this.bookingService = bookingService;
     }
 
-    @PostMapping
+    @PostMapping("/buses/{busId}")
     @ResponseStatus(value = HttpStatus.CREATED)
-    private BookingDto addBooking(@RequestBody BookingDto bookingDto) {
-	return bookingService.addBooking(bookingDto);
+    private BookingDto addBooking(@PathVariable("busId") int busId, @RequestBody BookingDto bookingDto) {
+	return bookingService.addBooking(busId, bookingDto);
     }
 
     @GetMapping
@@ -48,7 +48,7 @@ public class BookingController {
 
     @GetMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    private BookingDto searchBooking(@PathVariable int id) {
+    private BookingDto getBooking(@PathVariable int id) {
 	return bookingService.getBookingDto(id);
     }
     

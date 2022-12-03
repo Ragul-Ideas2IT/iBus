@@ -1,6 +1,7 @@
 package com.i2i.ibus.service;
 
 import java.time.LocalDateTime;
+
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import com.i2i.ibus.model.BusHistory;
 import com.i2i.ibus.model.Cancellation;
 import com.i2i.ibus.repository.BookingRepository;
 import com.i2i.ibus.repository.BusRepository;
+import com.i2i.ibus.repository.PaymentRepository;
 
 /**
  * @author Esakkiraja E
@@ -28,18 +30,25 @@ import com.i2i.ibus.repository.BusRepository;
 public class BookingService {
 
     private BookingRepository bookingRepository;
+    private PaymentRepository paymentRepository;
     private BusRepository busRepository;
     private ModelMapper mapper;
 
     @Autowired
-    public BookingService(BookingRepository bookingRepository, ModelMapper mapper) {
+    public BookingService(BookingRepository bookingRepository, ModelMapper mapper, PaymentRepository paymentRepository,
+	    BusRepository busRepository) {
 	this.bookingRepository = bookingRepository;
 	this.mapper = mapper;
+	this.paymentRepository = paymentRepository;
+	this.busRepository = busRepository;
     }
 
-    public BookingDto addBooking(BookingDto bookingDto) {
+    public BookingDto addBooking(int busId, BookingDto bookingDto) {
 	Booking booking = mapper.map(bookingDto, Booking.class);
 	booking.setDateTime(LocalDateTime.now());
+	booking.setBus(getBusById(busId));
+	booking.setPaymentStatus("unpaid");
+	booking.setStatus("upcoming");
 	bookingRepository.save(booking);
 	return mapper.map(booking, BookingDto.class);
     }
@@ -49,6 +58,7 @@ public class BookingService {
 	List<BookingDto> bookingDtos = new ArrayList<BookingDto>();
 	if (!bookingDetail.isEmpty()) {
 	    for (Booking booking : bookingDetail) {
+		completeBooking(booking.getId());
 		bookingDtos.add(mapper.map(booking, BookingDto.class));
 	    }
 	}
@@ -60,11 +70,12 @@ public class BookingService {
     }
 
     public BookingDto getBookingDto(int id) {
+	completeBooking(id);
 	return mapper.map(bookingRepository.findById(id).get(), BookingDto.class);
     }
 
-    public void cancellation(int id) {
-	Booking booking = bookingRepository.findById(id).get();
+    public void cancellation(int bookingId) {
+	Booking booking = bookingRepository.findById(bookingId).get();
 	if (booking.getCancellation() == null) {
 
 	    Cancellation cancellation = new Cancellation();
@@ -100,10 +111,15 @@ public class BookingService {
 		.getArrivingDateTime()) <= 0) {
 	    booking.setStatus("Completed");
 	}
+	bookingRepository.save(booking);
     }
 
     public long calculateDifferenceOfTime(LocalDateTime dateTime) {
 	return ChronoUnit.MINUTES.between(LocalDateTime.now(), dateTime);
+    }
+
+    public Bus getBusById(int id) {
+	return busRepository.findById(id);
     }
 
     public BusHistory getBusHistoryByTravelDateTime(Bus bus, LocalDateTime travelDateTime) {
