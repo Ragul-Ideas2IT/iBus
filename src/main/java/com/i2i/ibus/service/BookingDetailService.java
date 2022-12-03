@@ -1,5 +1,6 @@
 package com.i2i.ibus.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -28,26 +29,14 @@ public class BookingDetailService {
 
     private BookingDetailRepository bookingDetailRepository;
     private BookingRepository bookingRepository;
-    private BusRepository busRepository;
     private ModelMapper mapper;
 
     @Autowired
     private BookingDetailService(BookingDetailRepository bookingDetailRepository, BookingRepository bookingRepository,
-	    BusRepository busRepository, ModelMapper mapper) {
+	    ModelMapper mapper) {
 	this.bookingDetailRepository = bookingDetailRepository;
 	this.bookingRepository = bookingRepository;
-	this.busRepository = busRepository;
 	this.mapper = mapper;
-    }
-
-    public List<BookingDetailDto> createBookingDetails(int bookingId, List<BookingDetailDto> bookingDetailDtos)
-	    throws IBusException {
-	Booking booking = findBooking(bookingId);
-	booking.setStatus("success");
-	List<BookingDetail> bookingDetails = bookingDetailDtoToBookingDetail(bookingDetailDtos);
-	bookingDetails.forEach(bookingDetail -> bookingDetail.setBooking(booking));
-	bookingDetails.forEach(bookingDetail -> bookingDetailRepository.save(bookingDetail));
-	return bookingDetailToBookingDetailDto(bookingDetails);
     }
 
     public void updateBookingDetails(int bookingId, List<BookingDetailDto> bookingDetailDtos) throws IBusException {
@@ -71,15 +60,43 @@ public class BookingDetailService {
 		.toList();
     }
 
-    public BookingDetailDto createbookingDetail(int bookingId, int busId, int seatId, BookingDetailDto bookingDetailDto)
+    public BookingDetailDto createBookingDetail(int bookingId, int seatId, BookingDetailDto bookingDetailDto)
 	    throws IBusException {
+	Seat bookingSeat = null;
 	BookingDetail bookingDetail = mapper.map(bookingDetailDto, BookingDetail.class);
-	//Bus bus = busRepository.findById(busId).orElseThrow(() -> new IBusException("No bus id found..."));
-//	if(null != bookingDetailRepository.findBySeatId(bookingDetailDto.getSeatId())) {
-//	    throw new IBusException("Seat is booked...");
-//	}
-	//bookingDetail.setSeat(null);
-	return mapper.map(bookingDetailRepository.save(bookingDetail), BookingDetailDto.class);
+	Booking booking = findBooking(bookingId);
+	Bus bus = booking.getBus();
+	for (Seat seat : bus.getSeats()) {
+	    if (seat.getId() == seatId) {
+		bookingSeat = seat;
+	    }
+	}
+	if (null == bookingDetailRepository.findBySeatId(seatId)) {
+	    if (bookingSeat.getGender().equalsIgnoreCase(bookingDetailDto.getGender())) {
+		bookingDetail.setBooking(booking);
+		bookingDetail.setSeat(bookingSeat);
+		bookingDetail = bookingDetailRepository.save(bookingDetail);
+	    } else {
+		throw new IBusException("this seat is only for ".concat(bookingDetail.getGender()));
+	    }
+	} else {
+	    throw new IBusException("Seat is already booked..");
+	}
+	return mapper.map(bookingDetail, BookingDetailDto.class);
+    }
+
+    public List<BookingDetailDto> getBookingDetailsByBookId(int bookingId)
+	    throws IBusException {
+	findBooking(bookingId);
+	return bookingDetailsToBookingDetailDtos(bookingDetailRepository.findAllById(bookingId));
+    }
+
+    public List<BookingDetailDto> bookingDetailsToBookingDetailDtos(List<BookingDetail> bookingDetails) {
+	List<BookingDetailDto> bookingDetailDtos = new ArrayList<BookingDetailDto>();
+	for (BookingDetail bookingDetail : bookingDetails) {
+	    bookingDetailDtos.add(mapper.map(bookingDetail, BookingDetailDto.class));
+	}
+	return bookingDetailDtos;
     }
 
 }

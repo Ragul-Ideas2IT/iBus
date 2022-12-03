@@ -1,5 +1,6 @@
 package com.i2i.ibus.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,5 +26,8 @@ public interface BookingDetailRepository extends JpaRepository<BookingDetail, In
 
     @Query("from BookingDetail b join b.seat s where b.isDeleted = false and s.id = :seatId")
     BookingDetail findBySeatId(int seatId);
+
+    @Query("from BookingDetail b join b.booking bb where b.isDeleted = false and bb.id = :bookingId")
+    List<BookingDetail> findAllById(int bookingId);
 
 }

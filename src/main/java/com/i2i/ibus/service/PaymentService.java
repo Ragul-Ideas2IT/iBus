@@ -1,7 +1,7 @@
 package com.i2i.ibus.service;
 
 import java.time.LocalDateTime;
-import java.util.NoSuchElementException;
+import java.time.temporal.ChronoUnit;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,16 +37,20 @@ public class PaymentService {
     }
 
     public PaymentDto createPayment(int bookingId, PaymentDto paymentDto) throws IBusException {
-	Booking booking = null;
-	booking = bookingRepository.findById(bookingId).orElseThrow(() -> new IBusException("No booking id found..."));
+	Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new IBusException("No booking id found..."));
 	Payment payment = mapper.map(paymentDto, Payment.class);
-	payment.setBooking(booking);
-	payment.setTime(LocalDateTime.now());
-	payment.setStatus("paid");
-	return mapper.map(paymentRepository.save(payment), PaymentDto.class);
-    }
-
-    public void deletePayment(int bookingId) {
+	if (5 > ChronoUnit.MINUTES.between(booking.getDateTime(), LocalDateTime.now())) {
+	    booking.setStatus("cancelled");
+	    payment.setBooking(booking);
+	    payment.setStatus("unpaid");
+	    paymentDto = mapper.map(paymentRepository.save(payment), PaymentDto.class);
+	    throw new IBusException("Booking time is over...");
+	} else {
+	    payment.setBooking(booking);
+	    payment.setStatus("paid");
+	    paymentDto = mapper.map(paymentRepository.save(payment), PaymentDto.class);
+	}
+	return paymentDto;
     }
 
 }
