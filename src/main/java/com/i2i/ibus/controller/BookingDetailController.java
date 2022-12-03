@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,7 +29,7 @@ import com.i2i.ibus.service.BookingDetailService;
  *
  */
 @RestController
-@RequestMapping("api/v1/bookingdetails")
+@RequestMapping("api/v1/bookingdetails/bookings/{bookingId}/seats/{seatId}")
 public class BookingDetailController {
 
     private BookingDetailService bookingDetailService;
@@ -42,24 +43,15 @@ public class BookingDetailController {
 	this.bookingDetailService = bookingDetailService;
     }
 
-    @PostMapping("/bookings/{bookingId}/buses/{busId}/seats/{seatId}")
-    private BookingDetailDto createBookingDetail(@PathVariable int bookingId, @PathVariable int busId,
-	    @PathVariable int seatId, @RequestBody BookingDetailDto bookingDetailDto) throws IBusException {
-	return bookingDetailService.createbookingDetail(bookingId, busId, seatId, bookingDetailDto);
+    @PostMapping
+    private BookingDetailDto createBookingDetail(@PathVariable int bookingId, @PathVariable int seatId,
+	    @RequestBody BookingDetailDto bookingDetailDto) throws IBusException {
+	return bookingDetailService.createBookingDetail(bookingId, seatId, bookingDetailDto);
     }
 
-    @PostMapping("/bookings/{bookingId}")
-    @ResponseStatus(value = HttpStatus.OK)
-    private List<BookingDetailDto> createBookingDetails(@PathVariable int bookingId,
-	    @RequestBody List<BookingDetailDto> bookingDetailDtos) throws IBusException {
-	return bookingDetailService.createBookingDetails(bookingId, bookingDetailDtos);
-    }
-
-    @PutMapping("/bookings/{bookingId}")
-    @ResponseStatus(value = HttpStatus.OK)
-    private void updateBookingDetails(@PathVariable int bookingId,
-	    @RequestBody List<BookingDetailDto> bookingDetailDtos) throws IBusException {
-	bookingDetailService.updateBookingDetails(bookingId, bookingDetailDtos);
+    @GetMapping
+    private List<BookingDetailDto> getBookingDetailsByBookingId(@PathVariable int bookingId) throws IBusException {
+	return bookingDetailService.getBookingDetailsByBookId(bookingId);
     }
 
 }

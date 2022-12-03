@@ -50,4 +50,5 @@ public class Booking {
     private Cancellation cancellation;
     @OneToOne(cascade = CascadeType.PERSIST)
     private Bus bus;
+
 }

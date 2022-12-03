@@ -19,7 +19,6 @@ import com.i2i.ibus.model.User;
 public interface PaymentRepository extends JpaRepository<Payment, Integer>{  
     
     @Query("from Payment where isDeleted = false and id = :id")
-    Optional<User> findById(int id);
+    Optional<Payment> findById(int id);
 
-    
 }

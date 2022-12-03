@@ -35,6 +35,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private double amount;
+    @Column(columnDefinition = "varchar(255) default 'unpaid'")
     private String status;
     private String modeOfPayment;
     @Column(insertable = false)

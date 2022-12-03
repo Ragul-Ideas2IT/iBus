@@ -2,6 +2,9 @@ package com.i2i.ibus.dto;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +22,7 @@ public class PaymentDto {
     private double amount;
     private String status;
     private String modeOfPayment;
-    private LocalDateTime time;
+    @JsonProperty(access = Access.READ_ONLY)
+    private LocalDateTime time = LocalDateTime.now();
 
 }

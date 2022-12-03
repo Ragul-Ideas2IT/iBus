@@ -19,7 +19,7 @@ import com.i2i.ibus.service.PaymentService;
  *
  */
 @RestController
-@RequestMapping("api/v1/payments")
+@RequestMapping("api/v1/payments/bookings/{bookingId}")
 public class PaymentController {
 
     private PaymentService paymentService;
@@ -29,7 +29,7 @@ public class PaymentController {
 	this.paymentService = paymentService;
     }
 
-    @PostMapping("/bookings/{bookingId}")
+    @PostMapping
     private PaymentDto createPayment(@PathVariable int bookingId, @RequestBody PaymentDto paymentDto)
 	    throws IBusException {
 	return paymentService.createPayment(bookingId, paymentDto);
