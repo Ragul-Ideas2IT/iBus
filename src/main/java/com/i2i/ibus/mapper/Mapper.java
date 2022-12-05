@@ -35,12 +35,7 @@ import com.i2i.ibus.model.User;
  */
 public class Mapper {
 
-    private static ModelMapper mapper;
-
-    @Autowired
-    public Mapper(ModelMapper mapper) {
-	Mapper.mapper = mapper;
-    }
+    private static ModelMapper mapper = new ModelMapper();
 
     public static User toUser(UserDto userDto) {
 	return mapper.map(userDto, User.class);
