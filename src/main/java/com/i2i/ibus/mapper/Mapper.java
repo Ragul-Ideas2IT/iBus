@@ -102,7 +102,10 @@ public class Mapper {
 	busDto.setBusHistories(busHistoriesDto);
 	busDto.setPickupPoints(pickupPointsDto);
 	busDto.setSeats(seatsDto);
-	busDto.setOperatorDto(toOperatorDto(bus.getOperator()));
+	Operator operator = bus.getOperator();
+	if (null != operator) {
+	busDto.setOperatorDto(toOperatorDto(operator));
+	}
 	return busDto;
     }
 
@@ -117,7 +120,10 @@ public class Mapper {
 	bus.setBusHistories(busHistories);
 	bus.setPickupPoints(pickupPoints);
 	bus.setSeats(seats);
-	bus.setOperator(toOperator(busDto.getOperatorDto()));
+	OperatorDto operatorDto = busDto.getOperatorDto();
+	if (null != operatorDto ) {
+	bus.setOperator(toOperator(operatorDto));
+	}
 	return bus;
     }
 

@@ -1,6 +1,9 @@
 package com.i2i.ibus.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,8 +20,10 @@ import lombok.Setter;
 public class BusHistoryDto {
 
     private int id;
-    private LocalDateTime departureDateTime;
-    private LocalDateTime arrivingDateTime;
+    private LocalDate departureDate;
+    private LocalTime departureTime;
+    private LocalDate arrivingDate;
+    private LocalTime arrivingTime;
     private String source;
     private String destination;
 
