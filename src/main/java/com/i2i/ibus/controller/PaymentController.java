@@ -1,6 +1,10 @@
 package com.i2i.ibus.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,4 +39,13 @@ public class PaymentController {
 	return paymentService.createPayment(bookingId, paymentDto);
     }
 
+    @GetMapping
+    private List<PaymentDto> getAllPaymentsByBookId(@PathVariable int bookingId) {
+	return paymentService.getAllPaymentsByBookId(bookingId);
+    }
+    
+    @DeleteMapping
+    private void deleteAllByBookingId(@PathVariable int bookingId) {
+	paymentService.deleteAllByBookingId(bookingId);
+    }
 }

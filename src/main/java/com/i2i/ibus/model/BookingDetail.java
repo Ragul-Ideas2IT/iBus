@@ -26,7 +26,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table
-@SQLDelete(sql = "UPDATE bookingdetail SET is_deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE booking_detail SET is_deleted = true WHERE id=?")
 public class BookingDetail {
 
     @Id

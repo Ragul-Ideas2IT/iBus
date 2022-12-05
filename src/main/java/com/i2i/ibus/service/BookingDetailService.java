@@ -1,21 +1,19 @@
 package com.i2i.ibus.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.i2i.ibus.dto.BookingDetailDto;
 import com.i2i.ibus.exception.IBusException;
+import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.Booking;
 import com.i2i.ibus.model.BookingDetail;
 import com.i2i.ibus.model.Bus;
 import com.i2i.ibus.model.Seat;
 import com.i2i.ibus.repository.BookingDetailRepository;
 import com.i2i.ibus.repository.BookingRepository;
-import com.i2i.ibus.repository.BusRepository;
 
 /**
  * @author Tamilmani
@@ -29,42 +27,18 @@ public class BookingDetailService {
 
     private BookingDetailRepository bookingDetailRepository;
     private BookingRepository bookingRepository;
-    private ModelMapper mapper;
 
     @Autowired
-    private BookingDetailService(BookingDetailRepository bookingDetailRepository, BookingRepository bookingRepository,
-	    ModelMapper mapper) {
+    private BookingDetailService(BookingDetailRepository bookingDetailRepository, BookingRepository bookingRepository) {
 	this.bookingDetailRepository = bookingDetailRepository;
 	this.bookingRepository = bookingRepository;
-	this.mapper = mapper;
-    }
-
-    public void updateBookingDetails(int bookingId, List<BookingDetailDto> bookingDetailDtos) throws IBusException {
-	Booking booking = findBooking(bookingId);
-	List<BookingDetail> bookingDetails = bookingDetailDtoToBookingDetail(bookingDetailDtos);
-	bookingDetails.forEach(bookingDetail -> bookingDetail.setBooking(booking));
-	bookingDetails.forEach(bookingDetail -> bookingDetailRepository.save(bookingDetail));
-    }
-
-    public Booking findBooking(int bookingId) throws IBusException {
-	return bookingRepository.findById(bookingId).orElseThrow(() -> new IBusException("No booking id found..."));
-    }
-
-    public List<BookingDetail> bookingDetailDtoToBookingDetail(List<BookingDetailDto> bookingDetailDtos) {
-	return bookingDetailDtos.stream().map(bookingDetail -> mapper.map(bookingDetailDtos, BookingDetail.class))
-		.toList();
-    }
-
-    public List<BookingDetailDto> bookingDetailToBookingDetailDto(List<BookingDetail> bookingDetails) {
-	return bookingDetails.stream().map(bookingDetail -> mapper.map(bookingDetails, BookingDetailDto.class))
-		.toList();
     }
 
     public BookingDetailDto createBookingDetail(int bookingId, int seatId, BookingDetailDto bookingDetailDto)
 	    throws IBusException {
 	Seat bookingSeat = null;
-	BookingDetail bookingDetail = mapper.map(bookingDetailDto, BookingDetail.class);
-	Booking booking = findBooking(bookingId);
+	BookingDetail bookingDetail = Mapper.toBookingDetail(bookingDetailDto);
+	Booking booking = findBookingByBookingId(bookingId);
 	Bus bus = booking.getBus();
 	for (Seat seat : bus.getSeats()) {
 	    if (seat.getId() == seatId) {
@@ -82,21 +56,20 @@ public class BookingDetailService {
 	} else {
 	    throw new IBusException("Seat is already booked..");
 	}
-	return mapper.map(bookingDetail, BookingDetailDto.class);
+	return Mapper.toBookingDetailDto(bookingDetail);
     }
 
-    public List<BookingDetailDto> getBookingDetailsByBookId(int bookingId)
-	    throws IBusException {
-	findBooking(bookingId);
-	return bookingDetailsToBookingDetailDtos(bookingDetailRepository.findAllById(bookingId));
+    public List<BookingDetailDto> getBookingDetailsByBookingId(int bookingId) throws IBusException {
+	findBookingByBookingId(bookingId);
+	return Mapper.toBookingDetailDtos(bookingDetailRepository.findAllById(bookingId));
     }
 
-    public List<BookingDetailDto> bookingDetailsToBookingDetailDtos(List<BookingDetail> bookingDetails) {
-	List<BookingDetailDto> bookingDetailDtos = new ArrayList<BookingDetailDto>();
-	for (BookingDetail bookingDetail : bookingDetails) {
-	    bookingDetailDtos.add(mapper.map(bookingDetail, BookingDetailDto.class));
-	}
-	return bookingDetailDtos;
+    public Booking findBookingByBookingId(int bookingId) throws IBusException {
+	return bookingRepository.findById(bookingId).orElseThrow(() -> new IBusException("No booking id found..."));
+    }
+
+    public void deleteAllByBookingId(int bookingId) {
+	bookingDetailRepository.deleteAllByBookingId(bookingId);
     }
 
 }

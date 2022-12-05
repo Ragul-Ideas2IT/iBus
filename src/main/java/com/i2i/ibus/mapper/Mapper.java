@@ -7,18 +7,22 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.i2i.ibus.dto.AddressDto;
+import com.i2i.ibus.dto.BookingDetailDto;
 import com.i2i.ibus.dto.BookingDto;
 import com.i2i.ibus.dto.BusDto;
 import com.i2i.ibus.dto.BusHistoryDto;
 import com.i2i.ibus.dto.OperatorDto;
+import com.i2i.ibus.dto.PaymentDto;
 import com.i2i.ibus.dto.PickupPointDto;
 import com.i2i.ibus.dto.SeatDto;
 import com.i2i.ibus.dto.UserDto;
 import com.i2i.ibus.model.Address;
 import com.i2i.ibus.model.Booking;
+import com.i2i.ibus.model.BookingDetail;
 import com.i2i.ibus.model.Bus;
 import com.i2i.ibus.model.BusHistory;
 import com.i2i.ibus.model.Operator;
+import com.i2i.ibus.model.Payment;
 import com.i2i.ibus.model.PickupPoint;
 import com.i2i.ibus.model.Seat;
 import com.i2i.ibus.model.User;
@@ -121,4 +125,33 @@ public class Mapper {
 	bus.setOperator(toOperator(busDto.getOperatorDto()));
 	return bus;
     }
+
+    public static BookingDetailDto toBookingDetailDto(BookingDetail bookingDetail) {
+	return mapper.map(bookingDetail, BookingDetailDto.class);
+    }
+
+    public static BookingDetail toBookingDetail(BookingDetailDto bookingDetailDto) {
+	return mapper.map(bookingDetailDto, BookingDetail.class);
+    }
+
+    public static List<BookingDetailDto> toBookingDetailDtos(List<BookingDetail> bookingDetails) {
+	return bookingDetails.stream().map(bookingDetail -> toBookingDetailDto(bookingDetail)).toList();
+    }
+
+    public static List<BookingDetail> toBookingDetails(List<BookingDetailDto> bookingDetailDtos) {
+	return bookingDetailDtos.stream().map(bookingDetailDto -> toBookingDetail(bookingDetailDto)).toList();
+    }
+
+    public static PaymentDto toPaymentDto(Payment payment) {
+	return mapper.map(payment, PaymentDto.class);
+    }
+    
+    public static Payment toPayment(PaymentDto paymentDto) {
+	return mapper.map(paymentDto, Payment.class);
+    }
+    
+    public static List<PaymentDto> toPaymentDtos(List<Payment> payments) {
+	return payments.stream().map(payment -> toPaymentDto(payment)).toList();
+    }
+
 }

@@ -2,6 +2,8 @@ package com.i2i.ibus.service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.i2i.ibus.dto.PaymentDto;
 import com.i2i.ibus.exception.IBusException;
+import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.Booking;
 import com.i2i.ibus.model.Payment;
 import com.i2i.ibus.repository.BookingRepository;
@@ -26,31 +29,41 @@ public class PaymentService {
 
     private PaymentRepository paymentRepository;
     private BookingRepository bookingRepository;
-    private ModelMapper mapper;
 
     @Autowired
-    private PaymentService(PaymentRepository paymentRepositary, BookingRepository bookingRepository,
-	    ModelMapper mapper) {
+    private PaymentService(PaymentRepository paymentRepositary, BookingRepository bookingRepository) {
 	this.paymentRepository = paymentRepositary;
 	this.bookingRepository = bookingRepository;
-	this.mapper = mapper;
     }
 
     public PaymentDto createPayment(int bookingId, PaymentDto paymentDto) throws IBusException {
 	Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new IBusException("No booking id found..."));
-	Payment payment = mapper.map(paymentDto, Payment.class);
+	Payment payment = Mapper.toPayment(paymentDto);
+	payment.setTime(LocalDateTime.now());
+	payment.setBooking(booking);
 	if (5 > ChronoUnit.MINUTES.between(booking.getDateTime(), LocalDateTime.now())) {
-	    booking.setStatus("cancelled");
-	    payment.setBooking(booking);
+	    booking.setPaymentStatus("declined");
 	    payment.setStatus("unpaid");
-	    paymentDto = mapper.map(paymentRepository.save(payment), PaymentDto.class);
+	    paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
 	    throw new IBusException("Booking time is over...");
 	} else {
-	    payment.setBooking(booking);
-	    payment.setStatus("paid");
-	    paymentDto = mapper.map(paymentRepository.save(payment), PaymentDto.class);
+	    if (booking.getPaymentStatus().equalsIgnoreCase("declined")) {
+	        throw new IBusException("payment already succeeded");
+	    } else {
+		payment.setStatus("paid");
+		booking.setPaymentStatus("declined");
+	        paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
+	    }
 	}
 	return paymentDto;
+    }
+
+    public List<PaymentDto> getAllPaymentsByBookId(int bookingId) {
+	return Mapper.toPaymentDtos(paymentRepository.getAllPaymentsByBookId(bookingId));
+    }
+
+    public void deleteAllByBookingId(int bookingId) {
+	paymentRepository.deleteAllByBookingId(bookingId);
     }
 
 }
