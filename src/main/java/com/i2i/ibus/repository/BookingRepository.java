@@ -20,13 +20,11 @@ import com.i2i.ibus.model.Booking;
 public interface BookingRepository extends JpaRepository<Booking, Integer>{
     @Query("from Booking where isDeleted = false")
     List<Booking> findAll();
-
+    
     @Query("from Booking where isDeleted = false and id = :id")
     Optional<Booking> findById(int id);
     
-    @Query(value = "Select * from booking where user_id = :id and status = false", nativeQuery = true)
-    List<Booking> findAllUpcomingBookings(@Param("id") int id);
+    @Query(value = "Select * from booking where user_id = :id", nativeQuery = true)
+    List<Booking> findAllByUserId(@Param("id") int id);
 
-    @Query(value = "Select * from booking where user_id = :id and status = true", nativeQuery = true)
-    List<Booking> findAllCompletedBookings(@Param("id") int id);
 }

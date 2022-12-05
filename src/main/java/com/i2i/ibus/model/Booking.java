@@ -1,12 +1,12 @@
 package com.i2i.ibus.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import org.hibernate.annotations.SQLDelete;
-import org.springframework.beans.factory.annotation.Value;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -42,7 +42,8 @@ public class Booking {
     private String dropPoint;
     private String status;
     private String paymentStatus;
-    private LocalDateTime travelDateAndTime;
+    private LocalTime travelTime;
+    private LocalDate travelDate;
     private boolean isDeleted;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private User user;
