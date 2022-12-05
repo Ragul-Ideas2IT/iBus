@@ -23,6 +23,6 @@ public class PaymentDto {
     private String status;
     private String modeOfPayment;
     @JsonProperty(access = Access.READ_ONLY)
-    private LocalDateTime time = LocalDateTime.now();
+    private LocalDateTime time;
 
 }

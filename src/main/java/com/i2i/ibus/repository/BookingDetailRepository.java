@@ -6,10 +6,8 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.i2i.ibus.model.BookingDetail;
-import com.i2i.ibus.model.User;
 
 /**
  * @author Tamilmani
@@ -29,5 +27,8 @@ public interface BookingDetailRepository extends JpaRepository<BookingDetail, In
 
     @Query("from BookingDetail b join b.booking bb where b.isDeleted = false and bb.id = :bookingId")
     List<BookingDetail> findAllById(int bookingId);
+
+    @Query(value = "UPDATE booking_detail SET is_deleted = true where booking_id = :bookingId and is_deleted = false", nativeQuery = true)
+    void deleteAllByBookingId(int bookingId);
 
 }
