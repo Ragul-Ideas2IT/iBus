@@ -2,12 +2,10 @@ package com.i2i.ibus.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -111,7 +109,7 @@ public class BookingService {
 
     public Cancellation cancelBooking(Booking booking, Cancellation cancellation) {
 	long min = calculateDifferenceOfTime(
-		getBusHistoryByTravelDate(booking.getBus(), booking.getTravelDate()).getArrivingDateTime());
+		getBusHistoryByTravelDate(booking.getBus(), booking.getTravelDate()).getArrivingDate());
 	if (min >= 600) {
 	    cancellation.setRefundAmount((booking.getTotalFare() - (booking.getTotalFare() * 0.1)));
 	} else {
