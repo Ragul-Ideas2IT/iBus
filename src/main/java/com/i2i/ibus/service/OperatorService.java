@@ -5,16 +5,16 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.i2i.ibus.dto.AddressDto;
 import com.i2i.ibus.dto.OperatorDto;
 import com.i2i.ibus.exception.IBusException;
+import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.Address;
 import com.i2i.ibus.model.Operator;
 import com.i2i.ibus.repository.OperatorRepository;
-
-import lombok.RequiredArgsConstructor;
 
 /**
  * @author Ragul
@@ -24,12 +24,14 @@ import lombok.RequiredArgsConstructor;
  *
  */
 @Service
-@RequiredArgsConstructor
 public class OperatorService {
 
-    private final OperatorRepository operatorRepository;
-
-    private final ModelMapper mapper;
+    private OperatorRepository operatorRepository;
+    
+    @Autowired
+    public OperatorService(OperatorRepository operatorRepository, ModelMapper mapper) {
+	this.operatorRepository = operatorRepository;
+    }
 
     public void validateOperator(int id) throws IBusException {
 	Optional<Operator> operator = operatorRepository.findById(id);
@@ -62,17 +64,16 @@ public class OperatorService {
     }
 
     public OperatorDto saveOperator(OperatorDto operatorDto) {
-	return toOperatorDto(operatorRepository.save(toOperator(operatorDto)));
+	return Mapper.toOperatorDto(operatorRepository.save(Mapper.toOperator(operatorDto)));
     }
 
     public List<OperatorDto> getAllOperatorDtos() {
-	return operatorRepository.findAll().stream().map(operator -> toOperatorDto(operator))
-		.collect(Collectors.toList());
+	return Mapper.toOperatorDtos(operatorRepository.findAll());
     }
 
     public OperatorDto getOperatorDtoById(int id) throws IBusException {
 	validateOperator(id);
-	return toOperatorDto(operatorRepository.findById(id).get());
+	return Mapper.toOperatorDto(operatorRepository.findById(id).get());
     }
 
     public OperatorDto updateOperatorById(int id, OperatorDto operatorDto) throws IBusException {
@@ -86,17 +87,5 @@ public class OperatorService {
 	operatorRepository.deleteById(id);
     }
 
-    public Operator toOperator(OperatorDto operatorDto) {
-	Operator operator = mapper.map(operatorDto, Operator.class);
-	operator.setAddresses(operatorDto.getAddresses().stream()
-		.map(addressDto -> mapper.map(addressDto, Address.class)).toList());
-	return operator;
-    }
 
-    public OperatorDto toOperatorDto(Operator operator) {
-	OperatorDto operatorDto = mapper.map(operator, OperatorDto.class);
-	operatorDto.setAddresses(
-		operator.getAddresses().stream().map(address -> mapper.map(address, AddressDto.class)).toList());
-	return operatorDto;
-    }
 }

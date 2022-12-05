@@ -2,17 +2,16 @@ package com.i2i.ibus.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.i2i.ibus.dto.UserDto;
 import com.i2i.ibus.exception.IBusException;
+import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.User;
 import com.i2i.ibus.repository.UserRepository;
-
-import lombok.RequiredArgsConstructor;
 
 /**
  * @author Ragul
@@ -22,12 +21,15 @@ import lombok.RequiredArgsConstructor;
  *
  */
 @Service
-@RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
-    private final ModelMapper mapper;
+    private UserRepository userRepository;
     
+    @Autowired
+    public UserService(UserRepository userRepository, ModelMapper mapper) {
+	this.userRepository = userRepository;
+    }
+
     public void validateUser(int id) throws IBusException {
 	Optional<User> user = userRepository.findById(id);
 	if (user.isPresent() && user.get().isDeleted()) {
@@ -52,18 +54,17 @@ public class UserService {
     }
 
     public UserDto saveUser(UserDto userDto) {
-	User user = mapper.map(userDto, User.class);
-	return mapper.map(userRepository.save(user), UserDto.class);
+	User user = Mapper.toUser(userDto);
+	return Mapper.toUserDto(userRepository.save(user));
     }
 
     public List<UserDto> getAllUserDtos() {
-	return userRepository.findAll().stream().map(user -> mapper.map(user, UserDto.class))
-		.collect(Collectors.toList());
+	return Mapper.toUserDtos(userRepository.findAll());
     }
 
     public UserDto getUserDtoById(int id) throws IBusException {
 	validateUser(id);
-	return mapper.map(userRepository.findById(id), UserDto.class);
+	return Mapper.toUserDto(userRepository.findById(id).get());
     }
 
     public UserDto updateUserById(int id, UserDto userDto) throws IBusException {
