@@ -29,7 +29,7 @@ public class OperatorService {
     private OperatorRepository operatorRepository;
     
     @Autowired
-    public OperatorService(OperatorRepository operatorRepository, ModelMapper mapper) {
+    public OperatorService(OperatorRepository operatorRepository) {
 	this.operatorRepository = operatorRepository;
     }
 
