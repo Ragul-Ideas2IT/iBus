@@ -26,7 +26,7 @@ public class UserService {
     private UserRepository userRepository;
     
     @Autowired
-    public UserService(UserRepository userRepository, ModelMapper mapper) {
+    public UserService(UserRepository userRepository) {
 	this.userRepository = userRepository;
     }
 
