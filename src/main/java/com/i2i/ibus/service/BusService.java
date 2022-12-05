@@ -1,22 +1,19 @@
 package com.i2i.ibus.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.i2i.ibus.dto.BusDto;
-import com.i2i.ibus.dto.BusHistoryDto;
-import com.i2i.ibus.dto.PickupPointDto;
-import com.i2i.ibus.dto.SeatDto;
 import com.i2i.ibus.exception.IBusException;
+import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.Bus;
 import com.i2i.ibus.model.BusHistory;
-import com.i2i.ibus.model.PickupPoint;
-import com.i2i.ibus.model.Seat;
 import com.i2i.ibus.repository.BusRepository;
+import com.i2i.ibus.repository.OperatorRepository;
 
 /**
  * 
@@ -29,11 +26,16 @@ import com.i2i.ibus.repository.BusRepository;
 @Service
 public class BusService {
 
-    @Autowired
     private BusRepository busRepository;
 
+    private OperatorRepository operatorRepository;
+
     @Autowired
-    private ModelMapper mapper;
+    public BusService(BusRepository busRepository, OperatorRepository operatorRepository) {
+	super();
+	this.busRepository = busRepository;
+	this.operatorRepository = operatorRepository;
+    }
 
     /**
      * 
@@ -43,26 +45,11 @@ public class BusService {
      */
     public BusDto addBus(BusDto busDto, int operatorId) throws IBusException {
 	BusDto busDTO = null;
-	List<BusHistory> busHistories = busDto.getBusHistories().stream()
-		.map(busHistoryDto -> mapper.map(busHistoryDto, BusHistory.class)).toList();
-	List<PickupPoint> pickupPoints = busDto.getPickupPoints().stream()
-		.map(pickupPointDto -> mapper.map(pickupPointDto, PickupPoint.class)).toList();
-	List<Seat> seats = busDto.getSeats().stream().map(seatDto -> mapper.map(seatDto, Seat.class)).toList();
-	Bus bus = mapper.map(busDto, Bus.class);
-	bus.setBusHistories(busHistories);
-	bus.setPickupPoints(pickupPoints);
-	bus.setSeats(seats);
-
-	if (null == busRepository.checkForDuplicates(busDto.getBusNumber())) {
-	    List<BusHistoryDto> busHistoriesDto = bus.getBusHistories().stream()
-		    .map(busHistory -> mapper.map(busHistory, BusHistoryDto.class)).toList();
-	    List<PickupPointDto> pickupPointsDto = bus.getPickupPoints().stream()
-		    .map(pickupPoint -> mapper.map(pickupPoint, PickupPointDto.class)).toList();
-	    List<SeatDto> seatsDto = bus.getSeats().stream().map(seat -> mapper.map(seat, SeatDto.class)).toList();
-	    busDTO = mapper.map(busRepository.save(bus), BusDto.class);
-	    busDTO.setBusHistories(busHistoriesDto);
-	    busDTO.setPickupPoints(pickupPointsDto);
-	    busDto.setSeats(seatsDto);
+	Bus bus = Mapper.toBus(busDto);
+	bus.setOperator(operatorRepository.findById(operatorId).get());
+	
+	if (null == busRepository.findByBusNumber(busDto.getBusNumber())) {
+	    busDto = Mapper.toBusDto(busRepository.save(bus));
 	} else {
 	    throw new IBusException("Bus Number is Duplicate");
 	}
@@ -76,18 +63,35 @@ public class BusService {
     public List<BusDto> getAllBuses() {
 	List<Bus> buses = busRepository.findAll();
 	List<BusDto> busesDto = new ArrayList<BusDto>();
+	
 	for (Bus bus : buses) {
 	    BusDto busDto = null;
-	    List<BusHistoryDto> busHistoriesDto = bus.getBusHistories().stream()
-		    .map(busHistory -> mapper.map(busHistory, BusHistoryDto.class)).toList();
-	    List<PickupPointDto> pickupPointsDto = bus.getPickupPoints().stream()
-		    .map(pickupPoint -> mapper.map(pickupPoint, PickupPointDto.class)).toList();
-	    List<SeatDto> seatsDto = bus.getSeats().stream().map(seat -> mapper.map(seat, SeatDto.class)).toList();
-	    busDto = mapper.map(bus, BusDto.class);
-	    busDto.setBusHistories(busHistoriesDto);
-	    busDto.setPickupPoints(pickupPointsDto);
-	    busDto.setSeats(seatsDto);
+	    busDto = Mapper.toBusDto(bus);
 	    busesDto.add(busDto);
+	}
+	return busesDto;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public List<BusDto> getBusesByRoute(String source, String destination, LocalDate departureDate) {
+	List<Bus> buses = busRepository.findAll();
+	List<BusDto> busesDto = new ArrayList<BusDto>();
+
+	for (Bus bus : buses) {
+	    List<BusHistory> busHistories = bus.getBusHistories();
+
+	    for (BusHistory busHistory1 : busHistories) {
+		if (busHistory1.getSource().equalsIgnoreCase(source)
+			& busHistory1.getDestination().equalsIgnoreCase(destination)
+			& busHistory1.getDepartureDate().equals(departureDate)) {
+		    BusDto busDto = null;
+		    busDto = Mapper.toBusDto(bus);
+		    busesDto.add(busDto);
+		}
+	    }
 	}
 	return busesDto;
     }
@@ -100,26 +104,11 @@ public class BusService {
      */
     public BusDto updateBus(BusDto busDto, int operatorsId) throws IBusException {
 	BusDto busDTO = null;
-	List<BusHistory> busHistories = busDto.getBusHistories().stream()
-		.map(busHistoryDto -> mapper.map(busHistoryDto, BusHistory.class)).toList();
-	List<PickupPoint> pickupPoints = busDto.getPickupPoints().stream()
-		.map(pickupPointDto -> mapper.map(pickupPointDto, PickupPoint.class)).toList();
-	List<Seat> seats = busDto.getSeats().stream().map(seatDto -> mapper.map(seatDto, Seat.class)).toList();
-	Bus bus = mapper.map(busDto, Bus.class);
-	bus.setBusHistories(busHistories);
-	bus.setPickupPoints(pickupPoints);
-	bus.setSeats(seats);
-
-	if (null == busRepository.checkForUpdateDuplicates(busDto.getBusNumber(), busDto.getId())) {
-	    List<BusHistoryDto> busHistoriesDto = bus.getBusHistories().stream()
-		    .map(busHistory -> mapper.map(busHistory, BusHistoryDto.class)).toList();
-	    List<PickupPointDto> pickupPointsDto = bus.getPickupPoints().stream()
-		    .map(pickupPoint -> mapper.map(pickupPoint, PickupPointDto.class)).toList();
-	    List<SeatDto> seatsDto = bus.getSeats().stream().map(seat -> mapper.map(seat, SeatDto.class)).toList();
-	    busDTO = mapper.map(busRepository.save(bus), BusDto.class);
-	    busDTO.setBusHistories(busHistoriesDto);
-	    busDTO.setPickupPoints(pickupPointsDto);
-	    busDto.setSeats(seatsDto);
+	Bus bus = Mapper.toBus(busDto);
+	bus.setOperator(operatorRepository.findById(operatorsId).get());
+	
+	if (null == busRepository.findByBusNumberForUpdate(busDto.getBusNumber(), busDto.getId())) {
+	    busDto = Mapper.toBusDto(busRepository.save(bus));
 	} else {
 	    throw new IBusException("Bus Number is Duplicate");
 	}

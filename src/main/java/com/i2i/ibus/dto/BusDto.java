@@ -21,6 +21,7 @@ public class BusDto {
     private String busNumber;
     private int numberOfSeats;
     private String type;
+    private OperatorDto operatorDto;
     private List<BusHistoryDto> busHistories;
     private List<PickupPointDto> pickupPoints;
     private List<SeatDto> seats;
