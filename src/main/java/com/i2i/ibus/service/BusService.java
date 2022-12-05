@@ -45,11 +45,12 @@ public class BusService {
      */
     public BusDto addBus(BusDto busDto, int operatorId) throws IBusException {
 	BusDto busDTO = null;
+	busDto.setOperatorDto(Mapper.toOperatorDto(operatorRepository.findById(operatorId).get()));
 	Bus bus = Mapper.toBus(busDto);
-	bus.setOperator(operatorRepository.findById(operatorId).get());
+	
 	
 	if (null == busRepository.findByBusNumber(busDto.getBusNumber())) {
-	    busDto = Mapper.toBusDto(busRepository.save(bus));
+	    busDTO = Mapper.toBusDto(busRepository.save(bus));
 	} else {
 	    throw new IBusException("Bus Number is Duplicate");
 	}
