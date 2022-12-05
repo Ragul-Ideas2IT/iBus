@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Bean;
 public class IBusApplication {
 
     @Bean
-    public ModelMapper mapper() {
+    public static ModelMapper mapper() {
 	return new ModelMapper();
     }
     
