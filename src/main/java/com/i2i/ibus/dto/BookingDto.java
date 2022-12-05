@@ -1,6 +1,8 @@
 package com.i2i.ibus.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -31,8 +33,11 @@ public class BookingDto {
     private String status;
     @JsonProperty(access = Access.READ_ONLY)
     private String paymentStatus;
-    private LocalDateTime travelDateAndTime;
+    private LocalTime travelTime;
+    private LocalDate travelDate;
     @JsonProperty(access = Access.READ_ONLY)    
-    private LocalDateTime dateTime;
+    private LocalDate date;
+    @JsonProperty(access = Access.READ_ONLY)    
+    private LocalTime time;
     private Cancellation cancellation;
 }

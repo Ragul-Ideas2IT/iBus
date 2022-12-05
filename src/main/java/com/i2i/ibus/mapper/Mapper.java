@@ -7,9 +7,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.i2i.ibus.dto.AddressDto;
+import com.i2i.ibus.dto.BookingDto;
 import com.i2i.ibus.dto.OperatorDto;
 import com.i2i.ibus.dto.UserDto;
 import com.i2i.ibus.model.Address;
+import com.i2i.ibus.model.Booking;
 import com.i2i.ibus.model.Operator;
 import com.i2i.ibus.model.User;
 
@@ -69,4 +71,20 @@ public class Mapper {
 	return operators.stream().map(operator -> toOperatorDto(operator))
 		.collect(Collectors.toList());	
     }
+    
+    public static Booking toBooking(BookingDto bookingDto) {
+  	return mapper.map(bookingDto, Booking.class);
+      }
+
+      public static BookingDto toBookingDto(Booking booking) {
+  	return mapper.map(booking, BookingDto.class);
+      }
+      
+      public static List<Booking> toBooking(List<BookingDto> bookingDtos) {
+  	return bookingDtos.stream().map(bookingDto -> toBooking(bookingDto)).toList();	
+      }
+
+      public static List<BookingDto> toBookingDtos(List<Booking> bookings) {
+  	return bookings.stream().map(booking -> toBookingDto(booking)).toList();	
+      }
 }

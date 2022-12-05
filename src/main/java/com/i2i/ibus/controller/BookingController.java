@@ -34,10 +34,10 @@ public class BookingController {
 	this.bookingService = bookingService;
     }
 
-    @PostMapping("/buses/{busId}")
+    @PostMapping("/users/{userId}/buses/{busId}")
     @ResponseStatus(value = HttpStatus.CREATED)
-    private BookingDto addBooking(@PathVariable("busId") int busId, @RequestBody BookingDto bookingDto) {
-	return bookingService.addBooking(busId, bookingDto);
+    private BookingDto addBooking(@PathVariable("userId") int userId, @PathVariable("busId") int busId, @RequestBody BookingDto bookingDto) {
+	return bookingService.addBooking(userId, busId, bookingDto);
     }
 
     @GetMapping
@@ -46,10 +46,10 @@ public class BookingController {
 	return bookingService.getAllBooking();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/users/{userId}")
     @ResponseStatus(value = HttpStatus.OK)
-    private BookingDto getBooking(@PathVariable int id) {
-	return bookingService.getBookingDto(id);
+    private List<BookingDto> getBooking(@PathVariable int userId) {
+	return bookingService.getBookingDtoByUserId(userId);
     }
     
     @DeleteMapping("/{id}")
