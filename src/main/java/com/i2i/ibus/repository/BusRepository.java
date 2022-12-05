@@ -20,10 +20,10 @@ import com.i2i.ibus.model.Bus;
 public interface BusRepository extends JpaRepository<Bus, Integer> {
 
     @Query("From Bus Where busNumber = :busNumber and isDeleted = false")
-    public Bus checkForDuplicates(String busNumber);
+    public Bus findByBusNumber(String busNumber);
 
     @Query("From Bus Where busNumber = :busNumber and id != :id")
-    public Bus checkForUpdateDuplicates(String busNumber, int id);
+    public Bus findByBusNumberForUpdate(String busNumber, int id);
 
     @Query("from Bus where isDeleted = false")
     public List<Bus> findAll();

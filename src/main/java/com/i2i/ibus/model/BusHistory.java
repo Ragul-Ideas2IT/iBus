@@ -1,6 +1,8 @@
 package com.i2i.ibus.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,8 +30,10 @@ public class BusHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private LocalDateTime departureDateTime;
-    private LocalDateTime arrivingDateTime;
+    private LocalDate departureDate;
+    private LocalTime departureTime;
+    private LocalDate arrivingDate;
+    private LocalTime arrivingTime;
     private String source;
     private String destination;
     private boolean isDeleted;

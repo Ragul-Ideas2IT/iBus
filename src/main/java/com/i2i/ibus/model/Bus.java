@@ -1,7 +1,6 @@
 package com.i2i.ibus.model;
 
 import java.util.List;
-
 import org.hibernate.annotations.SQLDelete;
 
 import jakarta.persistence.Entity;

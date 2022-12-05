@@ -111,7 +111,7 @@ public class BookingService {
 
     public Cancellation cancelBooking(Booking booking, Cancellation cancellation) {
 	long min = calculateDifferenceOfTime(
-		getBusHistoryByTravelDate(booking.getBus(), booking.getTravelDate()).getArrivingDateTime());
+		getBusHistoryByTravelDate(booking.getBus(), booking.getTravelDate()));
 	if (min >= 600) {
 	    cancellation.setRefundAmount((booking.getTotalFare() - (booking.getTotalFare() * 0.1)));
 	} else {
