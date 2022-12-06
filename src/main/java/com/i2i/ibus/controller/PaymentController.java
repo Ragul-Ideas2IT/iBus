@@ -15,6 +15,8 @@ import com.i2i.ibus.dto.PaymentDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.service.PaymentService;
 
+import jakarta.validation.Valid;
+
 /**
  * @author Tamilmani
  * @version 1.0
@@ -34,18 +36,19 @@ public class PaymentController {
     }
 
     @PostMapping
-    private PaymentDto createPayment(@PathVariable int bookingId, @RequestBody PaymentDto paymentDto)
+    private PaymentDto createPayment(@PathVariable int bookingId, @RequestBody @Valid PaymentDto paymentDto)
 	    throws IBusException {
 	return paymentService.createPayment(bookingId, paymentDto);
     }
 
     @GetMapping
-    private List<PaymentDto> getAllPaymentsByBookId(@PathVariable int bookingId) {
-	return paymentService.getAllPaymentsByBookId(bookingId);
+    private List<PaymentDto> getAllPaymentsByBookingId(@PathVariable int bookingId) {
+	return paymentService.getAllPaymentsByBookingId(bookingId);
     }
-    
+
     @DeleteMapping
     private void deleteAllByBookingId(@PathVariable int bookingId) {
 	paymentService.deleteAllByBookingId(bookingId);
     }
+
 }
