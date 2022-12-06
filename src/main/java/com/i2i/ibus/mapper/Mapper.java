@@ -91,39 +91,11 @@ public class Mapper {
     }
 
     public static BusDto toBusDto(Bus bus) {
-
-	List<BusHistoryDto> busHistoriesDto = bus.getBusHistories().stream()
-		.map(busHistory -> mapper.map(busHistory, BusHistoryDto.class)).toList();
-	List<PickupPointDto> pickupPointsDto = bus.getPickupPoints().stream()
-		.map(pickupPoint -> mapper.map(pickupPoint, PickupPointDto.class)).toList();
-	List<SeatDto> seatsDto = bus.getSeats().stream().map(seat -> mapper.map(seat, SeatDto.class)).toList();
-	BusDto busDto = mapper.map(bus, BusDto.class);
-	busDto.setBusHistories(busHistoriesDto);
-	busDto.setPickupPoints(pickupPointsDto);
-	busDto.setSeats(seatsDto);
-	Operator operator = bus.getOperator();
-	if (null != operator) {
-	busDto.setOperatorDto(toOperatorDto(operator));
-	}
-	return busDto;
+	return mapper.map(bus, BusDto.class);
     }
 
     public static Bus toBus(BusDto busDto) {
-
-	List<BusHistory> busHistories = busDto.getBusHistories().stream()
-		.map(busHistoryDto -> mapper.map(busHistoryDto, BusHistory.class)).toList();
-	List<PickupPoint> pickupPoints = busDto.getPickupPoints().stream()
-		.map(pickupPointDto -> mapper.map(pickupPointDto, PickupPoint.class)).toList();
-	List<Seat> seats = busDto.getSeats().stream().map(seatDto -> mapper.map(seatDto, Seat.class)).toList();
-	Bus bus = mapper.map(busDto, Bus.class);
-	bus.setBusHistories(busHistories);
-	bus.setPickupPoints(pickupPoints);
-	bus.setSeats(seats);
-	OperatorDto operatorDto = busDto.getOperatorDto();
-	if (null != operatorDto ) {
-	bus.setOperator(toOperator(operatorDto));
-	}
-	return bus;
+	return mapper.map(busDto, Bus.class);
     }
 
     public static BookingDetailDto toBookingDetailDto(BookingDetail bookingDetail) {
@@ -153,5 +125,28 @@ public class Mapper {
     public static List<PaymentDto> toPaymentDtos(List<Payment> payments) {
 	return payments.stream().map(payment -> toPaymentDto(payment)).toList();
     }
+    
+    public static Seat toSeat(SeatDto seatDto) {
+	return mapper.map(seatDto, Seat.class);
+    }
 
+    public static SeatDto toSeatDto(Seat seat) {
+	return mapper.map(seat, SeatDto.class);
+    }
+    
+    public static BusHistory toBusHistory(BusHistoryDto busHistoryDto) {
+	return mapper.map(busHistoryDto, BusHistory.class);
+    }
+    
+    public static BusHistoryDto toBusHistoryDto(BusHistory busHistory) {
+	return mapper.map(busHistory, BusHistoryDto.class);
+    }
+    
+    public static PickupPoint toPickupPoint(PickupPointDto pickupPointDto) {
+	return mapper.map(pickupPointDto, PickupPoint.class);
+    }
+    
+    public static PickupPointDto toPickupPointDto(PickupPoint pickupPoint) {
+	return mapper.map(pickupPoint, PickupPointDto.class);
+    }
 }

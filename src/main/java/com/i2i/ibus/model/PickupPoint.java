@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,5 +35,8 @@ public class PickupPoint {
     private String landMark;
     private LocalTime arrivingTime;
     private LocalTime departureTime;
+    @ManyToOne(cascade = { jakarta.persistence.CascadeType.PERSIST })
+    @JoinColumn(name = "bus_id")
+    private Bus bus;
     private boolean isDeleted;
 }

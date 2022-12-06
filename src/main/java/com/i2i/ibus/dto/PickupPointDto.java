@@ -2,7 +2,11 @@ package com.i2i.ibus.dto;
 
 import java.time.LocalTime;
 
-import jakarta.validation.constraints.FutureOrPresent;
+import org.hibernate.annotations.SQLDelete;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -21,6 +25,7 @@ import lombok.Setter;
 @Setter
 public class PickupPointDto {
 
+    @JsonProperty(access = Access.READ_ONLY)
     private int id;
     @NotBlank
     @Pattern(regexp = "([a-zA-Z][ ]?){2,}")
@@ -32,5 +37,7 @@ public class PickupPointDto {
     private LocalTime arrivingTime;
     @NotNull
     private LocalTime departureTime;
+    @JsonProperty(access = Access.READ_ONLY)
+    private BusDto busDto;
 
 }

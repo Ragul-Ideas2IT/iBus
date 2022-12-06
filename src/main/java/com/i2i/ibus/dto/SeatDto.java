@@ -1,5 +1,8 @@
 package com.i2i.ibus.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -28,6 +31,8 @@ public class SeatDto {
     @NotBlank
     @Pattern(regexp = "^((?i)(male)|(female)|(others))$")
     private String gender;
+    @JsonProperty(access = Access.READ_ONLY)
+    private BusDto bus;
     @Min(value = 0)
     private double fare;
 }
