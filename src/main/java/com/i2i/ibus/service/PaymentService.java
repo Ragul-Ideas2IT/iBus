@@ -48,15 +48,15 @@ public class PaymentService {
 	    paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
 	    throw new IBusException("Booking time is over...");
 	} else if (booking.getTotalFare() != paymentDto.getAmount()) {
-	    throw new IBusException("payment amount is invalid. The amount is " + booking.getTotalFare());
+	    throw new IBusException("Payment amount is invalid. The amount is " + booking.getTotalFare());
 	} else if (booking.getNumberOfSeats() == paymentRepository.getAllPaymentsByBookingId(bookingId).size()) {
-	    throw new IBusException("booking seat limit is reached..");
+	    throw new IBusException("Booking seat limit is reached..");
 	} else if (booking.getPaymentStatus() == null) {
 	    payment.setStatus("paid");
 	    booking.setPaymentStatus("successful");
 	    paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
 	} else {
-	    throw new IBusException("payment already succeeded");
+	    throw new IBusException("Payment already succeeded");
 	}
 	return paymentDto;
     }
