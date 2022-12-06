@@ -5,13 +5,12 @@ import java.util.List;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -27,13 +26,14 @@ import com.i2i.ibus.dto.MessageDto;
  *
  */
 @RestControllerAdvice
-public class IBusExceptionHandler {
+public class IBusExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      * {@inheritDoc}
      */
+    @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception,
-	    HttpHeaders headers, HttpStatus status, WebRequest request) {
+	    HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 	List<String> errors = new ArrayList<String>();
 	for (FieldError error : exception.getBindingResult().getFieldErrors()) {
 	    errors.add(error.getField() + ": " + error.getDefaultMessage());
