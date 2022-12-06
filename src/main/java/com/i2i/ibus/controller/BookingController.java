@@ -66,13 +66,13 @@ public class BookingController {
     @ResponseStatus(value = HttpStatus.OK)
     private MessageDto deleteBooking(@PathVariable int id) {
 	bookingService.deleteBooking(id);
-	return new MessageDto("200", "Booking Deleted Sucessfully");
+	return new MessageDto("200", "Booking deleted sucessfully");
     }
     
     @PutMapping("/cancellations/{bookingId}")
     @ResponseStatus(value = HttpStatus.OK)
     private MessageDto cancellation(@PathVariable @Valid int bookingId) {
 	bookingService.cancellation(bookingId);
-	return new MessageDto("200", "Booking Cancellation successfully");
+	return new MessageDto("200", "Booking cancellation successfully");
     }
 }
