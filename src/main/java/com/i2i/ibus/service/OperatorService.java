@@ -2,17 +2,13 @@ package com.i2i.ibus.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.i2i.ibus.dto.AddressDto;
 import com.i2i.ibus.dto.OperatorDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.mapper.Mapper;
-import com.i2i.ibus.model.Address;
 import com.i2i.ibus.model.Operator;
 import com.i2i.ibus.repository.OperatorRepository;
 
@@ -27,7 +23,7 @@ import com.i2i.ibus.repository.OperatorRepository;
 public class OperatorService {
 
     private OperatorRepository operatorRepository;
-    
+
     @Autowired
     public OperatorService(OperatorRepository operatorRepository) {
 	this.operatorRepository = operatorRepository;
@@ -37,11 +33,11 @@ public class OperatorService {
 	Optional<Operator> operator = operatorRepository.findById(id);
 	if (operator.isPresent() && operator.get().isDeleted()) {
 	    throw new IBusException("User id doesn't exists because User details deleted");
-	} else if(!operator.isPresent()) {
+	} else if (!operator.isPresent()) {
 	    throw new IBusException("User Id doesn't exists");
 	}
-    } 
-    
+    }
+
     public void validatePhoneNo(String phoneNumber) throws IBusException {
 	Operator operator = operatorRepository.findByPhoneNumber(phoneNumber).get();
 	if (!operator.isDeleted() && (null != operator)) {
@@ -55,7 +51,7 @@ public class OperatorService {
 	    throw new IBusException(gstNumber.concat(" Already exists"));
 	}
     }
-    
+
     public void validateMailId(String mailId) throws IBusException {
 	Optional<Operator> operator = operatorRepository.findByMailId(mailId);
 	if (operator.isPresent()) {
@@ -63,7 +59,10 @@ public class OperatorService {
 	}
     }
 
-    public OperatorDto saveOperator(OperatorDto operatorDto) {
+    public OperatorDto saveOperator(OperatorDto operatorDto) throws IBusException {
+	validateGstNumber(operatorDto.getGstNumber());
+	validateMailId(operatorDto.getMailId());
+	validatePhoneNo(operatorDto.getPhoneNumber());
 	return Mapper.toOperatorDto(operatorRepository.save(Mapper.toOperator(operatorDto)));
     }
 
@@ -86,6 +85,5 @@ public class OperatorService {
 	validateOperator(id);
 	operatorRepository.deleteById(id);
     }
-
 
 }
