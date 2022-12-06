@@ -37,7 +37,8 @@ public class PaymentService {
     }
 
     public PaymentDto createPayment(int bookingId, PaymentDto paymentDto) throws IBusException {
-	Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new IBusException("No booking id found..."));
+	Booking booking = bookingRepository.findById(bookingId)
+		.orElseThrow(() -> new IBusException("No booking id found..."));
 	Payment payment = Mapper.toPayment(paymentDto);
 	payment.setTime(LocalDateTime.now());
 	payment.setBooking(booking);
@@ -46,20 +47,22 @@ public class PaymentService {
 	    payment.setStatus("unpaid");
 	    paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
 	    throw new IBusException("Booking time is over...");
+	} else if (booking.getTotalFare() != paymentDto.getAmount()) {
+	    throw new IBusException("payment amount is invalid. The amount is " + booking.getTotalFare());
+	} else if (booking.getNumberOfSeats() == paymentRepository.getAllPaymentsByBookingId(bookingId).size()) {
+	    throw new IBusException("booking seat limit is reached..");
+	} else if (booking.getPaymentStatus() == null) {
+	    payment.setStatus("paid");
+	    booking.setPaymentStatus("successful");
+	    paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
 	} else {
-	    if (booking.getPaymentStatus() == null) {
-		payment.setStatus("paid");
-		booking.setPaymentStatus("successful");
-	        paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
-	    } else {
-		throw new IBusException("payment already succeeded");
-	    }
+	    throw new IBusException("payment already succeeded");
 	}
 	return paymentDto;
     }
 
-    public List<PaymentDto> getAllPaymentsByBookId(int bookingId) {
-	return Mapper.toPaymentDtos(paymentRepository.getAllPaymentsByBookId(bookingId));
+    public List<PaymentDto> getAllPaymentsByBookingId(int bookingId) {
+	return Mapper.toPaymentDtos(paymentRepository.getAllPaymentsByBookingId(bookingId));
     }
 
     public void deleteAllByBookingId(int bookingId) {

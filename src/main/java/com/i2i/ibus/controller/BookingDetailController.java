@@ -15,6 +15,8 @@ import com.i2i.ibus.dto.BookingDetailDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.service.BookingDetailService;
 
+import jakarta.validation.Valid;
+
 /**
  * Here, passenger name, age, gender are getting from the user.
  * 
@@ -42,7 +44,7 @@ public class BookingDetailController {
 
     @PostMapping("/seats/{seatId}")
     private BookingDetailDto createBookingDetail(@PathVariable int bookingId, @PathVariable int seatId,
-	    @RequestBody BookingDetailDto bookingDetailDto) throws IBusException {
+	    @RequestBody @Valid BookingDetailDto bookingDetailDto) throws IBusException {
 	return bookingDetailService.createBookingDetail(bookingId, seatId, bookingDetailDto);
     }
 
@@ -55,4 +57,5 @@ public class BookingDetailController {
     private void deleteAllByBookingId(@PathVariable int bookingId) {
 	bookingDetailService.deleteAllByBookingId(bookingId);
     }
+
 }

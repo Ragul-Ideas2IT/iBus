@@ -18,7 +18,7 @@ import com.i2i.ibus.model.BookingDetail;
  */
 @Repository
 public interface BookingDetailRepository extends JpaRepository<BookingDetail, Integer> {
-    
+
     @Query("from BookingDetail where isDeleted = false and id = :id")
     Optional<BookingDetail> findById(int id);
 

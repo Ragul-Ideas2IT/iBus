@@ -51,7 +51,7 @@ public class BookingDetailService {
 		bookingDetail.setSeat(bookingSeat);
 		bookingDetail = bookingDetailRepository.save(bookingDetail);
 	    } else {
-		throw new IBusException("this seat is only for ".concat(bookingDetail.getGender()));
+		throw new IBusException("this seat is not for ".concat(bookingDetail.getGender()));
 	    }
 	} else {
 	    throw new IBusException("Seat is already booked..");

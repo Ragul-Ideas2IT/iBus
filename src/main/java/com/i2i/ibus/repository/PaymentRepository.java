@@ -23,7 +23,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer>{
     Optional<Payment> findById(int id);
 
     @Query("from Payment p join p.booking pb where p.isDeleted = false and pb.id = :bookingId")
-    List<Payment> getAllPaymentsByBookId(int bookingId);
+    List<Payment> getAllPaymentsByBookingId(int bookingId);
 
     @Query(value = "UPDATE payment SET is_deleted = true where booking_id = :bookingId and is_deleted = false", nativeQuery = true)
     void deleteAllByBookingId(int bookingId);
