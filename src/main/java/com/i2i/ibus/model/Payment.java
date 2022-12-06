@@ -38,6 +38,9 @@ public class Payment {
     @Column(columnDefinition = "varchar(255) default 'unpaid'")
     private String status;
     private String modeOfPayment;
+    private int CVVNumer;
+    private long cardNumber;
+    private String carHolderName;
     @Column(insertable = false)
     private LocalDateTime time;
     @ManyToOne(cascade = CascadeType.PERSIST)

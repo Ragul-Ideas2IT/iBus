@@ -27,8 +27,8 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String message;
-    private String reference_id;
-    private boolean reference_type;
+    private String referenceId;
+    private boolean referenceType;
     private boolean isDeleted;
 
 }
