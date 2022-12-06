@@ -1,9 +1,11 @@
 package com.i2i.ibus.dto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,11 +22,23 @@ import lombok.Setter;
 public class BusHistoryDto {
 
     private int id;
+    @NotBlank
+    @FutureOrPresent
     private LocalDate departureDate;
+    @NotBlank
+    @FutureOrPresent
     private LocalTime departureTime;
+    @NotBlank
+    @FutureOrPresent
     private LocalDate arrivingDate;
+    @NotBlank
+    @FutureOrPresent
     private LocalTime arrivingTime;
+    @NotBlank
+    @Pattern(regexp = "([a-zA-Z][ ]?){2,}")
     private String source;
+    @NotBlank
+    @Pattern(regexp = "([a-zA-Z][ ]?){2,}")
     private String destination;
 
 }
