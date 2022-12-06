@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.i2i.ibus.dto.BusDto;
+import com.i2i.ibus.dto.MessageDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.service.BusService;
+
+import jakarta.validation.Valid;
 
 /**
  * It is used to done the CRUD operations of the bus details. In this we can
@@ -47,7 +50,7 @@ public class BusController {
      * @throws IBusException
      */
     @PostMapping("/operators/{operatorId}")
-    private ResponseEntity<BusDto> addBus(@RequestBody BusDto busDto, @PathVariable int operatorId)
+    private ResponseEntity<BusDto> addBus(@RequestBody @Valid BusDto busDto, @PathVariable int operatorId)
 	    throws IBusException {
 
 	return new ResponseEntity<BusDto>(busService.addBus(busDto, operatorId), HttpStatus.CREATED);
@@ -69,7 +72,7 @@ public class BusController {
      * @return
      * @throws IBusExistException
      */
-    @GetMapping("/{source}/{destination}/{departureDateTime}")
+    @GetMapping("/{source}/{destination}/{departureDate}")
     private ResponseEntity<List<BusDto>> getBusesByRoute(@PathVariable String source, @PathVariable String destination,
 	    @PathVariable LocalDate departureDate)
 	    throws IBusException {
@@ -83,8 +86,8 @@ public class BusController {
      * @return
      * @throws IBusException
      */
-    @PutMapping("/{id}/operators/{operatorid}")
-    private ResponseEntity<BusDto> updateBus(@RequestBody BusDto busDto, @PathVariable int operatorId)
+    @PutMapping("/{id}/operators/{operatorId}")
+    private ResponseEntity<BusDto> updateBus(@RequestBody @Valid BusDto busDto, @PathVariable int operatorId)
 	    throws IBusException {
 
 	return new ResponseEntity<BusDto>(busService.updateBus(busDto, operatorId), HttpStatus.OK);
@@ -97,8 +100,9 @@ public class BusController {
      * @throws IBusException
      */
     @DeleteMapping("/{busId}")
-    private ResponseEntity<String> deleteBus(@PathVariable int busId) throws IBusException {
+    private MessageDto deleteBus(@PathVariable int busId) throws IBusException {
 
-	return new ResponseEntity<String>("Deleted Sucessfully", HttpStatus.OK);
+	busService.deleteBus(busId);
+	return new MessageDto("200", "Deleted Sucessfully");
     }
 }
