@@ -4,6 +4,7 @@ import java.time.LocalTime;
 
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,11 +28,9 @@ public class PickupPointDto {
     @NotBlank
     @Pattern(regexp = "([a-zA-Z][ ]?){2,}")
     private String landMark;
-    @NotBlank
-    @FutureOrPresent
+    @NotNull
     private LocalTime arrivingTime;
-    @NotBlank
-    @FutureOrPresent
+    @NotNull
     private LocalTime departureTime;
 
 }

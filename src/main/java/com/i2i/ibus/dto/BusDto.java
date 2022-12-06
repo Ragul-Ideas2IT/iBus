@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,13 +39,13 @@ public class BusDto {
     private String type;
     @JsonProperty(access = Access.READ_ONLY)
     private OperatorDto operatorDto;
-    @NotBlank
+    @NotEmpty
     @Valid
     private List<BusHistoryDto> busHistories;
-    @NotBlank
+    @NotEmpty
     @Valid
     private List<PickupPointDto> pickupPoints;
-    @NotBlank
+    @NotEmpty
     @Valid
     private List<SeatDto> seats;
 }

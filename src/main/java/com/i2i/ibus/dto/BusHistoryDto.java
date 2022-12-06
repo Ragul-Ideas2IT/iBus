@@ -5,6 +5,7 @@ import java.time.LocalTime;
 
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,17 +23,15 @@ import lombok.Setter;
 public class BusHistoryDto {
 
     private int id;
-    @NotBlank
+    @NotNull
     @FutureOrPresent
     private LocalDate departureDate;
-    @NotBlank
-    @FutureOrPresent
+    @NotNull
     private LocalTime departureTime;
-    @NotBlank
+    @NotNull
     @FutureOrPresent
     private LocalDate arrivingDate;
-    @NotBlank
-    @FutureOrPresent
+    @NotNull
     private LocalTime arrivingTime;
     @NotBlank
     @Pattern(regexp = "([a-zA-Z][ ]?){2,}")

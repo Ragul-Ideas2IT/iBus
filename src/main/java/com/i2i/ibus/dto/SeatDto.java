@@ -28,7 +28,6 @@ public class SeatDto {
     @NotBlank
     @Pattern(regexp = "^((?i)(male)|(female)|(others))$")
     private String gender;
-    @NotBlank
     @Min(value = 0)
     private double fare;
 }
