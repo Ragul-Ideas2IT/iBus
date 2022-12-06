@@ -39,15 +39,15 @@ public class OperatorService {
     }
 
     public void validatePhoneNo(String phoneNumber) throws IBusException {
-	Operator operator = operatorRepository.findByPhoneNumber(phoneNumber).get();
-	if (!operator.isDeleted() && (null != operator)) {
+	Optional<Operator> operator = operatorRepository.findByPhoneNumber(phoneNumber);
+	if (operator.isPresent()) {
 	    throw new IBusException(phoneNumber.concat(" Already exists"));
 	}
     }
 
     public void validateGstNumber(String gstNumber) throws IBusException {
-	Operator operator = operatorRepository.findByGstNumber(gstNumber).get();
-	if (!operator.isDeleted() && (null != operator)) {
+	Optional<Operator> operator = operatorRepository.findByGstNumber(gstNumber);
+	if (operator.isPresent()) {
 	    throw new IBusException(gstNumber.concat(" Already exists"));
 	}
     }
