@@ -15,7 +15,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.i2i.ibus.dto.BookingDto;
+import com.i2i.ibus.dto.MessageDto;
+import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.service.BookingService;
+
+import jakarta.validation.Valid;
 
 /**
  * @author Esakkiraja E
@@ -36,31 +40,39 @@ public class BookingController {
 
     @PostMapping("/users/{userId}/buses/{busId}")
     @ResponseStatus(value = HttpStatus.CREATED)
-    private BookingDto addBooking(@PathVariable("userId") int userId, @PathVariable("busId") int busId, @RequestBody BookingDto bookingDto) {
+    private BookingDto addBooking(@PathVariable @Valid int userId, @PathVariable int busId, @RequestBody BookingDto bookingDto) {
 	return bookingService.addBooking(userId, busId, bookingDto);
     }
 
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    private List<BookingDto> getAllBooking() {
+    private List<BookingDto> getAllBooking() throws IBusException {
 	return bookingService.getAllBooking();
+    }
+    
+    @GetMapping("/{id}")
+    @ResponseStatus(value = HttpStatus.OK)
+    private BookingDto getBookingById(@PathVariable int id) {
+	return bookingService.getBookingById(id);
     }
 
     @GetMapping("/users/{userId}")
     @ResponseStatus(value = HttpStatus.OK)
-    private List<BookingDto> getBooking(@PathVariable int userId) {
+    private List<BookingDto> getBookingByUserId(@PathVariable int userId) {
 	return bookingService.getBookingDtoByUserId(userId);
     }
     
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    private void deleteBooking(@PathVariable int id) {
+    private MessageDto deleteBooking(@PathVariable int id) {
 	bookingService.deleteBooking(id);
+	return new MessageDto("200", "Booking Deleted Sucessfully");
     }
     
     @PutMapping("/cancellations/{bookingId}")
     @ResponseStatus(value = HttpStatus.OK)
-    private void cancellation(@PathVariable int bookingId) {
+    private MessageDto cancellation(@PathVariable @Valid int bookingId) {
 	bookingService.cancellation(bookingId);
+	return new MessageDto("200", "Booking Cancellation successfully");
     }
 }
