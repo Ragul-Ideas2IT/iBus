@@ -39,13 +39,4 @@ public class BusDto {
     private String type;
     @JsonProperty(access = Access.READ_ONLY)
     private OperatorDto operatorDto;
-    @NotEmpty
-    @Valid
-    private List<BusHistoryDto> busHistories;
-    @NotEmpty
-    @Valid
-    private List<PickupPointDto> pickupPoints;
-    @NotEmpty
-    @Valid
-    private List<SeatDto> seats;
 }

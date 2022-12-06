@@ -32,7 +32,6 @@ public class BusService {
 
     @Autowired
     public BusService(BusRepository busRepository, OperatorRepository operatorRepository) {
-	super();
 	this.busRepository = busRepository;
 	this.operatorRepository = operatorRepository;
     }

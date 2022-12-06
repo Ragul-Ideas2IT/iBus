@@ -3,6 +3,9 @@ package com.i2i.ibus.dto;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,6 +25,7 @@ import lombok.Setter;
 @Setter
 public class BusHistoryDto {
 
+    @JsonProperty(access = Access.READ_ONLY)
     private int id;
     @NotNull
     @FutureOrPresent
@@ -39,5 +43,7 @@ public class BusHistoryDto {
     @NotBlank
     @Pattern(regexp = "([a-zA-Z][ ]?){2,}")
     private String destination;
+    @JsonProperty(access = Access.READ_ONLY)
+    private BusDto busDto;
 
 }
