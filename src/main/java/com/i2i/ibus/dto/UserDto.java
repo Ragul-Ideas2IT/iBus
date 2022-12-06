@@ -36,7 +36,7 @@ public class UserDto {
     @Pattern(regexp = "(?i)^(male)|(female)|(others)$", message = "Gender should be male, female or others")
     @NotBlank(message = "Gender is mandatory")
     private String gender;
-    @Min(1)
+    @Min(18)
     @Max(120)
     private int age;
 }

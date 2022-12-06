@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @created Nov 28 2022
  *
  */
-@SpringBootApplication
+@SpringBootApplication 
 public class IBusApplication {
     
     public static void main(String[] args) {
