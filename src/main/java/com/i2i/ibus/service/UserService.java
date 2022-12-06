@@ -3,7 +3,6 @@ package com.i2i.ibus.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,7 @@ import com.i2i.ibus.repository.UserRepository;
 public class UserService {
 
     private UserRepository userRepository;
-    
+
     @Autowired
     public UserService(UserRepository userRepository) {
 	this.userRepository = userRepository;
@@ -34,10 +33,10 @@ public class UserService {
 	Optional<User> user = userRepository.findById(id);
 	if (user.isPresent() && user.get().isDeleted()) {
 	    throw new IBusException("User id doesn't exists because User details deleted");
-	} else if(!user.isPresent()) {
+	} else if (!user.isPresent()) {
 	    throw new IBusException("User Id doesn't exists");
 	}
-    }    
+    }
 
     public void validatePhoneNo(String phoneNumber) throws IBusException {
 	Optional<User> user = userRepository.findByPhoneNumber(phoneNumber);
@@ -53,7 +52,9 @@ public class UserService {
 	}
     }
 
-    public UserDto saveUser(UserDto userDto) {
+    public UserDto saveUser(UserDto userDto) throws IBusException {
+	validateMailId(userDto.getMailId());
+	validatePhoneNo(userDto.getPhoneNumber());
 	User user = Mapper.toUser(userDto);
 	return Mapper.toUserDto(userRepository.save(user));
     }

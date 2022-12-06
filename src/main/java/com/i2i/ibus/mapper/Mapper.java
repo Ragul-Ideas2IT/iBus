@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.i2i.ibus.dto.AddressDto;
 import com.i2i.ibus.dto.BookingDetailDto;
@@ -68,11 +67,11 @@ public class Mapper {
     }
 
     public static List<Operator> toOperators(List<OperatorDto> operatorDtos) {
-	return operatorDtos.stream().map(operatorDto -> toOperator(operatorDto)).collect(Collectors.toList());
+	return operatorDtos.stream().map(operatorDto -> toOperator(operatorDto)).toList();
     }
 
     public static List<OperatorDto> toOperatorDtos(List<Operator> operators) {
-	return operators.stream().map(operator -> toOperatorDto(operator)).collect(Collectors.toList());
+	return operators.stream().map(operator -> toOperatorDto(operator)).toList();
     }
 
     public static Booking toBooking(BookingDto bookingDto) {
