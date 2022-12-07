@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.i2i.ibus.dto.MessageDto;
 import com.i2i.ibus.dto.UserDto;
-import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.service.UserService;
 
 import jakarta.validation.Valid;
@@ -33,7 +32,7 @@ import jakarta.validation.Valid;
 public class UserController {
 
     private UserService userService;
-    
+
     @Autowired
     private UserController(UserService userService) {
 	this.userService = userService;
@@ -41,7 +40,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    private UserDto createUser(@RequestBody @Valid UserDto userDto) throws IBusException {
+    private UserDto createUser(@RequestBody @Valid UserDto userDto) {
 	return userService.saveUser(userDto);
     }
 
@@ -53,19 +52,19 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    private UserDto getUserDtoById(@PathVariable int id) throws IBusException {
+    private UserDto getUserDtoById(@PathVariable int id) {
 	return userService.getUserDtoById(id);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    private UserDto updateUser(@PathVariable int id, @RequestBody @Valid UserDto userDto) throws IBusException {
+    private UserDto updateUser(@PathVariable int id, @RequestBody @Valid UserDto userDto) {
 	return userService.updateUserById(id, userDto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    private MessageDto deleteUser(@PathVariable int id) throws IBusException {
+    private MessageDto deleteUser(@PathVariable int id) {
 	userService.deleteUserById(id);
 	return new MessageDto("200", "Deleted Successfully");
     }
