@@ -12,6 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -39,6 +40,8 @@ public class Booking {
     private int id;
     private double totalFare;
     private LocalDateTime dateTime;
+    private String source;
+    private String destination;
     private String pickUpPoint;
     private String dropPoint;
     private String status;
@@ -46,13 +49,17 @@ public class Booking {
     private LocalTime travelTime;
     private LocalDate travelDate;
     private boolean isDeleted;
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "booking_id")
     private List<BookingDetail> bookingDetails;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
+    @JoinColumn(name = "cancellation_id")
     private Cancellation cancellation;
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
+    @JoinColumn(name = "bus_id")
     private Bus bus;
 
 }

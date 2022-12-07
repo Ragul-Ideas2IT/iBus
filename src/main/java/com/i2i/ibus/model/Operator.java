@@ -39,7 +39,7 @@ public class Operator {
     private String panNumber;
     private String gstNumber;
     private boolean isDeleted;
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "operator_id")
     private List<Address> addresses;
 }

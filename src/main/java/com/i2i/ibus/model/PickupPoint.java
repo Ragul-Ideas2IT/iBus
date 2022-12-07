@@ -36,7 +36,7 @@ public class PickupPoint {
     private String city;
     private LocalTime arrivingTime;
     private LocalTime departureTime;
-    @ManyToOne(cascade = { jakarta.persistence.CascadeType.PERSIST })
+    @ManyToOne
     @JoinColumn(name = "bus_id")
     private Bus bus;
     private boolean isDeleted;

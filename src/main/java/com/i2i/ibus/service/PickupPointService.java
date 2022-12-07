@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.i2i.ibus.dto.PickupPointDto;
 import com.i2i.ibus.exception.IBusException;
@@ -12,7 +13,7 @@ import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.PickupPoint;
 import com.i2i.ibus.repository.BusRepository;
 import com.i2i.ibus.repository.PickupPointRepository;
-
+@Service
 public class PickupPointService {
 
     private PickupPointRepository pickupPointRepository;
@@ -29,7 +30,7 @@ public class PickupPointService {
 	PickupPoint pickupPoint = null;
 
 	try {
-	    pickupPointDto.setBusDto(Mapper.toBusDto(busRepository.findById(busId).get()));
+	    pickupPointDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
 	    pickupPoint = pickupPointRepository.save(Mapper.toPickupPoint(pickupPointDto));
 	} catch (NoSuchElementException exception) {
 	    throw new IBusException("Bus doesnot exist");
@@ -55,7 +56,7 @@ public class PickupPointService {
 
 	try {
 	    pickupPointDto.setId(pickupPointId);
-	    pickupPointDto.setBusDto(Mapper.toBusDto(busRepository.findById(busId).get()));
+	    pickupPointDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
 	    pickupPoint = pickupPointRepository.save(Mapper.toPickupPoint(pickupPointDto));
 	} catch (NoSuchElementException exception) {
 	    throw new IBusException("Bus doesnot exist");

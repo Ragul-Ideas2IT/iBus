@@ -35,15 +35,14 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private double amount;
-    @Column(columnDefinition = "varchar(255) default 'unpaid'")
     private String status;
     private String modeOfPayment;
-    private int CVVNumer;
+    private int cvvNumber;
     private long cardNumber;
-    private String carHolderName;
+    private String cardHolderName;
     @Column(insertable = false)
     private LocalDateTime time;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private Booking booking;
     private boolean isDeleted;
 

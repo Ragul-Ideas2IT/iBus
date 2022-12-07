@@ -38,5 +38,5 @@ public class BusDto {
     @Pattern(regexp = "^((?i)(NONAC)|(AC))$")
     private String type;
     @JsonProperty(access = Access.READ_ONLY)
-    private OperatorDto operatorDto;
+    private OperatorDto operator;
 }

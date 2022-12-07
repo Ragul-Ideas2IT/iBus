@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.springframework.stereotype.Service;
+
 import com.i2i.ibus.dto.BusHistoryDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.mapper.Mapper;
@@ -12,6 +14,7 @@ import com.i2i.ibus.model.BusHistory;
 import com.i2i.ibus.repository.BusHistoryRepository;
 import com.i2i.ibus.repository.BusRepository;
 
+@Service
 public class BusHistoryService {
 
     private BusHistoryRepository busHistoryRepository;
@@ -27,7 +30,7 @@ public class BusHistoryService {
 	BusHistory busHistory = null;
 
 	try {
-	    busHistoryDto.setBusDto(Mapper.toBusDto(busRepository.findById(busId).get()));
+	    busHistoryDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
 	    busHistory = busHistoryRepository.save(Mapper.toBusHistory(busHistoryDto));
 	} catch (NoSuchElementException exception) {
 	    throw new IBusException("Bus doesnot exists");
@@ -76,7 +79,7 @@ public class BusHistoryService {
 
 	try {
 	    busHistoryDto.setId(busHistoryId);
-	    busHistoryDto.setBusDto(Mapper.toBusDto(busRepository.findById(busId).get()));
+	    busHistoryDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
 	    busHistory = busHistoryRepository.save(Mapper.toBusHistory(busHistoryDto));
 	} catch (NoSuchElementException exception) {
 	    throw new IBusException("Bus doesnot exception");

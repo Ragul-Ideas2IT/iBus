@@ -42,16 +42,12 @@ public class PaymentService {
 	Payment payment = Mapper.toPayment(paymentDto);
 	payment.setTime(LocalDateTime.now());
 	payment.setBooking(booking);
-	if (5 > ChronoUnit.MINUTES.between(booking.getDateTime(), LocalDateTime.now())) {
+	if (5 < ChronoUnit.MINUTES.between(booking.getDateTime(), LocalDateTime.now())) {
 	    booking.setPaymentStatus("declined");
 	    payment.setStatus("unpaid");
 	    paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
 	    throw new IBusException("Booking time is over...");
-	} else if (booking.getTotalFare() != paymentDto.getAmount()) {
-	    throw new IBusException("Payment amount is invalid. The amount is " + booking.getTotalFare());
-	} else if (booking.getNumberOfSeats() == paymentRepository.getAllPaymentsByBookingId(bookingId).size()) {
-	    throw new IBusException("Booking seat limit is reached..");
-	} else if (booking.getPaymentStatus() == null) {
+	} else if (booking.getPaymentStatus().equals("unpaid")) {
 	    payment.setStatus("paid");
 	    booking.setPaymentStatus("successful");
 	    paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
