@@ -1,6 +1,7 @@
 package com.i2i.ibus.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,14 +21,14 @@ import com.i2i.ibus.model.Bus;
 public interface BusRepository extends JpaRepository<Bus, Integer> {
 
     @Query("From Bus Where busNumber = :busNumber and isDeleted = false")
-    public Bus findByBusNumber(String busNumber);
+    public Optional<Bus> findByBusNumber(String busNumber);
 
     @Query("From Bus Where busNumber = :busNumber and id != :id")
-    public Bus findByBusNumberForUpdate(String busNumber, int id);
+    public Optional<Bus> findByBusNumberForUpdate(String busNumber, int id);
 
     @Query("from Bus where isDeleted = false")
     public List<Bus> findAll();
     
     @Query("from Bus where id = :id and isDeleted = false")
-    public Bus findById(int id);
+    public Optional<Bus> findById(int id);
 }

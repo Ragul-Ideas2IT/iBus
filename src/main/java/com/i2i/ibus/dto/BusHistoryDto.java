@@ -45,5 +45,10 @@ public class BusHistoryDto {
     private String destination;
     @JsonProperty(access = Access.READ_ONLY)
     private BusDto busDto;
+    private LocalTime actualDepartureTime;
+    private LocalTime actualArrivingTime;
+    @NotBlank
+    @JsonProperty(access = Access.READ_ONLY)
+    private String status;
 
 }

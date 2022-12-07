@@ -46,10 +46,21 @@ public class SeatController {
      * @return
      * @throws IBusExistException
      */
-    @GetMapping
-    private ResponseEntity<List<SeatDto>> getAllSeats(int busId) throws IBusException {
+    @GetMapping("/buses/{busId}")
+    private ResponseEntity<List<SeatDto>> getAllSeats(@PathVariable int busId) throws IBusException {
 
-	return new ResponseEntity<List<SeatDto>>(seatService.getAllSeats(busId), HttpStatus.OK);
+	return new ResponseEntity<List<SeatDto>>(seatService.getAllByBusId(busId), HttpStatus.OK);
+    }
+
+    /**
+     * 
+     * @return
+     * @throws IBusExistException
+     */
+    @GetMapping("/{seatId}")
+    private ResponseEntity<SeatDto> getBySeatId(@PathVariable int seatId) throws IBusException {
+
+	return new ResponseEntity<SeatDto>(seatService.getBySeatId(seatId), HttpStatus.OK);
     }
 
     /**
@@ -58,11 +69,11 @@ public class SeatController {
      * @return
      * @throws IBusException
      */
-    @PutMapping("/{id}/buses/{busId}")
-    private ResponseEntity<SeatDto> updateBus(@RequestBody @Valid SeatDto seatDto, @PathVariable int busId)
-	    throws IBusException {
+    @PutMapping("/{seatId}/buses/{busId}")
+    private ResponseEntity<SeatDto> updateBus(@RequestBody @Valid SeatDto seatDto, @PathVariable int seatId,
+	    @PathVariable int busId) throws IBusException {
 
-	return new ResponseEntity<SeatDto>(seatService.updateSeat(seatDto, busId), HttpStatus.OK);
+	return new ResponseEntity<SeatDto>(seatService.updateSeat(seatDto, seatId, busId), HttpStatus.OK);
     }
 
     /**

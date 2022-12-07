@@ -1,5 +1,8 @@
 package com.i2i.ibus.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,5 +39,7 @@ public class Seat {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Bus bus;
     private boolean isDeleted;
+    @JsonProperty(access = Access.READ_ONLY)
+    private boolean isAvailable;
 
 }

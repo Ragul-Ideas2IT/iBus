@@ -33,6 +33,7 @@ public class PickupPoint {
     private int id;
     private String stopName;
     private String landMark;
+    private String city;
     private LocalTime arrivingTime;
     private LocalTime departureTime;
     @ManyToOne(cascade = { jakarta.persistence.CascadeType.PERSIST })
