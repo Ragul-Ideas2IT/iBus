@@ -27,5 +27,6 @@ public class BookingDetailDto {
     @NotBlank
     @Pattern(regexp = "(?i)^(male)|(female)|(others)$", message = "Please enter the valid format gender.")
     private String gender;
+    private String seatNumber;
 
 }
