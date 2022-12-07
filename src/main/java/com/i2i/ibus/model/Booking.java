@@ -3,6 +3,7 @@ package com.i2i.ibus.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 import org.hibernate.annotations.SQLDelete;
 
@@ -12,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -35,7 +37,6 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int numberOfSeats;
     private double totalFare;
     private LocalDateTime dateTime;
     private String pickUpPoint;
@@ -45,6 +46,8 @@ public class Booking {
     private LocalTime travelTime;
     private LocalDate travelDate;
     private boolean isDeleted;
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private List<BookingDetail> bookingDetails;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private User user;
     @OneToOne(cascade = CascadeType.PERSIST)

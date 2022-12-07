@@ -17,10 +17,14 @@ import com.i2i.ibus.model.BookingDetail;
 import com.i2i.ibus.model.Bus;
 import com.i2i.ibus.model.BusHistory;
 import com.i2i.ibus.model.Cancellation;
+import com.i2i.ibus.model.Seat;
 import com.i2i.ibus.model.User;
 import com.i2i.ibus.repository.BookingDetailRepository;
 import com.i2i.ibus.repository.BookingRepository;
+import com.i2i.ibus.repository.BusHistoryRepository;
 import com.i2i.ibus.repository.BusRepository;
+import com.i2i.ibus.repository.PickupPointRepository;
+import com.i2i.ibus.repository.SeatRepository;
 import com.i2i.ibus.repository.UserRepository;
 
 /**
@@ -35,19 +39,28 @@ public class BookingService {
     private BookingRepository bookingRepository;
     private BookingDetailRepository bookingDetailRepository;
     private BusRepository busRepository;
+    private BusHistoryRepository busHistoryRepository;
+    private PickupPointRepository pickupPointRepository;
+    private SeatRepository seatRepository;
     private UserRepository userRepository;
 
     @Autowired
     public BookingService(BookingRepository bookingRepository, BookingDetailRepository bookingDetailRepository,
-	    BusRepository busRepository, UserRepository userRepository) {
+	    PickupPointRepository pickupPointRepository, BusRepository busRepository,
+	    BusHistoryRepository busHistoryRepository, UserRepository userRepository, SeatRepository seatRepository) {
 	this.bookingRepository = bookingRepository;
 	this.bookingDetailRepository = bookingDetailRepository;
 	this.busRepository = busRepository;
 	this.userRepository = userRepository;
+	this.busHistoryRepository = busHistoryRepository;
+	this.pickupPointRepository = pickupPointRepository;
+	this.seatRepository = seatRepository;
     }
 
     public BookingDto addBooking(int userId, int busId, BookingDto bookingDto) {
 	Booking booking = Mapper.toBooking(bookingDto);
+	validateBookingDetails(booking.getBookingDetails(), busId);
+	booking.setTotalFare(calculateFare(booking.getBookingDetails(), busId));
 	booking.setDateTime(LocalDateTime.now());
 	booking.setBus(getBusById(busId));
 	booking.setPaymentStatus("unpaid");
@@ -57,13 +70,22 @@ public class BookingService {
 	return Mapper.toBookingDto(booking);
     }
 
+    private void validateBookingDetails(List<BookingDetail> bookingDetails, int busId) {
+	for(BookingDetail bookingDetail: bookingDetails) {
+	    Seat seat = seatRepository.findBySeatNumberAndBusId(bookingDetail.getSeatNumber(), busId).get();
+	    if(!bookingDetail.getGender().equalsIgnoreCase(seat.getGender())) {
+		throw new IBusException("This seat is not for ".concat(bookingDetail.getGender()));
+	    }
+	}
+    }
+
     public List<BookingDto> getAllBooking() throws IBusException {
-	List<Booking> bookingDetail = bookingRepository.findAll();
+	List<Booking> bookings = bookingRepository.findAll();
 	List<BookingDto> bookingDtos = new ArrayList<BookingDto>();
 
-	if (!bookingDetail.isEmpty()) {
+	if (!bookings.isEmpty()) {
 
-	    for (Booking booking : bookingDetail) {
+	    for (Booking booking : bookings) {
 		completeBooking(booking.getId());
 		bookingDtos.add(Mapper.toBookingDto(booking));
 	    }
@@ -73,17 +95,12 @@ public class BookingService {
 	return bookingDtos;
     }
 
-    public void deleteBooking(int bookingId) {
-	bookingRepository.deleteById(bookingId);
-	bookingDetailRepository.deleteAllByBookingId(bookingId);
-    }
-
-    public BookingDto getBookingDtoById(int id) {
+    public BookingDto getBookingById(int id) {
 	completeBooking(id);
 	return Mapper.toBookingDto(bookingRepository.findById(id).get());
     }
 
-    public List<BookingDto> getBookingDtoByUserId(int userId) {
+    public List<BookingDto> getBookingByUserId(int userId) {
 	List<Booking> bookingDetail = bookingRepository.findAllByUserId(userId);
 	List<BookingDto> bookingDtos = new ArrayList<BookingDto>();
 
@@ -97,6 +114,25 @@ public class BookingService {
 	return bookingDtos;
     }
 
+    public Bus getBusById(int id) {
+	return busRepository.findById(id);
+    }
+
+    public User getUserById(int id) {
+	return userRepository.findById(id).get();
+    }
+
+    public BusHistory getBusHistoryByTravelDate(Bus bus, LocalDate travelDate) {
+	BusHistory busHistory1 = null;
+
+	for (BusHistory busHistory : busHistoryRepository.findByBusId(bus.getId())) {
+	    if (travelDate.equals(busHistory.getDepartureDate())) {
+		busHistory1 = busHistory;
+	    }
+	}
+	return busHistory1;
+    }
+    
     public void cancellation(int bookingId) {
 	Booking booking = bookingRepository.findById(bookingId).get();
 
@@ -108,11 +144,11 @@ public class BookingService {
 	}
     }
 
-    public double calculateFare(List<BookingDetail> bookingDetails) {
+    public double calculateFare(List<BookingDetail> bookingDetails, int busId) {
 	double fare = 0;
 
 	for (BookingDetail bookingDetail : bookingDetails) {
-	    fare += bookingDetail.getSeat().getFare();
+	    fare += seatRepository.findBySeatNumberAndBusId(bookingDetail.getSeatNumber(), busId).get().getFare();
 	}
 	return fare;
     }
@@ -142,28 +178,9 @@ public class BookingService {
 	return ChronoUnit.MINUTES.between(LocalDateTime.now(),
 		LocalDateTime.of(busHistory.getArrivingDate(), busHistory.getArrivingTime()));
     }
-
-    public Bus getBusById(int id) {
-	return busRepository.findById(id);
-    }
-
-    public User getUserById(int id) {
-	return userRepository.findById(id).get();
-    }
-
-    public BusHistory getBusHistoryByTravelDate(Bus bus, LocalDate travelDate) {
-	BusHistory busHistory1 = null;
-
-	for (BusHistory busHistory : bus.getBusHistories()) {
-
-	    if (travelDate.equals(busHistory.getDepartureDate())) {
-		busHistory1 = busHistory;
-	    }
-	}
-	return busHistory1;
-    }
-
-    public BookingDto getBookingById(int id) {
-	return Mapper.toBookingDto(bookingRepository.findById(id).get());
+  
+    public void deleteBooking(int bookingId) {
+	bookingRepository.deleteById(bookingId);
+	bookingDetailRepository.deleteAllByBookingId(bookingId);
     }
 }
