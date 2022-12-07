@@ -1,5 +1,6 @@
 package com.i2i.ibus.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,9 +48,33 @@ public class BusHistoryController {
      * @throws IBusExistException
      */
     @GetMapping
-    private ResponseEntity<List<BusHistoryDto>> getAllBusHistories(int busId) throws IBusException {
+    private ResponseEntity<List<BusHistoryDto>> getAllBusHistories() throws IBusException {
 
-	return new ResponseEntity<List<BusHistoryDto>>(busHistoryService.getAllBusHistories(busId), HttpStatus.OK);
+	return new ResponseEntity<List<BusHistoryDto>>(busHistoryService.getAllBusHistories(), HttpStatus.OK);
+    }
+
+    /**
+     * 
+     * @return
+     * @throws IBusExistException
+     */
+    @GetMapping("/buses/{busId}")
+    private ResponseEntity<List<BusHistoryDto>> getBusHistories(@PathVariable int busId) throws IBusException {
+
+	return new ResponseEntity<List<BusHistoryDto>>(busHistoryService.getBusHistories(busId), HttpStatus.OK);
+    }
+
+    /**
+     * 
+     * @return
+     * @throws IBusExistException
+     */
+    @GetMapping("/{departureDate}/{status}")
+    private ResponseEntity<List<BusHistoryDto>> getByDepartureDate(LocalDate departureDate, String status)
+	    throws IBusException {
+
+	return new ResponseEntity<List<BusHistoryDto>>(busHistoryService.getByDepartureDate(departureDate, status),
+		HttpStatus.OK);
     }
 
     /**
@@ -58,11 +83,11 @@ public class BusHistoryController {
      * @return
      * @throws IBusException
      */
-    @PutMapping("/{id}/buses/{busId}")
+    @PutMapping("/{busHistoryId}/buses/{busId}")
     private ResponseEntity<BusHistoryDto> updateBus(@RequestBody @Valid BusHistoryDto busHistoryDto,
-	    @PathVariable int busId) throws IBusException {
+	    @PathVariable int busHistoryId, @PathVariable int busId) throws IBusException {
 
-	return new ResponseEntity<BusHistoryDto>(busHistoryService.updateBusHistory(busHistoryDto, busId),
+	return new ResponseEntity<BusHistoryDto>(busHistoryService.updateBusHistory(busHistoryDto, busHistoryId, busId),
 		HttpStatus.OK);
     }
 
@@ -72,7 +97,7 @@ public class BusHistoryController {
      * @return
      * @throws IBusException
      */
-    @DeleteMapping("/{busId}")
+    @DeleteMapping("/{busHistoryId}")
     private MessageDto deleteBus(@PathVariable int busHistoryId) throws IBusException {
 
 	busHistoryService.deleteBusHistory(busHistoryId);

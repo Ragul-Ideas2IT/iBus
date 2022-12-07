@@ -33,6 +33,9 @@ public class PickupPointDto {
     @NotBlank
     @Pattern(regexp = "([a-zA-Z][ ]?){2,}")
     private String landMark;
+    @NotBlank
+    @Pattern(regexp = "([a-zA-Z][ ]?){2,}")
+    private String city;
     @NotNull
     private LocalTime arrivingTime;
     @NotNull

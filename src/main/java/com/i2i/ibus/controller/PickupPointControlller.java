@@ -34,10 +34,11 @@ public class PickupPointControlller {
      * @throws IBusException
      */
     @PostMapping("/buses/{busId}")
-    private ResponseEntity<PickupPointDto> addSeat(@RequestBody @Valid PickupPointDto pickupPointDto, @PathVariable int busId)
-	    throws IBusException {
+    private ResponseEntity<PickupPointDto> addSeat(@RequestBody @Valid PickupPointDto pickupPointDto,
+	    @PathVariable int busId) throws IBusException {
 
-	return new ResponseEntity<PickupPointDto>(pickupPointService.addPickupPoint(pickupPointDto, busId), HttpStatus.CREATED);
+	return new ResponseEntity<PickupPointDto>(pickupPointService.addPickupPoint(pickupPointDto, busId),
+		HttpStatus.CREATED);
     }
 
     /**
@@ -45,10 +46,11 @@ public class PickupPointControlller {
      * @return
      * @throws IBusExistException
      */
-    @GetMapping
-    private ResponseEntity<List<PickupPointDto>> getAllPickupPoints(int busId) throws IBusException {
+    @GetMapping("/buses/{busId}")
+    private ResponseEntity<List<PickupPointDto>> getPickupPointsByBusId(@PathVariable int busId) throws IBusException {
 
-	return new ResponseEntity<List<PickupPointDto>>(pickupPointService.getAllPickupPoints(busId), HttpStatus.OK);
+	return new ResponseEntity<List<PickupPointDto>>(pickupPointService.getPickupPointsByBusId(busId),
+		HttpStatus.OK);
     }
 
     /**
@@ -57,11 +59,12 @@ public class PickupPointControlller {
      * @return
      * @throws IBusException
      */
-    @PutMapping("/{id}/buses/{busId}")
-    private ResponseEntity<PickupPointDto> updatePickupPoint(@RequestBody @Valid PickupPointDto pickupPointDto, @PathVariable int busId)
-	    throws IBusException {
+    @PutMapping("/{pickupPointId}/buses/{busId}")
+    private ResponseEntity<PickupPointDto> updatePickupPoint(@RequestBody @Valid PickupPointDto pickupPointDto,
+	    @PathVariable int pickupPointId, @PathVariable int busId) throws IBusException {
 
-	return new ResponseEntity<PickupPointDto>(pickupPointService.updatePickupPoint(pickupPointDto, busId), HttpStatus.OK);
+	return new ResponseEntity<PickupPointDto>(
+		pickupPointService.updatePickupPoint(pickupPointDto, pickupPointId, busId), HttpStatus.OK);
     }
 
     /**

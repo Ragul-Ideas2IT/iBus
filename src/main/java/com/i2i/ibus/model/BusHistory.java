@@ -36,6 +36,8 @@ public class BusHistory {
     private LocalTime arrivingTime;
     private String source;
     private String destination;
+    private LocalTime actualDepartureTime;
+    private LocalTime actualArrivingTime;
     private boolean isDeleted;
 
 }

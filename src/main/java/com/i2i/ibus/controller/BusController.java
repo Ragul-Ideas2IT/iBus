@@ -1,6 +1,5 @@
 package com.i2i.ibus.controller;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,12 +71,10 @@ public class BusController {
      * @return
      * @throws IBusExistException
      */
-    @GetMapping("/{source}/{destination}/{departureDate}")
-    private ResponseEntity<List<BusDto>> getBusesByRoute(@PathVariable String source, @PathVariable String destination,
-	    @PathVariable LocalDate departureDate)
-	    throws IBusException {
+    @GetMapping("/bus/{budId}")
+    private ResponseEntity<BusDto> findById(int busId) throws IBusException {
 
-	return new ResponseEntity<List<BusDto>>(busService.getAllBuses(), HttpStatus.OK);
+	return new ResponseEntity<BusDto>(busService.getById(busId), HttpStatus.OK);
     }
 
     /**
@@ -86,11 +83,11 @@ public class BusController {
      * @return
      * @throws IBusException
      */
-    @PutMapping("/{id}/operators/{operatorId}")
-    private ResponseEntity<BusDto> updateBus(@RequestBody @Valid BusDto busDto, @PathVariable int operatorId)
-	    throws IBusException {
+    @PutMapping("/{busId}/operators/{operatorId}")
+    private ResponseEntity<BusDto> updateBus(@RequestBody @Valid BusDto busDto, @PathVariable int busId,
+	    @PathVariable int operatorId) throws IBusException {
 
-	return new ResponseEntity<BusDto>(busService.updateBus(busDto, operatorId), HttpStatus.OK);
+	return new ResponseEntity<BusDto>(busService.updateBus(busDto, busId, operatorId), HttpStatus.OK);
     }
 
     /**
