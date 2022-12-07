@@ -41,6 +41,6 @@ public class PickupPointDto {
     @NotNull
     private LocalTime departureTime;
     @JsonProperty(access = Access.READ_ONLY)
-    private BusDto busDto;
+    private BusDto bus;
 
 }

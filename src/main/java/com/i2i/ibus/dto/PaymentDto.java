@@ -30,15 +30,15 @@ public class PaymentDto {
     @NotBlank
     @Pattern(regexp = "(?i)^(upi)|(debit)|(credit)$", message = "only credit, debit, upi payments are allowed.")
     private String modeOfPayment;
-    @Min(value = 1)
-    @Max(value = 999)
-    private int CVVNumer;
+    @Min(0)
+    @Max(999)
+    private int cvvNumber;
     @NotBlank
-    @Pattern(regexp = "^((4\\d{3})|(5[1-5]\\d{2})|(34\\d{1})|(37\\d{1}))-?\\s?\\d{4}-?\\s?\\d{4}-?\\s?\\d{4}|3[4,7][\\d\\s-]{15}$")
+    @Pattern(regexp = "^[1-9][0-9]{15}$")
     private String cardNumber;
     @NotBlank
     @Pattern(regexp = "^([a-zA-Z][ ]?){2,50}$")
-    private String carHolderName;
+    private String cardHolderName;
     @JsonProperty(access = Access.READ_ONLY)
     private LocalDateTime time;
 

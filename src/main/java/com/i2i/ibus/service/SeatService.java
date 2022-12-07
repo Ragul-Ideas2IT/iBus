@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.i2i.ibus.dto.SeatDto;
 import com.i2i.ibus.exception.IBusException;
@@ -13,6 +14,7 @@ import com.i2i.ibus.model.Seat;
 import com.i2i.ibus.repository.BusRepository;
 import com.i2i.ibus.repository.SeatRepository;
 
+@Service
 public class SeatService {
 
     private SeatRepository seatRepository;
@@ -29,8 +31,12 @@ public class SeatService {
 	Seat seat = null;
 
 	try {
-	    seatDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
-	    seat = seatRepository.save(Mapper.toSeat(seatDto));
+	    if (!seatRepository.findBySeatNumberAndBusId(seatDto.getSeatNumber(), busId).isPresent()) {
+		seatDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
+		seat = seatRepository.save(Mapper.toSeat(seatDto));
+	    } else {
+		throw new IBusException(seatDto.getSeatNumber().concat(" already exists"));
+	    }
 	} catch (NoSuchElementException exception) {
 	    throw new IBusException("Bus doesnot exists");
 	}
@@ -64,6 +70,7 @@ public class SeatService {
 	Seat seat = null;
 
 	try {
+	    if (!seatRepository.findBySeatNumberAndBusIdAndSeatId(seatDto.getSeatNumber(), busId, seatId).isPresent())
 	    seatDto.setId(seatId);
 	    seatDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
 	    seat = seatRepository.save(Mapper.toSeat(seatDto));

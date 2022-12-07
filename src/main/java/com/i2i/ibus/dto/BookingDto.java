@@ -28,9 +28,9 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class BookingDto {
-    
+
     @JsonProperty(access = Access.READ_ONLY)
-    private int id; 
+    private int id;
     @JsonProperty(access = Access.READ_ONLY)
     private double totalFare;
     @NotBlank
@@ -39,6 +39,12 @@ public class BookingDto {
     @NotBlank
     @Pattern(regexp = "([a-zA-Z][ ]?){2,50}")
     private String dropPoint;
+    @NotBlank
+    @Pattern(regexp = "([a-zA-Z][ ]?){2,50}")
+    private String source;
+    @NotBlank
+    @Pattern(regexp = "([a-zA-Z][ ]?){2,50}")
+    private String destination;
     @JsonProperty(access = Access.READ_ONLY)
     private String status;
     @JsonProperty(access = Access.READ_ONLY)
@@ -51,8 +57,8 @@ public class BookingDto {
     @NotEmpty
     @Valid
     private List<BookingDetailDto> bookingDetails;
-    @JsonProperty(access = Access.READ_ONLY)    
+    @JsonProperty(access = Access.READ_ONLY)
     private LocalDateTime dateTime;
-    @JsonProperty(access = Access.READ_ONLY) 
+    @JsonProperty(access = Access.READ_ONLY)
     private Cancellation cancellation;
 }

@@ -31,9 +31,7 @@ public class UserService {
 
     public void validateUser(int id) {
 	Optional<User> user = userRepository.findById(id);
-	if (user.isPresent() && user.get().isDeleted()) {
-	    throw new IBusException("User id doesn't exists because User details deleted");
-	} else if (!user.isPresent()) {
+	if (!user.isPresent()) {
 	    throw new IBusException("User Id doesn't exists");
 	}
     }

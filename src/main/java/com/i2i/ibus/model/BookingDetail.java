@@ -37,7 +37,6 @@ public class BookingDetail {
     private String gender;
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Booking booking;
-    @OneToOne(cascade = CascadeType.PERSIST)
     private String seatNumber;
     private boolean isDeleted;
 

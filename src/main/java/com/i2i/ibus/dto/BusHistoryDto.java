@@ -44,10 +44,9 @@ public class BusHistoryDto {
     @Pattern(regexp = "([a-zA-Z][ ]?){2,}")
     private String destination;
     @JsonProperty(access = Access.READ_ONLY)
-    private BusDto busDto;
+    private BusDto bus;
     private LocalTime actualDepartureTime;
     private LocalTime actualArrivingTime;
-    @NotBlank
     @JsonProperty(access = Access.READ_ONLY)
     private String status;
 

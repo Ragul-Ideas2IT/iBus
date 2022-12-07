@@ -13,9 +13,12 @@ import com.i2i.ibus.model.BusHistory;
 @Repository
 public interface BusHistoryRepository extends JpaRepository<BusHistory, Integer> {
 
-    @Query(value = "Select * from bus_history where bus_id = :id and isDeleted = false", nativeQuery = true)
-    public Optional<BusHistory> findByBusId(int busid);
-    
-    @Query("from Bus where departureDate = :departureDate and isDeleted = false and status = :status")
+    @Query(value = "Select * from bus_history where bus_id = :busId and is_deleted = false", nativeQuery = true)
+    public List<BusHistory> findByBusId(int busId);
+
+    @Query("from BusHistory where departureDate = :departureDate and isDeleted = false and status = :status")
     public List<BusHistory> findByDepartureDate(LocalDate departureDate, String status);
+
+    @Query(value = "Select * from bus_history where bus_id = :busId and is_deleted = false and departure_date = :departureDate", nativeQuery = true)
+    public Optional<BusHistory> findByBusIdAndDepartureDate(int busId, LocalDate departureDate);
 }

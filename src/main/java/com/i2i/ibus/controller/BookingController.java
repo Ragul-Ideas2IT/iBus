@@ -58,7 +58,7 @@ public class BookingController {
     @GetMapping("/users/{userId}")
     @ResponseStatus(value = HttpStatus.OK)
     private List<BookingDto> getBookingByUserId(@PathVariable int userId) {
-	return bookingService.getBookingDtoByUserId(userId);
+	return bookingService.getBookingByUserId(userId);
     }
     
     @DeleteMapping("/{id}")
