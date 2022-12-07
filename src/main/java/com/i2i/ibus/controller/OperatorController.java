@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.i2i.ibus.dto.MessageDto;
 import com.i2i.ibus.dto.OperatorDto;
-import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.service.OperatorService;
 
 import jakarta.validation.Valid;
@@ -40,7 +39,7 @@ public class OperatorController {
 
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    private OperatorDto createOperator(@RequestBody @Valid OperatorDto operatorDto) throws IBusException {
+    private OperatorDto createOperator(@RequestBody @Valid OperatorDto operatorDto) {
 	return operatorService.saveOperator(operatorDto);
     }
 
@@ -52,20 +51,19 @@ public class OperatorController {
 
     @GetMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    private OperatorDto getOperatorDtoById(@PathVariable int id) throws IBusException {
+    private OperatorDto getOperatorDtoById(@PathVariable int id) {
 	return operatorService.getOperatorDtoById(id);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    private OperatorDto updateOperator(@PathVariable int id, @RequestBody @Valid OperatorDto operatorDto)
-	    throws IBusException {
+    private OperatorDto updateOperator(@PathVariable int id, @RequestBody @Valid OperatorDto operatorDto) {
 	return operatorService.updateOperatorById(id, operatorDto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    private MessageDto deleteOperator(@PathVariable int id) throws IBusException {
+    private MessageDto deleteOperator(@PathVariable int id) {
 	operatorService.deleteOperatorById(id);
 	return new MessageDto("200", "Deleted Successfully");
     }

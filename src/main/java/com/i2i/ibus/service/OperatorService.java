@@ -29,37 +29,37 @@ public class OperatorService {
 	this.operatorRepository = operatorRepository;
     }
 
-    public void validateOperator(int id) throws IBusException {
+    public void validateOperator(int id) {
 	Optional<Operator> operator = operatorRepository.findById(id);
 	if (operator.isPresent() && operator.get().isDeleted()) {
-	    throw new IBusException("User id doesn't exists because User details deleted");
+	    throw new IBusException("Operator id doesn't exists because Operator details deleted");
 	} else if (!operator.isPresent()) {
-	    throw new IBusException("User Id doesn't exists");
+	    throw new IBusException("Operator Id doesn't exists");
 	}
     }
 
-    public void validatePhoneNo(String phoneNumber) throws IBusException {
+    public void validatePhoneNo(String phoneNumber) {
 	Optional<Operator> operator = operatorRepository.findByPhoneNumber(phoneNumber);
 	if (operator.isPresent()) {
 	    throw new IBusException(phoneNumber.concat(" Already exists"));
 	}
     }
 
-    public void validateGstNumber(String gstNumber) throws IBusException {
+    public void validateGstNumber(String gstNumber) {
 	Optional<Operator> operator = operatorRepository.findByGstNumber(gstNumber);
 	if (operator.isPresent()) {
 	    throw new IBusException(gstNumber.concat(" Already exists"));
 	}
     }
 
-    public void validateMailId(String mailId) throws IBusException {
+    public void validateMailId(String mailId) {
 	Optional<Operator> operator = operatorRepository.findByMailId(mailId);
 	if (operator.isPresent()) {
 	    throw new IBusException(mailId.concat(" Already exists"));
 	}
     }
 
-    public OperatorDto saveOperator(OperatorDto operatorDto) throws IBusException {
+    public OperatorDto saveOperator(OperatorDto operatorDto) {
 	validateGstNumber(operatorDto.getGstNumber());
 	validateMailId(operatorDto.getMailId());
 	validatePhoneNo(operatorDto.getPhoneNumber());
@@ -70,18 +70,18 @@ public class OperatorService {
 	return Mapper.toOperatorDtos(operatorRepository.findAll());
     }
 
-    public OperatorDto getOperatorDtoById(int id) throws IBusException {
+    public OperatorDto getOperatorDtoById(int id) {
 	validateOperator(id);
 	return Mapper.toOperatorDto(operatorRepository.findById(id).get());
     }
 
-    public OperatorDto updateOperatorById(int id, OperatorDto operatorDto) throws IBusException {
+    public OperatorDto updateOperatorById(int id, OperatorDto operatorDto) {
 	validateOperator(id);
 	operatorDto.setId(id);
 	return saveOperator(operatorDto);
     }
 
-    public void deleteOperatorById(int id) throws IBusException {
+    public void deleteOperatorById(int id) {
 	validateOperator(id);
 	operatorRepository.deleteById(id);
     }
