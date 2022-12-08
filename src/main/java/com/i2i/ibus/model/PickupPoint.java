@@ -2,6 +2,8 @@ package com.i2i.ibus.model;
 
 import java.time.LocalTime;
 
+import org.hibernate.annotations.SQLDelete;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +28,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table
+@SQLDelete(sql = "UPDATE PickupPoint SET is_deleted = true WHERE id=?")
 public class PickupPoint {
 
     @Id

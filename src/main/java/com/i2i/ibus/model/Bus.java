@@ -24,7 +24,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table
-@SQLDelete(sql = "UPDATE user SET is_deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE Bus SET is_deleted = true WHERE id=?")
 public class Bus {
 
     @Id

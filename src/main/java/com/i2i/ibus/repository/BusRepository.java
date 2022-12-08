@@ -31,4 +31,7 @@ public interface BusRepository extends JpaRepository<Bus, Integer> {
     
     @Query("from Bus where id = :id and isDeleted = false")
     public Optional<Bus> findById(int id);
+    
+    @Query(value = "Select * from bus where operator_id = :operatorId", nativeQuery = true)
+    public List<Bus> findByOperatorId(int operatorId);
 }

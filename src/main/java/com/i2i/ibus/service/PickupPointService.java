@@ -13,6 +13,7 @@ import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.PickupPoint;
 import com.i2i.ibus.repository.BusRepository;
 import com.i2i.ibus.repository.PickupPointRepository;
+
 @Service
 public class PickupPointService {
 
@@ -26,12 +27,17 @@ public class PickupPointService {
 	this.busRepository = busRepository;
     }
 
-    public PickupPointDto addPickupPoint(PickupPointDto pickupPointDto, int busId) throws IBusException {
+    public PickupPointDto addPickupPoint(PickupPointDto pickupPointDto, int busId) {
 	PickupPoint pickupPoint = null;
 
 	try {
-	    pickupPointDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
-	    pickupPoint = pickupPointRepository.save(Mapper.toPickupPoint(pickupPointDto));
+	    if (pickupPointRepository.findByBusIdAndCityAndLandmarkAndStopName(busId, pickupPointDto.getCity(),
+		    pickupPointDto.getLandMark(), pickupPointDto.getStopName()).isEmpty()) {
+		pickupPointDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
+		pickupPoint = pickupPointRepository.save(Mapper.toPickupPoint(pickupPointDto));
+	    } else {
+		throw new IBusException("This pickup point is already exists.");
+	    }
 	} catch (NoSuchElementException exception) {
 	    throw new IBusException("Bus doesnot exist");
 	}
@@ -50,14 +56,18 @@ public class PickupPointService {
 	return pickupPointsDto;
     }
 
-    public PickupPointDto updatePickupPoint(PickupPointDto pickupPointDto, int pickupPointId, int busId)
-	    throws IBusException {
+    public PickupPointDto updatePickupPoint(PickupPointDto pickupPointDto, int pickupPointId, int busId) {
 	PickupPoint pickupPoint = null;
 
 	try {
-	    pickupPointDto.setId(pickupPointId);
-	    pickupPointDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
-	    pickupPoint = pickupPointRepository.save(Mapper.toPickupPoint(pickupPointDto));
+	    if (pickupPointRepository.findByBusIdAndCityAndLandmarkAndStopName(busId, pickupPointDto.getCity(),
+		    pickupPointDto.getLandMark(), pickupPointDto.getStopName(), pickupPointId).isEmpty()) {
+		pickupPointDto.setId(pickupPointId);
+		pickupPointDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
+		pickupPoint = pickupPointRepository.save(Mapper.toPickupPoint(pickupPointDto));
+	    } else {
+		throw new IBusException("This pickup point is already exists.");
+	    }
 	} catch (NoSuchElementException exception) {
 	    throw new IBusException("Bus doesnot exist");
 	}

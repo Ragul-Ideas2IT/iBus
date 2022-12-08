@@ -22,8 +22,12 @@ import com.i2i.ibus.service.BusService;
 import jakarta.validation.Valid;
 
 /**
- * It is used to done the CRUD operations of the bus details. In this we can
- * manipulate the bus details by Operators.
+ * <h1>Bus Ticket Booking Application
+ * <h1>
+ * <p>
+ * Used to manipulate the Bus details in the application. Operators are
+ * manipulate the bus details.
+ * <p>
  * 
  * @author Ananth.
  * @version 1.0.
@@ -43,14 +47,14 @@ public class BusController {
     }
 
     /**
+     * <p>
      * 
      * @param busDto
      * @return
      * @throws IBusException
      */
     @PostMapping("/operators/{operatorId}")
-    private ResponseEntity<BusDto> addBus(@RequestBody @Valid BusDto busDto, @PathVariable int operatorId)
-	    throws IBusException {
+    private ResponseEntity<BusDto> addBus(@RequestBody @Valid BusDto busDto, @PathVariable int operatorId) {
 
 	return new ResponseEntity<BusDto>(busService.addBus(busDto, operatorId), HttpStatus.CREATED);
     }
@@ -61,7 +65,7 @@ public class BusController {
      * @throws IBusExistException
      */
     @GetMapping
-    private ResponseEntity<List<BusDto>> getAllBuses() throws IBusException {
+    private ResponseEntity<List<BusDto>> getAllBuses() {
 
 	return new ResponseEntity<List<BusDto>>(busService.getAllBuses(), HttpStatus.OK);
     }
@@ -71,8 +75,19 @@ public class BusController {
      * @return
      * @throws IBusExistException
      */
-    @GetMapping("/bus/{budId}")
-    private ResponseEntity<BusDto> findById(int busId) throws IBusException {
+    @GetMapping("/operators/{operatorId}")
+    private ResponseEntity<List<BusDto>> findByOperatorId(@PathVariable int operatorId) {
+
+	return new ResponseEntity<List<BusDto>>(busService.getAllByOperatorId(operatorId), HttpStatus.OK);
+    }
+
+    /**
+     * 
+     * @return
+     * @throws IBusExistException
+     */
+    @GetMapping("/{busId}")
+    private ResponseEntity<BusDto> findById(@PathVariable int busId) {
 
 	return new ResponseEntity<BusDto>(busService.getById(busId), HttpStatus.OK);
     }
@@ -85,7 +100,7 @@ public class BusController {
      */
     @PutMapping("/{busId}/operators/{operatorId}")
     private ResponseEntity<BusDto> updateBus(@RequestBody @Valid BusDto busDto, @PathVariable int busId,
-	    @PathVariable int operatorId) throws IBusException {
+	    @PathVariable int operatorId) {
 
 	return new ResponseEntity<BusDto>(busService.updateBus(busDto, busId, operatorId), HttpStatus.OK);
     }
@@ -97,7 +112,7 @@ public class BusController {
      * @throws IBusException
      */
     @DeleteMapping("/{busId}")
-    private MessageDto deleteBus(@PathVariable int busId) throws IBusException {
+    private MessageDto deleteBus(@PathVariable int busId) {
 
 	busService.deleteBus(busId);
 	return new MessageDto("200", "Deleted Sucessfully");

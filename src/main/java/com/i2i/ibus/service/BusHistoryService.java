@@ -1,6 +1,8 @@
 package com.i2i.ibus.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -26,12 +28,16 @@ public class BusHistoryService {
 	this.busRepository = busRepository;
     }
 
-    public BusHistoryDto addBusHistory(BusHistoryDto busHistoryDto, int busId) throws IBusException {
+    public BusHistoryDto addBusHistory(BusHistoryDto busHistoryDto, int busId) {
 	BusHistory busHistory = null;
 
 	try {
-	    busHistoryDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
-	    busHistory = busHistoryRepository.save(Mapper.toBusHistory(busHistoryDto));
+	    if (validateTime(busHistoryDto)) {
+		busHistoryDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
+		busHistory = busHistoryRepository.save(Mapper.toBusHistory(busHistoryDto));
+	    } else {
+		throw new IBusException("Departue and Arrival date and time not to be same");
+	    }
 	} catch (NoSuchElementException exception) {
 	    throw new IBusException("Bus doesnot exists");
 	}
@@ -43,6 +49,7 @@ public class BusHistoryService {
 	List<BusHistoryDto> busHistoriesDto = new ArrayList<BusHistoryDto>();
 
 	for (BusHistory busHistory : busHistories) {
+	    setStatus(busHistory);
 	    BusHistoryDto busHistoryDto = null;
 	    busHistoryDto = Mapper.toBusHistoryDto(busHistory);
 	    busHistoriesDto.add(busHistoryDto);
@@ -51,22 +58,11 @@ public class BusHistoryService {
     }
 
     public List<BusHistoryDto> getBusHistories(int busId) {
-	List<BusHistory> busHistories = busHistoryRepository.findAll();
+	List<BusHistory> busHistories = busHistoryRepository.findByBusId(busId);
 	List<BusHistoryDto> busHistoriesDto = new ArrayList<BusHistoryDto>();
 
 	for (BusHistory busHistory : busHistories) {
-	    BusHistoryDto busHistoryDto = null;
-	    busHistoryDto = Mapper.toBusHistoryDto(busHistory);
-	    busHistoriesDto.add(busHistoryDto);
-	}
-	return busHistoriesDto;
-    }
-    
-    public List<BusHistoryDto> getByDepartureDate(LocalDate departureDate, String status) {
-	List<BusHistory> busHistories = busHistoryRepository.findByDepartureDate(departureDate, status);
-	List<BusHistoryDto> busHistoriesDto = new ArrayList<BusHistoryDto>();
-
-	for (BusHistory busHistory : busHistories) {
+	    setStatus(busHistory);
 	    BusHistoryDto busHistoryDto = null;
 	    busHistoryDto = Mapper.toBusHistoryDto(busHistory);
 	    busHistoriesDto.add(busHistoryDto);
@@ -74,13 +70,30 @@ public class BusHistoryService {
 	return busHistoriesDto;
     }
 
-    public BusHistoryDto updateBusHistory(BusHistoryDto busHistoryDto, int busHistoryId, int busId) throws IBusException {
+    public List<BusHistoryDto> getByDepartureDate(LocalDate departureDate, String source, String destination) {
+	List<BusHistory> busHistories = busHistoryRepository.findByDepartureDate(departureDate, source, destination);
+	List<BusHistoryDto> busHistoriesDto = new ArrayList<BusHistoryDto>();
+
+	for (BusHistory busHistory : busHistories) {
+	    setStatus(busHistory);
+	    BusHistoryDto busHistoryDto = null;
+	    busHistoryDto = Mapper.toBusHistoryDto(busHistory);
+	    busHistoriesDto.add(busHistoryDto);
+	}
+	return busHistoriesDto;
+    }
+
+    public BusHistoryDto updateBusHistory(BusHistoryDto busHistoryDto, int busHistoryId, int busId) {
 	BusHistory busHistory = null;
 
 	try {
-	    busHistoryDto.setId(busHistoryId);
-	    busHistoryDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
-	    busHistory = busHistoryRepository.save(Mapper.toBusHistory(busHistoryDto));
+	    if (validateTime(busHistoryDto)) {
+		busHistoryDto.setId(busHistoryId);
+		busHistoryDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
+		busHistory = busHistoryRepository.save(Mapper.toBusHistory(busHistoryDto));
+	    } else {
+		throw new IBusException("Departue and Arrival date and time not to be same");
+	    }
 	} catch (NoSuchElementException exception) {
 	    throw new IBusException("Bus doesnot exception");
 	}
@@ -89,5 +102,28 @@ public class BusHistoryService {
 
     public void deleteBusHistory(int busHistoryId) {
 	busHistoryRepository.deleteById(busHistoryId);
+    }
+
+    private boolean validateTime(BusHistoryDto busHistoryDto) {
+	boolean isValid = false;
+	LocalDateTime departureDateTime = LocalDateTime.of(busHistoryDto.getDepartureDate(),
+		busHistoryDto.getDepartureTime());
+	LocalDateTime arrivalDateTime = LocalDateTime.of(busHistoryDto.getArrivingDate(),
+		busHistoryDto.getArrivingTime());
+
+	if (((arrivalDateTime.compareTo(departureDateTime)) > 0)) {
+	    isValid = true;
+	}
+	return isValid;
+    }
+
+    private void setStatus(BusHistory busHistory) {
+
+	if (null != busHistory.getArrivingDate()) {
+	    if ((LocalDate.now().compareTo(busHistory.getArrivingDate()) >= 0)
+		    && (LocalTime.now().compareTo(busHistory.getArrivingTime()) >= 0)) {
+		busHistory.setStatus("ended");
+	    }
+	}
     }
 }

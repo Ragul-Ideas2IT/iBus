@@ -40,7 +40,7 @@ public class BusHistoryController {
      */
     @PostMapping("/buses/{busId}")
     private ResponseEntity<BusHistoryDto> addBusHistory(@RequestBody @Valid BusHistoryDto busHistoryDto,
-	    @PathVariable int busId) throws IBusException {
+	    @PathVariable int busId) {
 
 	return new ResponseEntity<BusHistoryDto>(busHistoryService.addBusHistory(busHistoryDto, busId),
 		HttpStatus.CREATED);
@@ -52,7 +52,7 @@ public class BusHistoryController {
      * @throws IBusExistException
      */
     @GetMapping
-    private ResponseEntity<List<BusHistoryDto>> getAllBusHistories() throws IBusException {
+    private ResponseEntity<List<BusHistoryDto>> getAllBusHistories() {
 
 	return new ResponseEntity<List<BusHistoryDto>>(busHistoryService.getAllBusHistories(), HttpStatus.OK);
     }
@@ -63,7 +63,7 @@ public class BusHistoryController {
      * @throws IBusExistException
      */
     @GetMapping("/buses/{busId}")
-    private ResponseEntity<List<BusHistoryDto>> getBusHistories(@PathVariable int busId) throws IBusException {
+    private ResponseEntity<List<BusHistoryDto>> getBusHistories(@PathVariable int busId) {
 
 	return new ResponseEntity<List<BusHistoryDto>>(busHistoryService.getBusHistories(busId), HttpStatus.OK);
     }
@@ -73,12 +73,12 @@ public class BusHistoryController {
      * @return
      * @throws IBusExistException
      */
-    @GetMapping("/{departureDate}/{status}")
-    private ResponseEntity<List<BusHistoryDto>> getByDepartureDate(LocalDate departureDate, String status)
-	    throws IBusException {
+    @GetMapping("/{departureDate}/{source}/{destination}")
+    private ResponseEntity<List<BusHistoryDto>> getByDepartureDate(@PathVariable LocalDate departureDate,
+	    @PathVariable String source, @PathVariable String destination) {
 
-	return new ResponseEntity<List<BusHistoryDto>>(busHistoryService.getByDepartureDate(departureDate, status),
-		HttpStatus.OK);
+	return new ResponseEntity<List<BusHistoryDto>>(
+		busHistoryService.getByDepartureDate(departureDate, source, destination), HttpStatus.OK);
     }
 
     /**
@@ -89,7 +89,7 @@ public class BusHistoryController {
      */
     @PutMapping("/{busHistoryId}/buses/{busId}")
     private ResponseEntity<BusHistoryDto> updateBus(@RequestBody @Valid BusHistoryDto busHistoryDto,
-	    @PathVariable int busHistoryId, @PathVariable int busId) throws IBusException {
+	    @PathVariable int busHistoryId, @PathVariable int busId) {
 
 	return new ResponseEntity<BusHistoryDto>(busHistoryService.updateBusHistory(busHistoryDto, busHistoryId, busId),
 		HttpStatus.OK);
@@ -102,9 +102,10 @@ public class BusHistoryController {
      * @throws IBusException
      */
     @DeleteMapping("/{busHistoryId}")
-    private MessageDto deleteBus(@PathVariable int busHistoryId) throws IBusException {
+    private MessageDto deleteBus(@PathVariable int busHistoryId) {
 
 	busHistoryService.deleteBusHistory(busHistoryId);
 	return new MessageDto("200", "Deleted Sucessfully");
     }
+
 }
