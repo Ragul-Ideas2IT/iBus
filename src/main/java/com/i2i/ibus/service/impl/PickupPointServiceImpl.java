@@ -6,6 +6,8 @@ import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.PickupPoint;
 import com.i2i.ibus.repository.BusRepository;
 import com.i2i.ibus.repository.PickupPointRepository;
+import com.i2i.ibus.service.PickupPointService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +16,14 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
-public class PickupPointService {
+public class PickupPointServiceImpl implements PickupPointService {
 
     private PickupPointRepository pickupPointRepository;
 
     private BusRepository busRepository;
 
     @Autowired
-    private PickupPointService(PickupPointRepository pickupPointRepository, BusRepository busRepository) {
+    private PickupPointServiceImpl(PickupPointRepository pickupPointRepository, BusRepository busRepository) {
 	this.pickupPointRepository = pickupPointRepository;
 	this.busRepository = busRepository;
     }

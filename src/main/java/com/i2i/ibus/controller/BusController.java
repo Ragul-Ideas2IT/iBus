@@ -48,8 +48,10 @@ public class BusController {
 
     /**
      * <p>
+     * Method is used to save the bus details. Bus details were given by operators.
+     * <p>
      * 
-     * @param busDto
+     * @param busDto 
      * @return
      * @throws IBusException
      */

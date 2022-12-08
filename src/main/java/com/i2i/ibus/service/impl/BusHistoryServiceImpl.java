@@ -6,6 +6,8 @@ import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.BusHistory;
 import com.i2i.ibus.repository.BusHistoryRepository;
 import com.i2i.ibus.repository.BusRepository;
+import com.i2i.ibus.service.BusHistoryService;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -16,13 +18,13 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
-public class BusHistoryService {
+public class BusHistoryServiceImpl implements BusHistoryService {
 
     private BusHistoryRepository busHistoryRepository;
 
     private BusRepository busRepository;
 
-    public BusHistoryService(BusHistoryRepository busHistoryRepository, BusRepository busRepository) {
+    public BusHistoryServiceImpl(BusHistoryRepository busHistoryRepository, BusRepository busRepository) {
 	this.busHistoryRepository = busHistoryRepository;
 	this.busRepository = busRepository;
     }
@@ -103,7 +105,7 @@ public class BusHistoryService {
 	busHistoryRepository.deleteById(busHistoryId);
     }
 
-    private boolean validateTime(BusHistoryDto busHistoryDto) {
+    public boolean validateTime(BusHistoryDto busHistoryDto) {
 	boolean isValid = false;
 	LocalDateTime departureDateTime = LocalDateTime.of(busHistoryDto.getDepartureDate(),
 		busHistoryDto.getDepartureTime());
@@ -116,7 +118,7 @@ public class BusHistoryService {
 	return isValid;
     }
 
-    private void setStatus(BusHistory busHistory) {
+    public void setStatus(BusHistory busHistory) {
 
 	if (null != busHistory.getArrivingDate()) {
 	    if ((LocalDate.now().compareTo(busHistory.getArrivingDate()) >= 0)
