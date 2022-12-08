@@ -36,5 +36,5 @@ public class SeatDto {
     @Min(value = 0)
     private double fare;
     @JsonProperty(access = Access.READ_ONLY)
-    private boolean isAvailable;
+    private boolean isOccupied;
 }
