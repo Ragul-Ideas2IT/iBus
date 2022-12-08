@@ -1,32 +1,15 @@
 package com.i2i.ibus.service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.i2i.ibus.dto.BookingDto;
-import com.i2i.ibus.exception.IBusException;
-import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.Booking;
 import com.i2i.ibus.model.BookingDetail;
 import com.i2i.ibus.model.Bus;
 import com.i2i.ibus.model.BusHistory;
 import com.i2i.ibus.model.Cancellation;
-import com.i2i.ibus.model.PickupPoint;
-import com.i2i.ibus.model.Seat;
 import com.i2i.ibus.model.User;
-import com.i2i.ibus.repository.BookingRepository;
-import com.i2i.ibus.repository.BusHistoryRepository;
-import com.i2i.ibus.repository.BusRepository;
-import com.i2i.ibus.repository.PickupPointRepository;
-import com.i2i.ibus.repository.SeatRepository;
-import com.i2i.ibus.repository.UserRepository;
 
 /**
  * @author Esakkiraja E
@@ -172,18 +155,10 @@ public interface BookingService {
     public void validateBooking(int id);
 
     /**
-     * > Validates the pickup points of a booking
+     *  Validates the pickup points of a booking
      *
      * @param booking The booking object that contains the pickup points.
      * @param busId The id of the bus that the user has selected.
      */
     public void validatePickupPoints(Booking booking, int busId);
-
-    /**
-     * Validate the booking details for the given bus.
-     *
-     * @param bookingDetails List of BookingDetail objects
-     * @param busId The id of the bus for which the booking details are being validated.
-     */
-    public void validateBookingDetails(List<BookingDetail> bookingDetails, int busId);
 }
