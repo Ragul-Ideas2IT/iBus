@@ -12,12 +12,6 @@ import com.i2i.ibus.model.Payment;
 
 import jakarta.transaction.Transactional;
 
-/**
- * @author Tamilmani
- * @version 1.0
- * 
- * @created Nov 30 2022
- */
 @Repository
 @Transactional
 public interface PaymentRepository extends JpaRepository<Payment, Integer> {

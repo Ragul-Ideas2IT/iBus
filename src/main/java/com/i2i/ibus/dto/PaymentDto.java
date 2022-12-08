@@ -12,13 +12,6 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
-/**
- * @author Tamilmani
- * @version 1.0
- * 
- * @created Nov 30 2022
- *
- */
 @Getter
 @Setter
 public class PaymentDto {
