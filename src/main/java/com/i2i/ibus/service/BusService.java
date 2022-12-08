@@ -41,7 +41,7 @@ public class BusService {
      * @return
      * @throws IBusException
      */
-    public BusDto addBus(BusDto busDto, int operatorId) throws IBusException {
+    public BusDto addBus(BusDto busDto, int operatorId) {
 	BusDto busDTO = null;
 	try {
 	    busDto.setOperator(Mapper.toOperatorDto(operatorRepository.findById(operatorId).get()));
@@ -78,9 +78,25 @@ public class BusService {
     /**
      * 
      * @return
+     */
+    public List<BusDto> getAllByOperatorId(int OperatorId) {
+	List<Bus> buses = busRepository.findByOperatorId(OperatorId);
+	List<BusDto> busesDto = new ArrayList<BusDto>();
+
+	for (Bus bus : buses) {
+	    BusDto busDto = null;
+	    busDto = Mapper.toBusDto(bus);
+	    busesDto.add(busDto);
+	}
+	return busesDto;
+    }
+
+    /**
+     * 
+     * @return
      * @throws IBusException
      */
-    public BusDto getById(int id) throws IBusException {
+    public BusDto getById(int id) {
 	Bus bus = null;
 	try {
 	    bus = busRepository.findById(id).get();
@@ -96,8 +112,7 @@ public class BusService {
      * @return
      * @throws IBusException
      */
-    public BusDto updateBus(BusDto busDto, int busId, int operatorId) throws IBusException {
-	BusDto busDTO = null;
+    public BusDto updateBus(BusDto busDto, int busId, int operatorId) {
 
 	try {
 	    busDto.setId(busId);
@@ -113,7 +128,7 @@ public class BusService {
 	} catch (NoSuchElementException Exception) {
 	    throw new IBusException("Operator doesnot exist");
 	}
-	return busDTO;
+	return busDto;
     }
 
     /**

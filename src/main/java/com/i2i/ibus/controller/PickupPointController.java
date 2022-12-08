@@ -39,7 +39,7 @@ public class PickupPointController {
      */
     @PostMapping("/buses/{busId}")
     private ResponseEntity<PickupPointDto> addSeat(@RequestBody @Valid PickupPointDto pickupPointDto,
-	    @PathVariable int busId) throws IBusException {
+	    @PathVariable int busId) {
 
 	return new ResponseEntity<PickupPointDto>(pickupPointService.addPickupPoint(pickupPointDto, busId),
 		HttpStatus.CREATED);
@@ -51,7 +51,7 @@ public class PickupPointController {
      * @throws IBusExistException
      */
     @GetMapping("/buses/{busId}")
-    private ResponseEntity<List<PickupPointDto>> getPickupPointsByBusId(@PathVariable int busId) throws IBusException {
+    private ResponseEntity<List<PickupPointDto>> getPickupPointsByBusId(@PathVariable int busId) {
 
 	return new ResponseEntity<List<PickupPointDto>>(pickupPointService.getPickupPointsByBusId(busId),
 		HttpStatus.OK);
@@ -65,7 +65,7 @@ public class PickupPointController {
      */
     @PutMapping("/{pickupPointId}/buses/{busId}")
     private ResponseEntity<PickupPointDto> updatePickupPoint(@RequestBody @Valid PickupPointDto pickupPointDto,
-	    @PathVariable int pickupPointId, @PathVariable int busId) throws IBusException {
+	    @PathVariable int pickupPointId, @PathVariable int busId) {
 
 	return new ResponseEntity<PickupPointDto>(
 		pickupPointService.updatePickupPoint(pickupPointDto, pickupPointId, busId), HttpStatus.OK);
@@ -78,7 +78,7 @@ public class PickupPointController {
      * @throws IBusException
      */
     @DeleteMapping("/{pickupPointId}")
-    private MessageDto deleteBus(@PathVariable int pickupPointId) throws IBusException {
+    private MessageDto deleteBus(@PathVariable int pickupPointId) {
 
 	pickupPointService.deletePickupPoint(pickupPointId);
 	return new MessageDto("200", "Deleted Sucessfully");

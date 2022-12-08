@@ -39,8 +39,7 @@ public class SeatController {
      * @throws IBusException
      */
     @PostMapping("/buses/{busId}")
-    private ResponseEntity<SeatDto> addSeat(@RequestBody @Valid SeatDto seatDto, @PathVariable int busId)
-	    throws IBusException {
+    private ResponseEntity<SeatDto> addSeat(@RequestBody @Valid SeatDto seatDto, @PathVariable int busId) {
 
 	return new ResponseEntity<SeatDto>(seatService.addSeat(seatDto, busId), HttpStatus.CREATED);
     }
@@ -51,7 +50,7 @@ public class SeatController {
      * @throws IBusExistException
      */
     @GetMapping("/buses/{busId}")
-    private ResponseEntity<List<SeatDto>> getAllSeats(@PathVariable int busId) throws IBusException {
+    private ResponseEntity<List<SeatDto>> getAllSeats(@PathVariable int busId) {
 
 	return new ResponseEntity<List<SeatDto>>(seatService.getAllByBusId(busId), HttpStatus.OK);
     }
@@ -62,7 +61,7 @@ public class SeatController {
      * @throws IBusExistException
      */
     @GetMapping("/{seatId}")
-    private ResponseEntity<SeatDto> getBySeatId(@PathVariable int seatId) throws IBusException {
+    private ResponseEntity<SeatDto> getBySeatId(@PathVariable int seatId) {
 
 	return new ResponseEntity<SeatDto>(seatService.getBySeatId(seatId), HttpStatus.OK);
     }
@@ -75,7 +74,7 @@ public class SeatController {
      */
     @PutMapping("/{seatId}/buses/{busId}")
     private ResponseEntity<SeatDto> updateBus(@RequestBody @Valid SeatDto seatDto, @PathVariable int seatId,
-	    @PathVariable int busId) throws IBusException {
+	    @PathVariable int busId) {
 
 	return new ResponseEntity<SeatDto>(seatService.updateSeat(seatDto, seatId, busId), HttpStatus.OK);
     }
@@ -87,7 +86,7 @@ public class SeatController {
      * @throws IBusException
      */
     @DeleteMapping("/{seatId}")
-    private MessageDto deleteBus(@PathVariable int seatId) throws IBusException {
+    private MessageDto deleteBus(@PathVariable int seatId) {
 
 	seatService.deleteSeat(seatId);
 	return new MessageDto("200", "Deleted Sucessfully");

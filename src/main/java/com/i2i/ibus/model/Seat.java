@@ -1,5 +1,7 @@
 package com.i2i.ibus.model;
 
+import org.hibernate.annotations.SQLDelete;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -28,6 +30,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table
+@SQLDelete(sql = "UPDATE Seat SET is_deleted = true WHERE id=?")
 public class Seat {
 
     @Id

@@ -3,7 +3,8 @@ package com.i2i.ibus.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import jakarta.persistence.CascadeType;
+import org.hibernate.annotations.SQLDelete;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,6 +29,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table
+@SQLDelete(sql = "UPDATE bus_history SET is_deleted = true WHERE id=?")
 public class BusHistory {
 
     @Id

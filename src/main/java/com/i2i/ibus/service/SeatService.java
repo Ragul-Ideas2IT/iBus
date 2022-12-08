@@ -27,7 +27,7 @@ public class SeatService {
 	this.busRepository = busRepository;
     }
 
-    public SeatDto addSeat(SeatDto seatDto, int busId) throws IBusException {
+    public SeatDto addSeat(SeatDto seatDto, int busId) {
 	Seat seat = null;
 
 	try {
@@ -55,7 +55,7 @@ public class SeatService {
 	return seatsDto;
     }
 
-    public SeatDto getBySeatId(int id) throws IBusException {
+    public SeatDto getBySeatId(int id) {
 	Seat seat = null;
 
 	try {
@@ -66,14 +66,17 @@ public class SeatService {
 	return Mapper.toSeatDto(seat);
     }
 
-    public SeatDto updateSeat(SeatDto seatDto, int seatId, int busId) throws IBusException {
+    public SeatDto updateSeat(SeatDto seatDto, int seatId, int busId) {
 	Seat seat = null;
 
 	try {
-	    if (!seatRepository.findBySeatNumberAndBusIdAndSeatId(seatDto.getSeatNumber(), busId, seatId).isPresent())
-	    seatDto.setId(seatId);
-	    seatDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
-	    seat = seatRepository.save(Mapper.toSeat(seatDto));
+	    if (!seatRepository.findBySeatNumberAndBusIdAndSeatId(seatDto.getSeatNumber(), busId, seatId).isPresent()) {
+		seatDto.setId(seatId);
+		seatDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
+		seat = seatRepository.save(Mapper.toSeat(seatDto));
+	    } else {
+		throw new IBusException(seatDto.getSeatNumber().concat(" already exists"));
+	    }
 	} catch (NoSuchElementException exception) {
 	    throw new IBusException("Bus doesnot exists");
 	}
