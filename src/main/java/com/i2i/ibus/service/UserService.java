@@ -36,23 +36,22 @@ public class UserService {
 	}
     }
 
-    public void validatePhoneNo(String phoneNumber) {
-	Optional<User> user = userRepository.findByPhoneNumber(phoneNumber);
+    public void validateMailIdAndPhoneNo(String mailId, String phoneNumber) {
+	Optional<User> user = userRepository.findByMailIdAndPhoneNo(mailId, phoneNumber);
 	if (user.isPresent()) {
-	    throw new IBusException(phoneNumber.concat(" Already exists"));
+	    throw new IBusException("Mail Id and Phone No already exists");
 	}
     }
 
-    public void validateMailId(String mailId) {
-	Optional<User> user = userRepository.findByMailId(mailId);
+    public void validateMailIdAndPhoneNoForUpdate(String mailId, String phoneNumber, int id) {
+	Optional<User> user = userRepository.findByMailIdAndPhoneNoForUpdate(mailId, phoneNumber, id);
 	if (user.isPresent()) {
-	    throw new IBusException(mailId.concat(" Already exists"));
+	    throw new IBusException("Mail Id and Phone No already exists");
 	}
     }
 
     public UserDto saveUser(UserDto userDto) {
-	validateMailId(userDto.getMailId());
-	validatePhoneNo(userDto.getPhoneNumber());
+	validateMailIdAndPhoneNo(userDto.getMailId(), userDto.getPhoneNumber());
 	User user = Mapper.toUser(userDto);
 	return Mapper.toUserDto(userRepository.save(user));
     }
@@ -68,8 +67,10 @@ public class UserService {
 
     public UserDto updateUserById(int id, UserDto userDto) {
 	validateUser(id);
+	validateMailIdAndPhoneNoForUpdate(userDto.getMailId(), userDto.getPhoneNumber(), id);
 	userDto.setId(id);
-	return saveUser(userDto);
+	User user = Mapper.toUser(userDto);
+	return Mapper.toUserDto(userRepository.save(user));
     }
 
     public void deleteUserById(int id) {
