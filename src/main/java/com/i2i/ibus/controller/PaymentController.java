@@ -20,25 +20,12 @@ import com.i2i.ibus.service.PaymentService;
 
 import jakarta.validation.Valid;
 
-/**
- * 
- * @author Tamilmani
- * @version 1.0
- * 
- * @created Nov 30 2022
- *
- */
 @RestController
 @RequestMapping("api/v1/payments")
 public class PaymentController {
 
     private PaymentService paymentService;
 
-    /**
-     * 
-     * 
-     * @param paymentService
-     */
     @Autowired
     private PaymentController(PaymentService paymentService) {
 	this.paymentService = paymentService;

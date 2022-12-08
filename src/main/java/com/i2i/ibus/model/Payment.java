@@ -14,13 +14,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * @author Tamilmani
- * @version 1.0
- * 
- * @created Nov 30 2022
- *
- */
 @Getter
 @Setter
 @NoArgsConstructor

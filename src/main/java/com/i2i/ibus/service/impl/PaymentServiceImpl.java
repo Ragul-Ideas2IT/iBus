@@ -14,21 +14,14 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * @author Tamilmani
- * @version 1.0
- * 
- * @created Nov 30 2022
- *
- */
 @Service
-public class PaymentService {
+public class PaymentServiceImpl {
 
     private PaymentRepository paymentRepository;
     private BookingRepository bookingRepository;
 
     @Autowired
-    private PaymentService(PaymentRepository paymentRepositary, BookingRepository bookingRepository) {
+    private PaymentServiceImpl(PaymentRepository paymentRepositary, BookingRepository bookingRepository) {
 	this.paymentRepository = paymentRepositary;
 	this.bookingRepository = bookingRepository;
     }
