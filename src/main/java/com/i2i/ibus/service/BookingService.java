@@ -34,312 +34,156 @@ import com.i2i.ibus.repository.UserRepository;
  *
  * @created Nov 29 2022
  */
-@Service
-public class BookingService {
-
-    private BookingRepository bookingRepository;
-    private BusRepository busRepository;
-    private BusHistoryRepository busHistoryRepository;
-    private PickupPointRepository pickupPointRepository;
-    private SeatRepository seatRepository;
-    private UserRepository userRepository;
-
-    @Autowired
-    public BookingService(BookingRepository bookingRepository, PickupPointRepository pickupPointRepository,
-	    BusRepository busRepository, BusHistoryRepository busHistoryRepository, UserRepository userRepository,
-	    SeatRepository seatRepository) {
-	this.bookingRepository = bookingRepository;
-	this.busRepository = busRepository;
-	this.userRepository = userRepository;
-	this.busHistoryRepository = busHistoryRepository;
-	this.pickupPointRepository = pickupPointRepository;
-	this.seatRepository = seatRepository;
-    }
+public interface BookingService {
+    /**
+     * Add a booking for a user on a bus
+     *
+     * @param userId The id of the user who is booking the ticket.
+     * @param busId The id of the bus that the user wants to book.
+     * @param bookingDto This is the object that contains the details of the booking.
+     * @return BookingDto
+     */
+    public BookingDto addBooking(int userId, int busId, BookingDto bookingDto);
 
     /**
-     * method is used to add Bookings
-     * 
-     * @param userId
-     * @param busId
-     * @param bookingDto
-     * @return
+     * > Get all bookings
+     *
+     * @return List of BookingDto
      */
-    public BookingDto addBooking(int userId, int busId, BookingDto bookingDto) {
-	Booking booking = Mapper.toBooking(bookingDto);
-	validatePickupPoints(booking, busId);
-	validateBookingDetails(booking.getBookingDetails(), busId);
-	booking.setTotalFare(calculateFare(booking.getBookingDetails(), busId));
-	booking.setDateTime(LocalDateTime.now());
-	booking.setBus(getBusById(busId));
-	booking.setPaymentStatus("unpaid");
-	booking.setStatus("upcoming");
-	booking.setUser(getUserById(userId));
-	bookingRepository.save(booking);
-	return Mapper.toBookingDto(booking);
-    }
+    public List<BookingDto> getAllBooking();
 
     /**
-     * method is used to display the all booking objects
-     * 
-     * @return
-     * @throws IBusException
+     * This function returns a booking by id.
+     *
+     * @param id The id of the booking you want to retrieve.
+     * @return A BookingDto object.
      */
-    public List<BookingDto> getAllBooking() throws IBusException {
-	List<Booking> bookings = bookingRepository.findAll();
-	List<BookingDto> bookingDtos = new ArrayList<BookingDto>();
-	if (!bookings.isEmpty()) {
-	    for (Booking booking : bookings) {
-		completeBooking(booking.getId());
-		bookingDtos.add(Mapper.toBookingDto(booking));
-	    }
-	} else {
-	    throw new IBusException("Booking doesn't exists");
-	}
-	return bookingDtos;
-    }
+    public BookingDto getBookingById(int id);
 
     /**
-     * method is used to get Booking by id(bookingId)
-     * 
-     * @param id
-     * @return
+     * Get all bookings for a user.
+     *
+     * @param userId The id of the user who made the booking.
+     * @return A list of BookingDto objects.
      */
-    public BookingDto getBookingById(int id) {
-	completeBooking(id);
-	Booking booking = bookingRepository.findById(id).get();
-	setSeatStatus(booking);
-	return Mapper.toBookingDto(booking);
-    }
+    public List<BookingDto> getBookingByUserId(int userId);
 
     /**
-     * method is used to get Booking by id(userId)
-     * 
-     * @param userId
-     * @return
+     * This function returns a Bus object with the given id.
+     *
+     * @param id The id of the bus you want to get.
+     * @return A bus object
      */
-    public List<BookingDto> getBookingByUserId(int userId) {
-	validateUser(userId);
-	List<Booking> bookings = bookingRepository.findAllByUserId(userId);
-	List<BookingDto> bookingDtos = new ArrayList<BookingDto>();
-	if (!bookings.isEmpty()) {
-	    for (Booking booking : bookings) {
-		setSeatStatus(booking);
-		completeBooking(booking.getId());
-		bookingDtos.add(Mapper.toBookingDto(booking));
-	    }
-	}
-	return bookingDtos;
-    }
+    public Bus getBusById(int id);
 
     /**
-     * method is used to get Booking by id(userId)
-     * 
-     * @param id
-     * @return
+     * This function returns a User object with the given id.
+     *
+     * @param id The id of the user to be retrieved.
+     * @return A User object
      */
-    public Bus getBusById(int id) {
-	validateBus(id);
-	return busRepository.findById(id).get();
-    }
+    public User getUserById(int id);
 
     /**
-     * 
-     * @param id
-     * @return
+     * "Get the bus history for a bus on a given travel date."
+     *
+     * The function name is `getBusHistoryByTravelDate`. It takes two parameters: `bus` and `travelDate`. The return type
+     * is `BusHistory`
+     *
+     * @param bus The bus object that you want to get the history for.
+     * @param travelDate The date of travel
+     * @return A BusHistory object
      */
-    public User getUserById(int id) {
-	validateUser(id);
-	return userRepository.findById(id).get();
-    }
+    public BusHistory getBusHistoryByTravelDate(Bus bus, LocalDate travelDate);
 
     /**
-     * method is used to get Booking by Date(travelDate)
-     * 
-     * @param bus
-     * @param travelDate
-     * @return
+     * Cancel a booking.
+     *
+     * @param bookingId The booking id of the booking that is being cancelled.
      */
-    public BusHistory getBusHistoryByTravelDate(Bus bus, LocalDate travelDate) {
-	Optional<BusHistory> busHistory = busHistoryRepository.findByBusIdAndDepartureDate(bus.getId(), travelDate);
-	if (!busHistory.isPresent()) {
-	    throw new IBusException("This bus is not departure on this date");
-	}
-	return busHistory.get();
-    }
+    public void cancellation(int bookingId);
 
     /**
-     * method is used to cancellation the booking.
-     * 
-     * @param bookingId
+     * Given a list of booking details and a bus id, calculate the fare for the bus
+     *
+     * @param bookingDetails List of BookingDetail objects.
+     * @param busId The id of the bus for which the fare is to be calculated.
+     * @return A double value
      */
-    public void cancellation(int bookingId) {
-	validateBooking(bookingId);
-	Booking booking = bookingRepository.findById(bookingId).get();
-
-	if (booking.getCancellation() == null) {
-	    Cancellation cancellation = new Cancellation();
-	    cancellation.setDateAndTime(LocalDateTime.now());
-	    booking.setCancellation(cancelBooking(booking, cancellation));
-	    bookingRepository.save(booking);
-	}
-    }
+    public double calculateFare(List<BookingDetail> bookingDetails, int busId);
 
     /**
-     * method is used to Calculate the fare.
-     * 
-     * @param bookingDetails
-     * @param busId
-     * @return
+     * Cancel a booking and return the cancellation.
+     *
+     * @param booking The booking to be cancelled.
+     * @param cancellation The cancellation object that contains the cancellation details.
+     * @return A Cancellation object.
      */
-    public double calculateFare(List<BookingDetail> bookingDetails, int busId) {
-	double fare = 0;
-
-	for (BookingDetail bookingDetail : bookingDetails) {
-	    fare += seatRepository.findBySeatNumberAndBusId(bookingDetail.getSeatNumber(), busId).get().getFare();
-	}
-	return fare;
-    }
+    public Cancellation cancelBooking(Booking booking, Cancellation cancellation);
 
     /**
-     * method is used to calculate refund far.
-     * 
-     * @param booking
-     * @param cancellation
-     * @return
+     * Complete a booking.
+     *
+     * @param id The id of the booking to be completed.
      */
-    public Cancellation cancelBooking(Booking booking, Cancellation cancellation) {
-	long min = calculateDifferenceOfTime(getBusHistoryByTravelDate(booking.getBus(), booking.getTravelDate()));
-	if (min >= 600) {
-	    cancellation.setRefundAmount((booking.getTotalFare() - (booking.getTotalFare() * 0.1)));
-	} else {
-	    cancellation.setRefundAmount(booking.getTotalFare() - (booking.getTotalFare() * (100 - (6000 / min))));
-	}
-	cancellation.setCancelled(true);
-	return cancellation;
-    }
+    public void completeBooking(int id);
+
+	/**
+	 * This function sets the seat status of a booking.
+	 *
+	 * @param booking The booking object that contains the seat number and the status of the seat.
+	 */
+	public void setSeatStatus(Booking booking);
 
     /**
-     * method is used to check the booking complete or not.
-     * 
-     * @param id
+     * It calculates the difference of time between the current time and the time when the bus was last seen.
+     *
+     * @param busHistory The BusHistory object that contains the time of the bus.
+     * @return The difference of time between the current time and the time the bus was last seen.
      */
-    public void completeBooking(int id) {
-	validateBooking(id);
-	Booking booking = bookingRepository.findById(id).get();
-	if (calculateDifferenceOfTime(getBusHistoryByTravelDate(booking.getBus(), booking.getTravelDate())) <= 0) {
-	    booking.setStatus("Completed");
-	}
-	bookingRepository.save(booking);
-    }
-
-    public void setSeatStatus(Booking booking) {
-	if (booking.getPaymentStatus().equals("success")) {
-	    for (BookingDetail bookingDetail : booking.getBookingDetails()) {
-		Seat seat = seatRepository
-			.findBySeatNumberAndBusId(bookingDetail.getSeatNumber(), booking.getBus().getId()).get();
-		seat.setOccupied(true);
-	    }
-	}
-    }
+    public long calculateDifferenceOfTime(BusHistory busHistory);
 
     /**
-     * method is used to Calculate the time.
-     * 
-     * @param busHistory
-     * @return
+     * Delete a booking with the given bookingId.
+     *
+     * @param bookingId The id of the booking to be deleted.
      */
-    public long calculateDifferenceOfTime(BusHistory busHistory) {
-	return ChronoUnit.MINUTES.between(LocalDateTime.now(),
-		LocalDateTime.of(busHistory.getArrivingDate(), busHistory.getArrivingTime()));
-    }
+    public void deleteBooking(int bookingId);
 
     /**
-     * method is used to Delete booking.
-     * 
-     * @param bookingId
+     * This function validates a user.
+     *
+     * @param id The id of the user to validate.
      */
-    public void deleteBooking(int bookingId) {
-	validateBooking(bookingId);
-	bookingRepository.deleteById(bookingId);
-    }
+    public void validateUser(int id);
+
+	/**
+	 * Validate the bus with the given id.
+	 *
+	 * @param id The id of the bus to be validated.
+	 */
+	public void validateBus(int id);
 
     /**
-     * method is used to Validate the id(userId).
-     * 
-     * @param id
+     * Validate a booking.
+     *
+     * @param id The id of the booking to be validated.
      */
-    public void validateUser(int id) {
-	Optional<User> user = userRepository.findById(id);
-	if (!user.isPresent()) {
-	    throw new IBusException("User Id doesn't exists");
-	}
-    }
+    public void validateBooking(int id);
 
     /**
-     * method is used to Validate the id(BusId).
-     * 
-     * @param id
+     * > Validates the pickup points of a booking
+     *
+     * @param booking The booking object that contains the pickup points.
+     * @param busId The id of the bus that the user has selected.
      */
-    public void validateBus(int id) {
-	Optional<Bus> bus = busRepository.findById(id);
-	if (!bus.isPresent()) {
-	    throw new IBusException("Bus Id doesn't exists");
-	}
-    }
+    public void validatePickupPoints(Booking booking, int busId);
 
     /**
-     * method is used to Validate the id(bookingId).
-     * 
-     * @param id
+     * Validate the booking details for the given bus.
+     *
+     * @param bookingDetails List of BookingDetail objects
+     * @param busId The id of the bus for which the booking details are being validated.
      */
-    public void validateBooking(int id) {
-	Optional<Booking> booking = bookingRepository.findById(id);
-	if (!booking.isPresent()) {
-	    throw new IBusException("Booking Id doesn't exists");
-	}
-    }
-
-    /**
-     * method is used to alidate the pickup/droppoints.
-     * 
-     * @param booking
-     * @param busId
-     */
-    private void validatePickupPoints(Booking booking, int busId) {
-	Optional<PickupPoint> dropOff = pickupPointRepository.findAllByBusIdCityAndStopName(busId,
-		booking.getDestination(), booking.getDropPoint());
-	Optional<PickupPoint> pickUp = pickupPointRepository.findAllByBusIdCityAndStopName(busId, booking.getSource(),
-		booking.getPickUpPoint());
-	if (booking.getSource().equals(booking.getDestination())) {
-	    throw new IBusException("Source and destination are same");
-	}
-	if (!dropOff.isPresent()) {
-	    throw new IBusException("Invalid Drop off point in ".concat(booking.getDestination()));
-	}
-	if (!pickUp.isPresent()) {
-	    throw new IBusException("Invalid Pick up point in ".concat(booking.getSource()));
-	}
-    }
-
-    /**
-     * method is used to Validate the ValidateBookingDetails.
-     * 
-     * @param bookingDetails
-     * @param busId
-     */
-    private void validateBookingDetails(List<BookingDetail> bookingDetails, int busId) {
-	for (BookingDetail bookingDetail : bookingDetails) {
-	    Optional<Seat> seat = seatRepository.findBySeatNumberAndBusId(bookingDetail.getSeatNumber(), busId);
-	    if (seat.isPresent()) {
-		throw new IBusException("Seat is not available ".concat(bookingDetail.getSeatNumber()));
-	    }
-	    if (seat.get().isOccupied()) {
-		throw new IBusException(bookingDetail.getSeatNumber().concat("seat is already booked"));
-	    }
-	    if (!bookingDetail.getGender().equalsIgnoreCase(seat.get().getGender())) {
-		throw new IBusException("This seat is not for ".concat(bookingDetail.getGender()));
-	    }
-
-	}
-    }
+    public void validateBookingDetails(List<BookingDetail> bookingDetails, int busId);
 }

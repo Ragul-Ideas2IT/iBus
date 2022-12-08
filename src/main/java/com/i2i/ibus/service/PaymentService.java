@@ -22,70 +22,48 @@ import com.i2i.ibus.repository.PaymentRepository;
  * @created Nov 30 2022
  *
  */
-@Service
-public class PaymentService {
+public interface PaymentService {
+     /**
+      * Create a payment for a booking.
+      *
+      * @param bookingId The id of the booking that the payment is for.
+      * @param paymentDto The payment details.
+      * @return A PaymentDto object
+      */
+     PaymentDto createPayment(int bookingId, PaymentDto paymentDto);
 
-    private PaymentRepository paymentRepository;
-    private BookingRepository bookingRepository;
+	/**
+	 * Get a payment by its payment ID.
+	 *
+	 * @param paymentId The id of the payment you want to get.
+	 * @return PaymentDto
+	 */
+	PaymentDto getPaymentByPaymentId(int paymentId);
 
-    @Autowired
-    private PaymentService(PaymentRepository paymentRepositary, BookingRepository bookingRepository) {
-	this.paymentRepository = paymentRepositary;
-	this.bookingRepository = bookingRepository;
-    }
+	/**
+	 * Get all payments for a booking.
+	 *
+	 * @param bookingId The id of the booking you want to get the payments for.
+	 * @return A list of PaymentDto objects.
+	 */
+	List<PaymentDto> getAllPaymentsByBookingId(int bookingId);
 
-    public PaymentDto createPayment(int bookingId, PaymentDto paymentDto) throws IBusException {
-	Booking booking = bookingRepository.findById(bookingId)
-		.orElseThrow(() -> new IBusException("No booking id found..."));
-	Payment payment = Mapper.toPayment(paymentDto);
-	payment.setTime(LocalDateTime.now());
-	payment.setBooking(booking);
-	if (0 == paymentDto.getCvvNumber()) {
-	    throw new IBusException("Cvv number must be mandatory.");
-	}
-	if (5 < Duration.between(booking.getDateTime(), LocalDateTime.now()).toMinutes()) {
-	    booking.setPaymentStatus("declined");
-	    payment.setStatus("unpaid");
-	    paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
-	    throw new IBusException("Booking time is over...");
-	} else if (booking.getPaymentStatus().equalsIgnoreCase("success")) {
-	    throw new IBusException("Payment already succeeded");
-	} else if (booking.getTotalFare() != paymentDto.getAmount()) {
-	    booking.setPaymentStatus("declined");
-	    payment.setStatus("unpaid");
-	    paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
-	    throw new IBusException(
-		    "Payment is cancelled due to invalid amount. The total fare is " + booking.getTotalFare());
-	} else {
-	    payment.setStatus("paid");
-	    booking.setPaymentStatus("success");
-	    paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
-	}
-	return paymentDto;
-    }
+	/**
+	 * Delete all payments for a booking
+	 *
+	 * @param bookingId The id of the booking to delete payments for.
+	 */
+	void deleteAllPaymentsByBookingId(int bookingId);
 
-    public PaymentDto getPaymentByPaymentId(int paymentId) throws IBusException {
-	Payment payment = paymentRepository.findById(paymentId)
-		.orElseThrow(() -> new IBusException("Payment id doesn't exist"));
-	return Mapper.toPaymentDto(payment);
-    }
+	/**
+	 * Delete a payment by paymentId
+	 *
+	 * @param paymentId The id of the payment to be deleted.
+	 */
+	void deleteByPaymentId(int paymentId);
 
-    public List<PaymentDto> getAllPaymentsByBookingId(int bookingId) {
-	bookingRepository.findById(bookingId).orElseThrow(() -> new IBusException("No booking id found..."));
-	return Mapper.toPaymentDtos(paymentRepository.getAllPaymentsByBookingId(bookingId));
-    }
-
-    public void deleteAllPaymentsByBookingId(int bookingId) {
-	bookingRepository.findById(bookingId).orElseThrow(() -> new IBusException("No booking id found..."));
-	paymentRepository.deleteAllPaymentsByBookingId(bookingId);
-    }
-
-    public void deleteByPaymentId(int paymentId) {
-	paymentRepository.findById(paymentId).orElseThrow(() -> new IBusException("Payment id doesn't exist"));
-	paymentRepository.deleteById(paymentId);
-    }
-
-    public void deleteAllPayments() {
-	paymentRepository.deleteAll();
-    }
+	/**
+	 * Delete all payments from the database.
+	 */
+	void deleteAllPayments();
 }

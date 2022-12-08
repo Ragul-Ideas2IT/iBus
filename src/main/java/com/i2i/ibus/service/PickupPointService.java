@@ -14,67 +14,39 @@ import com.i2i.ibus.model.PickupPoint;
 import com.i2i.ibus.repository.BusRepository;
 import com.i2i.ibus.repository.PickupPointRepository;
 
-@Service
-public class PickupPointService {
+ public interface PickupPointService {
 
-    private PickupPointRepository pickupPointRepository;
+	/**
+	 * Add a pickup point to a bus
+	 *
+	 * @param pickupPointDto This is the object that contains the pickup point details.
+	 * @param busId The id of the bus to which the pickup point is to be added.
+	 * @return PickupPointDto
+	 */
+	PickupPointDto addPickupPoint(PickupPointDto pickupPointDto, int busId);
 
-    private BusRepository busRepository;
+     /**
+      * Get a list of pickup points for a bus.
+      *
+      * @param busId The id of the bus.
+      * @return A list of pickup points for a bus.
+      */
+     List<PickupPointDto> getPickupPointsByBusId(int busId);
 
-    @Autowired
-    private PickupPointService(PickupPointRepository pickupPointRepository, BusRepository busRepository) {
-	this.pickupPointRepository = pickupPointRepository;
-	this.busRepository = busRepository;
-    }
+	/**
+	 * Update a pickup point for a bus.
+	 *
+	 * @param pickupPointDto This is the object that contains the new pickup point details.
+	 * @param pickupPointId The id of the pickup point you want to update.
+	 * @param busId The id of the bus that the pickup point belongs to.
+	 * @return PickupPointDto
+	 */
+	PickupPointDto updatePickupPoint(PickupPointDto pickupPointDto, int pickupPointId, int busId);
 
-    public PickupPointDto addPickupPoint(PickupPointDto pickupPointDto, int busId) {
-	PickupPoint pickupPoint = null;
-
-	try {
-	    if (pickupPointRepository.findByBusIdAndCityAndLandmarkAndStopName(busId, pickupPointDto.getCity(),
-		    pickupPointDto.getLandMark(), pickupPointDto.getStopName()).isEmpty()) {
-		pickupPointDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
-		pickupPoint = pickupPointRepository.save(Mapper.toPickupPoint(pickupPointDto));
-	    } else {
-		throw new IBusException("This pickup point is already exists.");
-	    }
-	} catch (NoSuchElementException exception) {
-	    throw new IBusException("Bus doesnot exist");
-	}
-	return Mapper.toPickupPointDto(pickupPoint);
-    }
-
-    public List<PickupPointDto> getPickupPointsByBusId(int busId) {
-	List<PickupPoint> pickupPoints = pickupPointRepository.findAllByBusId(busId);
-	List<PickupPointDto> pickupPointsDto = new ArrayList<PickupPointDto>();
-
-	for (PickupPoint pickupPoint : pickupPoints) {
-	    PickupPointDto pickupPointDto = null;
-	    pickupPointDto = Mapper.toPickupPointDto(pickupPoint);
-	    pickupPointsDto.add(pickupPointDto);
-	}
-	return pickupPointsDto;
-    }
-
-    public PickupPointDto updatePickupPoint(PickupPointDto pickupPointDto, int pickupPointId, int busId) {
-	PickupPoint pickupPoint = null;
-
-	try {
-	    if (pickupPointRepository.findByBusIdAndCityAndLandmarkAndStopName(busId, pickupPointDto.getCity(),
-		    pickupPointDto.getLandMark(), pickupPointDto.getStopName(), pickupPointId).isEmpty()) {
-		pickupPointDto.setId(pickupPointId);
-		pickupPointDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
-		pickupPoint = pickupPointRepository.save(Mapper.toPickupPoint(pickupPointDto));
-	    } else {
-		throw new IBusException("This pickup point is already exists.");
-	    }
-	} catch (NoSuchElementException exception) {
-	    throw new IBusException("Bus doesnot exist");
-	}
-	return Mapper.toPickupPointDto(pickupPoint);
-    }
-
-    public void deletePickupPoint(int pickupPointId) {
-	pickupPointRepository.deleteById(pickupPointId);
-    }
+	/**
+	 * Delete a pickup point
+	 *
+	 * @param pickupPointId The id of the pickup point to be deleted.
+	 */
+	void deletePickupPoint(int pickupPointId);
 }
