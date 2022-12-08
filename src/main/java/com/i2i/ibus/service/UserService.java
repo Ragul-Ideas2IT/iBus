@@ -15,66 +15,70 @@ import com.i2i.ibus.repository.UserRepository;
 /**
  * @author Ragul
  * @version 1.0
- * 
  * @created Nov 29 2022
- *
  */
-@Service
-public class UserService {
+ public interface UserService {
 
-    private UserRepository userRepository;
+    /**
+     * If the user doesn't exist, throw an exception.
+     *
+     * @param id The id of the user to be validated.
+     */
+     void validateUser(int id);
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
-	this.userRepository = userRepository;
-    }
+    /**
+     * This function validates the mail id and phone number of the user
+     *
+     * @param mailId The mailId of the user.
+     * @param phoneNumber The phone number of the user.
+     */
+     void validateMailIdAndPhoneNo(String mailId, String phoneNumber);
 
-    public void validateUser(int id) {
-	Optional<User> user = userRepository.findById(id);
-	if (!user.isPresent()) {
-	    throw new IBusException("User Id doesn't exists");
-	}
-    }
+    /**
+     * It checks if the mail id and phone number already exists in the database for a given id
+     *
+     * @param mailId The mailId to be validated.
+     * @param phoneNumber The phone number to be validated.
+     * @param id The id of the user that is being updated.
+     */
+     void validateMailIdAndPhoneNoForUpdate(String mailId, String phoneNumber, int id);
 
-    public void validateMailIdAndPhoneNo(String mailId, String phoneNumber) {
-	Optional<User> user = userRepository.findByMailIdAndPhoneNo(mailId, phoneNumber);
-	if (user.isPresent()) {
-	    throw new IBusException("Mail Id and Phone No already exists");
-	}
-    }
+    /**
+     * Save a user and return the saved user.
+     *
+     * @param userDto This is the object that we want to save.
+     * @return UserDto
+     */
+    UserDto saveUser(UserDto userDto);
 
-    public void validateMailIdAndPhoneNoForUpdate(String mailId, String phoneNumber, int id) {
-	Optional<User> user = userRepository.findByMailIdAndPhoneNoForUpdate(mailId, phoneNumber, id);
-	if (user.isPresent()) {
-	    throw new IBusException("Mail Id and Phone No already exists");
-	}
-    }
+    /**
+     * Get all user DTOs.
+     *
+     * @return A list of UserDto objects.
+     */
+    List<UserDto> getAllUserDtos();
 
-    public UserDto saveUser(UserDto userDto) {
-	validateMailIdAndPhoneNo(userDto.getMailId(), userDto.getPhoneNumber());
-	User user = Mapper.toUser(userDto);
-	return Mapper.toUserDto(userRepository.save(user));
-    }
+    /**
+     * Get a user DTO by id.
+     *
+     * @param id The id of the user you want to get.
+     * @return UserDto
+     */
+    UserDto getUserDtoById(int id);
 
-    public List<UserDto> getAllUserDtos() {
-	return Mapper.toUserDtos(userRepository.findAll());
-    }
+    /**
+     * It updates the user with the given id with the given userDto
+     *
+     * @param id The id of the user to be updated.
+     * @param userDto The userDto object that contains the updated user details.
+     * @return UserDto
+     */
+    UserDto updateUserById(int id, UserDto userDto);
 
-    public UserDto getUserDtoById(int id) {
-	validateUser(id);
-	return Mapper.toUserDto(userRepository.findById(id).get());
-    }
-
-    public UserDto updateUserById(int id, UserDto userDto) {
-	validateUser(id);
-	validateMailIdAndPhoneNoForUpdate(userDto.getMailId(), userDto.getPhoneNumber(), id);
-	userDto.setId(id);
-	User user = Mapper.toUser(userDto);
-	return Mapper.toUserDto(userRepository.save(user));
-    }
-
-    public void deleteUserById(int id) {
-	validateUser(id);
-	userRepository.deleteById(id);
-    }
+    /**
+      * Delete a user by id, but first validate that the user exists.
+      *
+      * @param id The id of the user to be deleted.
+      */
+     void deleteUserById(int id);
 }

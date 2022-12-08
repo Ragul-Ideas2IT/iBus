@@ -59,11 +59,7 @@ public class BusController {
 	return new ResponseEntity<BusDto>(busService.addBus(busDto, operatorId), HttpStatus.CREATED);
     }
 
-    /**
-     * 
-     * @return
-     * @throws IBusExistException
-     */
+
     @GetMapping
     private ResponseEntity<List<BusDto>> getAllBuses() {
 

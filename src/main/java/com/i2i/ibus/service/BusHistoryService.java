@@ -16,114 +16,75 @@ import com.i2i.ibus.model.BusHistory;
 import com.i2i.ibus.repository.BusHistoryRepository;
 import com.i2i.ibus.repository.BusRepository;
 
-@Service
-public class BusHistoryService {
+public interface BusHistoryService {
 
-    private BusHistoryRepository busHistoryRepository;
+    /**
+     * Adds a new bus history to the database
+     *
+     * @param busHistoryDto This is the object that contains the information that will be added to the database.
+     * @param busId The id of the bus that the history is being added to.
+     * @return BusHistoryDto
+     */
+    BusHistoryDto addBusHistory(BusHistoryDto busHistoryDto, int busId);
 
-    private BusRepository busRepository;
+	/**
+	 * > Get all bus histories
+	 *
+	 * @return A list of BusHistoryDto objects.
+	 */
+	List<BusHistoryDto> getAllBusHistories();
 
-    public BusHistoryService(BusHistoryRepository busHistoryRepository, BusRepository busRepository) {
-	this.busHistoryRepository = busHistoryRepository;
-	this.busRepository = busRepository;
-    }
+	/**
+	 * Get a list of bus histories for a given bus.
+	 *
+	 * @param busId The id of the bus you want to get the history for.
+	 * @return A list of BusHistoryDto objects.
+	 */
+	List<BusHistoryDto> getBusHistories(int busId);
 
-    public BusHistoryDto addBusHistory(BusHistoryDto busHistoryDto, int busId) {
-	BusHistory busHistory = null;
+	/**
+	 * "Get all bus history records that have a departure date of `departureDate` and a source of `source` and a destination
+	 * of `destination`."
+	 *
+	 * The function is named `getByDepartureDate` because that's the most important thing we're looking for. The other two
+	 * parameters are just there to narrow down the results
+	 *
+	 * @param departureDate The date on which the bus is scheduled to depart.
+	 * @param source The source city of the bus
+	 * @param destination The destination of the bus.
+	 * @return List of BusHistoryDto
+	 */
+	List<BusHistoryDto> getByDepartureDate(LocalDate departureDate, String source, String destination);
 
-	try {
-	    if (validateTime(busHistoryDto)) {
-		busHistoryDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
-		busHistory = busHistoryRepository.save(Mapper.toBusHistory(busHistoryDto));
-	    } else {
-		throw new IBusException("Departue and Arrival date and time not to be same");
-	    }
-	} catch (NoSuchElementException exception) {
-	    throw new IBusException("Bus doesnot exists");
-	}
-	return Mapper.toBusHistoryDto(busHistory);
-    }
+	/**
+	 * Update a bus history by bus history id and bus id
+	 *
+	 * @param busHistoryDto This is the object that contains the data that you want to update.
+	 * @param busHistoryId The id of the bus history you want to update.
+	 * @param busId The id of the bus that the history is being added to.
+	 * @return BusHistoryDto
+	 */
+	BusHistoryDto updateBusHistory(BusHistoryDto busHistoryDto, int busHistoryId, int busId);
 
-    public List<BusHistoryDto> getAllBusHistories() {
-	List<BusHistory> busHistories = busHistoryRepository.findAll();
-	List<BusHistoryDto> busHistoriesDto = new ArrayList<BusHistoryDto>();
+	/**
+	 * Delete a bus history
+	 *
+	 * @param busHistoryId The id of the bus history to be deleted.
+	 */
+	void deleteBusHistory(int busHistoryId);
 
-	for (BusHistory busHistory : busHistories) {
-	    setStatus(busHistory);
-	    BusHistoryDto busHistoryDto = null;
-	    busHistoryDto = Mapper.toBusHistoryDto(busHistory);
-	    busHistoriesDto.add(busHistoryDto);
-	}
-	return busHistoriesDto;
-    }
+	/**
+	 * > This function validates the time of the bus history
+	 *
+	 * @param busHistoryDto The object that contains the data to be validated.
+	 * @return boolean
+	 */
+	boolean validateTime(BusHistoryDto busHistoryDto);
 
-    public List<BusHistoryDto> getBusHistories(int busId) {
-	List<BusHistory> busHistories = busHistoryRepository.findByBusId(busId);
-	List<BusHistoryDto> busHistoriesDto = new ArrayList<BusHistoryDto>();
-
-	for (BusHistory busHistory : busHistories) {
-	    setStatus(busHistory);
-	    BusHistoryDto busHistoryDto = null;
-	    busHistoryDto = Mapper.toBusHistoryDto(busHistory);
-	    busHistoriesDto.add(busHistoryDto);
-	}
-	return busHistoriesDto;
-    }
-
-    public List<BusHistoryDto> getByDepartureDate(LocalDate departureDate, String source, String destination) {
-	List<BusHistory> busHistories = busHistoryRepository.findByDepartureDate(departureDate, source, destination);
-	List<BusHistoryDto> busHistoriesDto = new ArrayList<BusHistoryDto>();
-
-	for (BusHistory busHistory : busHistories) {
-	    setStatus(busHistory);
-	    BusHistoryDto busHistoryDto = null;
-	    busHistoryDto = Mapper.toBusHistoryDto(busHistory);
-	    busHistoriesDto.add(busHistoryDto);
-	}
-	return busHistoriesDto;
-    }
-
-    public BusHistoryDto updateBusHistory(BusHistoryDto busHistoryDto, int busHistoryId, int busId) {
-	BusHistory busHistory = null;
-
-	try {
-	    if (validateTime(busHistoryDto)) {
-		busHistoryDto.setId(busHistoryId);
-		busHistoryDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
-		busHistory = busHistoryRepository.save(Mapper.toBusHistory(busHistoryDto));
-	    } else {
-		throw new IBusException("Departue and Arrival date and time not to be same");
-	    }
-	} catch (NoSuchElementException exception) {
-	    throw new IBusException("Bus doesnot exception");
-	}
-	return Mapper.toBusHistoryDto(busHistory);
-    }
-
-    public void deleteBusHistory(int busHistoryId) {
-	busHistoryRepository.deleteById(busHistoryId);
-    }
-
-    private boolean validateTime(BusHistoryDto busHistoryDto) {
-	boolean isValid = false;
-	LocalDateTime departureDateTime = LocalDateTime.of(busHistoryDto.getDepartureDate(),
-		busHistoryDto.getDepartureTime());
-	LocalDateTime arrivalDateTime = LocalDateTime.of(busHistoryDto.getArrivingDate(),
-		busHistoryDto.getArrivingTime());
-
-	if (((arrivalDateTime.compareTo(departureDateTime)) > 0)) {
-	    isValid = true;
-	}
-	return isValid;
-    }
-
-    private void setStatus(BusHistory busHistory) {
-
-	if (null != busHistory.getArrivingDate()) {
-	    if ((LocalDate.now().compareTo(busHistory.getArrivingDate()) >= 0)
-		    && (LocalTime.now().compareTo(busHistory.getArrivingTime()) >= 0)) {
-		busHistory.setStatus("ended");
-	    }
-	}
-    }
+	/**
+	 * It sets the status of the busHistory object.
+	 *
+	 * @param busHistory The bus history object that you want to set the status of.
+	 */
+	void setStatus(BusHistory busHistory);
 }

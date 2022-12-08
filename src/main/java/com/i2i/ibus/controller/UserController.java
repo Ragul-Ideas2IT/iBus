@@ -38,6 +38,12 @@ public class UserController {
 	this.userService = userService;
     }
 
+    /**
+     * The function is a POST request that returns a UserDto object
+     *
+     * @param userDto The object that will be created.
+     * @return UserDto
+     */
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     private UserDto createUser(@RequestBody @Valid UserDto userDto) {

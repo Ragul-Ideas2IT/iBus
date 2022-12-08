@@ -19,66 +19,72 @@ import com.i2i.ibus.repository.OperatorRepository;
  * @created Nov 29 2022
  *
  */
-@Service
-public class OperatorService {
+public interface OperatorService {
 
-    private OperatorRepository operatorRepository;
+     /**
+      * Validate the operator with the given id.
+      *
+      * @param id The id of the operator to validate.
+      */
+     void validateOperator(int id);
 
-    @Autowired
-    public OperatorService(OperatorRepository operatorRepository) {
-	this.operatorRepository = operatorRepository;
-    }
+	/**
+	 * It validates the mail id, phone number and GST number
+	 *
+	 * @param mailId The mail id of the user.
+	 * @param phoneNumber The phone number of the user.
+	 * @param gstNumber GST number of the user
+	 */
+	void validateMailIdPhoneNoAndGstNumber(String mailId, String phoneNumber, String gstNumber);
 
-    public void validateOperator(int id) {
-	Optional<Operator> operator = operatorRepository.findById(id);
-	if (!operator.isPresent()) {
-	    throw new IBusException("Operator Id doesn't exists");
-	}
-    }
+	/**
+	 * It validates the mailId, phoneNumber and gstNumber for update.
+	 *
+	 * @param mailId The mail id of the customer.
+	 * @param phoneNumber The phone number of the customer.
+	 * @param gstNumber GST number of the customer
+	 * @param id The id of the customer.
+	 */
+	void validateMailIdPhoneNoAndGstNumberForUpdate(String mailId, String phoneNumber, String gstNumber,
+	    int id);
 
-    public void validateMailIdPhoneNoAndGstNumber(String mailId, String phoneNumber, String gstNumber) {
-	Optional<Operator> operator = operatorRepository.findByMailIdPhoneNoAndGstNumber(mailId, phoneNumber,
-		gstNumber);
-	if (operator.isPresent()) {
-	    throw new IBusException("MailId, Phone no, GST number are already exist");
-	}
-    }
+	/**
+	 * Save an operator.
+	 *
+	 * @param operatorDto The operator object to be saved.
+	 * @return The operatorDto object that was saved.
+	 */
+	OperatorDto saveOperator(OperatorDto operatorDto);
 
-    public void validateMailIdPhoneNoAndGstNumberForUpdate(String mailId, String phoneNumber, String gstNumber,
-	    int id) {
-	Optional<Operator> operator = operatorRepository.findByMailIdPhoneNoAndGstNumberForUpdate(mailId, phoneNumber,
-		gstNumber, id);
-	if (operator.isPresent()) {
-	    throw new IBusException("MailId, Phone no, GST number are already exist");
-	}
-    }
+	/**
+	 * Get all operator DTOs.
+	 *
+	 * @return A list of OperatorDtos
+	 */
+	List<OperatorDto> getAllOperatorDtos();
 
-    public OperatorDto saveOperator(OperatorDto operatorDto) {
-	validateMailIdPhoneNoAndGstNumber(operatorDto.getMailId(), operatorDto.getPhoneNumber(),
-		operatorDto.getGstNumber());
-	return Mapper.toOperatorDto(operatorRepository.save(Mapper.toOperator(operatorDto)));
-    }
+	/**
+	 * Get an operator by id.
+	 *
+	 * @param id The id of the operator you want to get.
+	 * @return OperatorDto
+	 */
+	OperatorDto getOperatorDtoById(int id);
 
-    public List<OperatorDto> getAllOperatorDtos() {
-	return Mapper.toOperatorDtos(operatorRepository.findAll());
-    }
+	/**
+	 * Update an operator by id.
+	 *
+	 * @param id The id of the operator you want to update.
+	 * @param operatorDto The operator object that you want to update.
+	 * @return OperatorDto
+	 */
+	OperatorDto updateOperatorById(int id, OperatorDto operatorDto);
 
-    public OperatorDto getOperatorDtoById(int id) {
-	validateOperator(id);
-	return Mapper.toOperatorDto(operatorRepository.findById(id).get());
-    }
-
-    public OperatorDto updateOperatorById(int id, OperatorDto operatorDto) {
-	validateOperator(id);
-	validateMailIdPhoneNoAndGstNumberForUpdate(operatorDto.getMailId(), operatorDto.getPhoneNumber(),
-		operatorDto.getGstNumber(), id);
-	operatorDto.setId(id);
-	return Mapper.toOperatorDto(operatorRepository.save(Mapper.toOperator(operatorDto)));
-    }
-
-    public void deleteOperatorById(int id) {
-	validateOperator(id);
-	operatorRepository.deleteById(id);
-    }
+	/**
+	 * Deletes the operator with the given id.
+	 *
+	 * @param id The id of the operator to delete.
+	 */
+	void deleteOperatorById(int id);
 
 }

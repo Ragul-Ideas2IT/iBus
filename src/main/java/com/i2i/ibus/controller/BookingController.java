@@ -49,6 +49,12 @@ public class BookingController {
 	return bookingService.getAllBooking();
     }
     
+    /**
+     * This function returns a booking by id
+     *
+     * @param id The id of the booking to be retrieved.
+     * @return A BookingDto object
+     */
     @GetMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     private BookingDto getBookingById(@PathVariable int id) {

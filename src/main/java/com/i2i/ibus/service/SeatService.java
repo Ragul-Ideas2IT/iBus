@@ -14,76 +14,47 @@ import com.i2i.ibus.model.Seat;
 import com.i2i.ibus.repository.BusRepository;
 import com.i2i.ibus.repository.SeatRepository;
 
-@Service
-public class SeatService {
+ public interface SeatService {
 
-    private SeatRepository seatRepository;
+     /**
+      * Add a seat to a bus
+      *
+      * @param seatDto This is the seat object that you want to add to the bus.
+      * @param busId The id of the bus to which the seat is to be added.
+      * @return SeatDto
+      */
+     SeatDto addSeat(SeatDto seatDto, int busId);
 
-    private BusRepository busRepository;
+	/**
+	 * It returns a list of all seats in a bus
+	 *
+	 * @param busId The id of the bus whose seats are to be fetched.
+	 * @return List of SeatDto objects
+	 */
+	List<SeatDto> getAllByBusId(int busId);
 
-    @Autowired
-    private SeatService(SeatRepository seatRepository, BusRepository busRepository) {
-	this.seatRepository = seatRepository;
-	this.busRepository = busRepository;
-    }
+	/**
+	 * Get a seat by its id.
+	 *
+	 * @param id The id of the seat you want to get.
+	 * @return A SeatDto object.
+	 */
+	SeatDto getBySeatId(int id);
 
-    public SeatDto addSeat(SeatDto seatDto, int busId) {
-	Seat seat = null;
+	/**
+	 * Update a seat in a bus.
+	 *
+	 * @param seatDto The seat object that you want to update.
+	 * @param seatId The id of the seat to be updated.
+	 * @param busId The id of the bus whose seat is to be updated.
+	 * @return SeatDto
+	 */
+	SeatDto updateSeat(SeatDto seatDto, int seatId, int busId);
 
-	try {
-	    if (!seatRepository.findBySeatNumberAndBusId(seatDto.getSeatNumber(), busId).isPresent()) {
-		seatDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
-		seat = seatRepository.save(Mapper.toSeat(seatDto));
-	    } else {
-		throw new IBusException(seatDto.getSeatNumber().concat(" already exists"));
-	    }
-	} catch (NoSuchElementException exception) {
-	    throw new IBusException("Bus doesnot exists");
-	}
-	return Mapper.toSeatDto(seat);
-    }
-
-    public List<SeatDto> getAllByBusId(int busId) {
-	List<Seat> seats = seatRepository.findAllByBusId(busId);
-	List<SeatDto> seatsDto = new ArrayList<SeatDto>();
-
-	for (Seat seat : seats) {
-	    SeatDto seatDto = null;
-	    seatDto = Mapper.toSeatDto(seat);
-	    seatsDto.add(seatDto);
-	}
-	return seatsDto;
-    }
-
-    public SeatDto getBySeatId(int id) {
-	Seat seat = null;
-
-	try {
-	    seat = seatRepository.findBySeatId(id).get();
-	} catch (NoSuchElementException exception) {
-	    throw new IBusException("Seat doesnot exixts");
-	}
-	return Mapper.toSeatDto(seat);
-    }
-
-    public SeatDto updateSeat(SeatDto seatDto, int seatId, int busId) {
-	Seat seat = null;
-
-	try {
-	    if (!seatRepository.findBySeatNumberAndBusIdAndSeatId(seatDto.getSeatNumber(), busId, seatId).isPresent()) {
-		seatDto.setId(seatId);
-		seatDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
-		seat = seatRepository.save(Mapper.toSeat(seatDto));
-	    } else {
-		throw new IBusException(seatDto.getSeatNumber().concat(" already exists"));
-	    }
-	} catch (NoSuchElementException exception) {
-	    throw new IBusException("Bus doesnot exists");
-	}
-	return Mapper.toSeatDto(seat);
-    }
-
-    public void deleteSeat(int seatId) {
-	seatRepository.deleteById(seatId);
-    }
+	/**
+	 * Deletes a seat from the database.
+	 *
+	 * @param seatId The id of the seat to be deleted.
+	 */
+	void deleteSeat(int seatId);
 }
