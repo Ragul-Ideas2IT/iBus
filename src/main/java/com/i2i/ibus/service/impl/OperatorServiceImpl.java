@@ -4,6 +4,7 @@ import com.i2i.ibus.dto.OperatorDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.Operator;
+import com.i2i.ibus.service.OperatorService;
 import com.i2i.ibus.repository.OperatorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,12 +20,12 @@ import java.util.Optional;
  *
  */
 @Service
-public class OperatorService {
+public class OperatorServiceImpl implements OperatorService {
 
     private OperatorRepository operatorRepository;
 
     @Autowired
-    public OperatorService(OperatorRepository operatorRepository) {
+    public OperatorServiceImpl(OperatorRepository operatorRepository) {
 	this.operatorRepository = operatorRepository;
     }
 

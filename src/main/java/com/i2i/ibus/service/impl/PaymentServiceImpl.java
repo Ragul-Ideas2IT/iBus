@@ -5,6 +5,7 @@ import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.Booking;
 import com.i2i.ibus.model.Payment;
+import com.i2i.ibus.service.PaymentService;
 import com.i2i.ibus.repository.BookingRepository;
 import com.i2i.ibus.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class PaymentServiceImpl {
+public class PaymentServiceImpl implements PaymentService {
 
     private PaymentRepository paymentRepository;
     private BookingRepository bookingRepository;

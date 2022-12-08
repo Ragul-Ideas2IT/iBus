@@ -4,6 +4,7 @@ import com.i2i.ibus.dto.BookingDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.*;
+import com.i2i.ibus.service.BookingService;
 import com.i2i.ibus.repository.BookingRepository;
 import com.i2i.ibus.repository.BusRepository;
 import com.i2i.ibus.repository.BusHistoryRepository;
@@ -27,7 +28,7 @@ import java.util.Optional;
  * @created Nov 29 2022
  */
 @Service
-public class BookingServiceImpl {
+public class BookingServiceImpl implements BookingService {
 
     private BookingRepository bookingRepository;
     private BusRepository busRepository;
@@ -282,7 +283,7 @@ public class BookingServiceImpl {
      * @param booking
      * @param busId
      */
-    private void validatePickupPoints(Booking booking, int busId) {
+    public void validatePickupPoints(Booking booking, int busId) {
 	Optional<PickupPoint> dropOff = pickupPointRepository.findAllByBusIdCityAndStopName(busId,
 		booking.getDestination(), booking.getDropPoint());
 	Optional<PickupPoint> pickUp = pickupPointRepository.findAllByBusIdCityAndStopName(busId, booking.getSource(),
@@ -304,7 +305,7 @@ public class BookingServiceImpl {
      * @param bookingDetails
      * @param busId
      */
-    private void validateBookingDetails(List<BookingDetail> bookingDetails, int busId) {
+    public void validateBookingDetails(List<BookingDetail> bookingDetails, int busId) {
 	for (BookingDetail bookingDetail : bookingDetails) {
 	    Optional<Seat> seat = seatRepository.findBySeatNumberAndBusId(bookingDetail.getSeatNumber(), busId);
 	    if (seat.isPresent()) {
