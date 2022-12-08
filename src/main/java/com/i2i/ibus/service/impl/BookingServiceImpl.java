@@ -27,7 +27,7 @@ import java.util.Optional;
  * @created Nov 29 2022
  */
 @Service
-public class BookingService {
+public class BookingServiceImpl {
 
     private BookingRepository bookingRepository;
     private BusRepository busRepository;
@@ -37,7 +37,7 @@ public class BookingService {
     private UserRepository userRepository;
 
     @Autowired
-    public BookingService(BookingRepository bookingRepository, PickupPointRepository pickupPointRepository,
+    public BookingServiceImpl(BookingRepository bookingRepository, PickupPointRepository pickupPointRepository,
 	    BusRepository busRepository, BusHistoryRepository busHistoryRepository, UserRepository userRepository,
 	    SeatRepository seatRepository) {
 	this.bookingRepository = bookingRepository;
