@@ -6,6 +6,8 @@ import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.Bus;
 import com.i2i.ibus.repository.BusRepository;
 import com.i2i.ibus.repository.OperatorRepository;
+import com.i2i.ibus.service.BusService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +24,14 @@ import java.util.NoSuchElementException;
  *
  */
 @Service
-public class BusService {
+public class BusServiceImpl implements BusService {
 
     private BusRepository busRepository;
 
     private OperatorRepository operatorRepository;
 
     @Autowired
-    public BusService(BusRepository busRepository, OperatorRepository operatorRepository) {
+    public BusServiceImpl(BusRepository busRepository, OperatorRepository operatorRepository) {
 	this.busRepository = busRepository;
 	this.operatorRepository = operatorRepository;
     }

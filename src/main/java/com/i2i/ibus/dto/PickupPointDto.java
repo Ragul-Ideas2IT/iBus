@@ -2,8 +2,6 @@ package com.i2i.ibus.dto;
 
 import java.time.LocalTime;
 
-import org.hibernate.annotations.SQLDelete;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
