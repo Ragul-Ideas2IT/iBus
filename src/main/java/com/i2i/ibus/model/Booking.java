@@ -55,7 +55,7 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cancellation_id")
     private Cancellation cancellation;
     @OneToOne

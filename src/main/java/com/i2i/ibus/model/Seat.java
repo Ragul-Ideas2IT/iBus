@@ -45,5 +45,6 @@ public class Seat {
     private Bus bus;
     private boolean isDeleted;
     @JsonProperty(access = Access.READ_ONLY)
-    private boolean isAvailable;
+    private boolean isOccupied;
+
 }
