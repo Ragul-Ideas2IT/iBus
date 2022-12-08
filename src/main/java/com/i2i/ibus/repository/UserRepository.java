@@ -18,11 +18,11 @@ import com.i2i.ibus.model.User;
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-    @Query("from User where isDeleted = false and mailId = :mailId")
-    Optional<User> findByMailId(String mailId);
+    @Query("from User where isDeleted = false and mailId = :mailId and phoneNumber = :phoneNumber")
+    Optional<User> findByMailIdAndPhoneNo(String mailId, String phoneNumber);
 
-    @Query("from User where isDeleted = false and phoneNumber = :phoneNumber")
-    Optional<User> findByPhoneNumber(String phoneNumber);
+    @Query("from User where isDeleted = false and mailId = :mailId and phoneNumber = :phoneNumber and id != :id")
+    Optional<User> findByMailIdAndPhoneNoForUpdate(String mailId, String phoneNumber, int id);
 
     @Query("from User where isDeleted = false")
     List<User> findAll();

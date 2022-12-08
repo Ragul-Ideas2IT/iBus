@@ -31,38 +31,31 @@ public class OperatorService {
 
     public void validateOperator(int id) {
 	Optional<Operator> operator = operatorRepository.findById(id);
-	if (operator.isPresent() && operator.get().isDeleted()) {
-	    throw new IBusException("Operator id doesn't exists because Operator details deleted");
-	} else if (!operator.isPresent()) {
+	if (!operator.isPresent()) {
 	    throw new IBusException("Operator Id doesn't exists");
 	}
     }
 
-    public void validatePhoneNo(String phoneNumber) {
-	Optional<Operator> operator = operatorRepository.findByPhoneNumber(phoneNumber);
+    public void validateMailIdPhoneNoAndGstNumber(String mailId, String phoneNumber, String gstNumber) {
+	Optional<Operator> operator = operatorRepository.findByMailIdPhoneNoAndGstNumber(mailId, phoneNumber,
+		gstNumber);
 	if (operator.isPresent()) {
-	    throw new IBusException(phoneNumber.concat(" Already exists"));
+	    throw new IBusException("MailId, Phone no, GST number are already exist");
 	}
     }
 
-    public void validateGstNumber(String gstNumber) {
-	Optional<Operator> operator = operatorRepository.findByGstNumber(gstNumber);
+    public void validateMailIdPhoneNoAndGstNumberForUpdate(String mailId, String phoneNumber, String gstNumber,
+	    int id) {
+	Optional<Operator> operator = operatorRepository.findByMailIdPhoneNoAndGstNumberForUpdate(mailId, phoneNumber,
+		gstNumber, id);
 	if (operator.isPresent()) {
-	    throw new IBusException(gstNumber.concat(" Already exists"));
-	}
-    }
-
-    public void validateMailId(String mailId) {
-	Optional<Operator> operator = operatorRepository.findByMailId(mailId);
-	if (operator.isPresent()) {
-	    throw new IBusException(mailId.concat(" Already exists"));
+	    throw new IBusException("MailId, Phone no, GST number are already exist");
 	}
     }
 
     public OperatorDto saveOperator(OperatorDto operatorDto) {
-	validateGstNumber(operatorDto.getGstNumber());
-	validateMailId(operatorDto.getMailId());
-	validatePhoneNo(operatorDto.getPhoneNumber());
+	validateMailIdPhoneNoAndGstNumber(operatorDto.getMailId(), operatorDto.getPhoneNumber(),
+		operatorDto.getGstNumber());
 	return Mapper.toOperatorDto(operatorRepository.save(Mapper.toOperator(operatorDto)));
     }
 
@@ -77,8 +70,10 @@ public class OperatorService {
 
     public OperatorDto updateOperatorById(int id, OperatorDto operatorDto) {
 	validateOperator(id);
+	validateMailIdPhoneNoAndGstNumberForUpdate(operatorDto.getMailId(), operatorDto.getPhoneNumber(),
+		operatorDto.getGstNumber(), id);
 	operatorDto.setId(id);
-	return saveOperator(operatorDto);
+	return Mapper.toOperatorDto(operatorRepository.save(Mapper.toOperator(operatorDto)));
     }
 
     public void deleteOperatorById(int id) {
