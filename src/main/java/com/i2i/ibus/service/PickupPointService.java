@@ -1,18 +1,8 @@
 package com.i2i.ibus.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.i2i.ibus.dto.PickupPointDto;
-import com.i2i.ibus.exception.IBusException;
-import com.i2i.ibus.mapper.Mapper;
-import com.i2i.ibus.model.PickupPoint;
-import com.i2i.ibus.repository.BusRepository;
-import com.i2i.ibus.repository.PickupPointRepository;
+
+import java.util.List;
 
  public interface PickupPointService {
 

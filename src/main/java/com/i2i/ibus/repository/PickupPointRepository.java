@@ -12,18 +12,14 @@ import com.i2i.ibus.model.PickupPoint;
 @Repository
 public interface PickupPointRepository extends JpaRepository<PickupPoint, Integer> {
 
-    @Query(value = "Select * from pickup_point where bus_id = :busId and is_deleted = false", nativeQuery = true)
-    public List<PickupPoint> findAllByBusId(int busId);
+    List<PickupPoint> findAllByBusId(int busId);
 
-    @Query(value = "Select * from pickup_point where bus_id = :busId and city = :city and is_deleted = false", nativeQuery = true)
-    public List<PickupPoint> findAllByBusIdAndCity(int busId, String city);
+    List<PickupPoint> findAllByBusIdAndCity(int busId, String city);
 
-    @Query(value = "Select * from pickup_point where bus_id = :busId and city = :city and stop_name = :stopName and is_deleted = false", nativeQuery = true)
-    public Optional<PickupPoint> findAllByBusIdCityAndStopName(int busId, String city, String stopName);
+    Optional<PickupPoint> findAllByBusIdAndCityAndStopName(int busId, String city, String stopName);
     
-    @Query(value = "Select * from pickup_point where bus_id = :busId and city = :city and land_mark = :landMark and stop_name = :stopName and is_deleted = false", nativeQuery = true)
-    public Optional<PickupPoint> findByBusIdAndCityAndLandmarkAndStopName(int busId, String city, String landMark, String stopName);
+    Optional<PickupPoint> findByBusIdAndCityAndLandMarkAndStopName(int busId, String city, String landMark, String stopName);
     
     @Query(value = "Select * from pickup_point where bus_id = :busId and city = :city and land_mark = :landMark and stop_name = :stopName and is_deleted = false and id != :id", nativeQuery = true)
-    public Optional<PickupPoint> findByBusIdAndCityAndLandmarkAndStopName(int busId, String city, String landMark, String stopName,int id);
+    Optional<PickupPoint> findByBusIdAndCityAndLandmarkAndStopName(int busId, String city, String landMark, String stopName,int id);
 }

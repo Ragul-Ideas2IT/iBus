@@ -4,13 +4,10 @@ public class Constants {
 
     //Http status code messages.
     public static final String BAD_REQUEST = "400";
-    public static final String EVERYTHINK_IS_OK = "200";
+    public static final String EVERYTHING_IS_OK = "200";
 
     //Delete messages.
-    public static final String DELETE_MSG = "Deleted sucessfully";
-
-    //Update messages.
-    public static final String UPDATE_MSG = "Updated sucessfully";
+    public static final String DELETE_MESSAGE = "Deleted successfully";
 
     //Invalid pattern messages.
     public static final String INVALID_CITY_PATTERN_MSG = "City should be in valid format";

@@ -21,9 +21,7 @@ import com.i2i.ibus.dto.MessageDto;
 /**
  * @author Ragul
  * @version 1.0
- * 
  * @created Nov 30 2022
- *
  */
 @RestControllerAdvice
 public class IBusExceptionHandler extends ResponseEntityExceptionHandler {
@@ -33,21 +31,27 @@ public class IBusExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception,
-	    HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-	List<String> errors = new ArrayList<String>();
-	for (FieldError error : exception.getBindingResult().getFieldErrors()) {
-	    errors.add(error.getField() + ": " + error.getDefaultMessage());
-	}
-	for (ObjectError error : exception.getBindingResult().getGlobalErrors()) {
-	    errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
-	}
-	return new ResponseEntity<Object>(errors, HttpStatus.BAD_REQUEST);
+                                                                  HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        List<String> errors = new ArrayList<String>();
+        for (FieldError error : exception.getBindingResult().getFieldErrors()) {
+            errors.add(error.getField() + ": " + error.getDefaultMessage());
+        }
+        for (ObjectError error : exception.getBindingResult().getGlobalErrors()) {
+            errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
+        }
+        return new ResponseEntity<Object>(errors, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * This function will be called whenever an IBusException is thrown. It will return a 400 error with the message from
+     * the exception
+     *
+     * @param exception The exception object that was thrown.
+     * @return A MessageDto object with a status code of 400 and the message from the exception.
+     */
     @ExceptionHandler(value = IBusException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public MessageDto exception(IBusException exception) {
-	MessageDto error = new MessageDto("400", exception.getMessage());
-	return error;
+        return new MessageDto("400", exception.getMessage());
     }
 }

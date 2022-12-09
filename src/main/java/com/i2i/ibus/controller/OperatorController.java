@@ -23,10 +23,9 @@ import jakarta.validation.Valid;
 /**
  * @author Ragul
  * @version 1.0
- * 
  * @created Nov 29 2022
- *
  */
+
 @RestController
 @RequestMapping("api/v1/operators")
 public class OperatorController {
@@ -34,38 +33,68 @@ public class OperatorController {
 
     @Autowired
     private OperatorController(OperatorService operatorService) {
-	this.operatorService = operatorService;
+        this.operatorService = operatorService;
     }
 
+    /**
+     * > The function creates a new operator and returns the created operator
+     *
+     * @param operatorDto The object that will be created.
+     * @return OperatorDto
+     */
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     private OperatorDto createOperator(@RequestBody @Valid OperatorDto operatorDto) {
-	return operatorService.saveOperator(operatorDto);
+        return operatorService.saveOperator(operatorDto);
     }
 
+    /**
+     * > This function returns a list of all the operators in the database
+     *
+     * @return A list of OperatorDto objects.
+     */
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    private List<OperatorDto> getAllOperatorDtos() {
-	return operatorService.getAllOperatorDtos();
+    private List<OperatorDto> getAllOperators() {
+        return operatorService.getAllOperatorDtos();
     }
 
+    /**
+     * > This function returns an OperatorDto object with the given id
+     *
+     * @param id The id of the operator to be retrieved.
+     * @return OperatorDto
+     */
     @GetMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
-    private OperatorDto getOperatorDtoById(@PathVariable int id) {
-	return operatorService.getOperatorDtoById(id);
+    private OperatorDto getById(@PathVariable int id) {
+        return operatorService.getOperatorDtoById(id);
     }
 
+    /**
+     * It updates the operator by id.
+     *
+     * @param id          The id of the operator to be updated.
+     * @param operatorDto The object that will be used to update the operator.
+     * @return OperatorDto
+     */
     @PutMapping("/{id}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     private OperatorDto updateOperator(@PathVariable int id, @RequestBody @Valid OperatorDto operatorDto) {
-	return operatorService.updateOperatorById(id, operatorDto);
+        return operatorService.updateOperatorById(id, operatorDto);
     }
 
+    /**
+     * It deletes the operator with the given id.
+     *
+     * @param id The id of the operator to be deleted.
+     * @return A MessageDto object with a status code and a message.
+     */
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     private MessageDto deleteOperator(@PathVariable int id) {
-	operatorService.deleteOperatorById(id);
-	return new MessageDto("200", "Deleted Successfully");
+        operatorService.deleteOperatorById(id);
+        return new MessageDto("200", "Deleted Successfully");
     }
 
 }
