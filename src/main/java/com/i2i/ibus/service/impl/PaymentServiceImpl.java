@@ -33,22 +33,27 @@ public class PaymentServiceImpl implements PaymentService {
 	Payment payment = Mapper.toPayment(paymentDto);
 	payment.setTime(LocalDateTime.now());
 	payment.setBooking(booking);
+	if(booking.getCancellation() != null) {
+	    throw new IBusException("Booking is cancelled");
+	}
 	if (0 == paymentDto.getCvvNumber()) {
 	    throw new IBusException("Cvv number must be mandatory.");
+	}
+	if (booking.getPaymentStatus().equalsIgnoreCase("success")) {
+	    throw new IBusException("Payment already succeeded");
+	} 
+	if (booking.getTotalFare() != paymentDto.getAmount()) {
+	    booking.setPaymentStatus("declined");
+	    payment.setStatus("unpaid");
+	    paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
+	    throw new IBusException(
+		    "Payment is cancelled due to invalid amount. The total fare is " + booking.getTotalFare());
 	}
 	if (5 < Duration.between(booking.getDateTime(), LocalDateTime.now()).toMinutes()) {
 	    booking.setPaymentStatus("declined");
 	    payment.setStatus("unpaid");
 	    paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
 	    throw new IBusException("Booking time is over...");
-	} else if (booking.getPaymentStatus().equalsIgnoreCase("success")) {
-	    throw new IBusException("Payment already succeeded");
-	} else if (booking.getTotalFare() != paymentDto.getAmount()) {
-	    booking.setPaymentStatus("declined");
-	    payment.setStatus("unpaid");
-	    paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
-	    throw new IBusException(
-		    "Payment is cancelled due to invalid amount. The total fare is " + booking.getTotalFare());
 	} else {
 	    payment.setStatus("paid");
 	    booking.setPaymentStatus("success");
@@ -65,12 +70,12 @@ public class PaymentServiceImpl implements PaymentService {
 
     public List<PaymentDto> getAllPaymentsByBookingId(int bookingId) {
 	bookingRepository.findById(bookingId).orElseThrow(() -> new IBusException("No booking id found..."));
-	return Mapper.toPaymentDtos(paymentRepository.getAllPaymentsByBookingId(bookingId));
+	return Mapper.toPaymentDtos(paymentRepository.findAllByBookingId(bookingId));
     }
 
     public void deleteAllPaymentsByBookingId(int bookingId) {
 	bookingRepository.findById(bookingId).orElseThrow(() -> new IBusException("No booking id found..."));
-	paymentRepository.deleteAllPaymentsByBookingId(bookingId);
+	paymentRepository.deleteAllByBookingId(bookingId);
     }
 
     public void deleteByPaymentId(int paymentId) {

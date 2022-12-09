@@ -60,5 +60,5 @@ public class BookingDto {
     @JsonProperty(access = Access.READ_ONLY)
     private LocalDateTime dateTime;
     @JsonProperty(access = Access.READ_ONLY)
-    private Cancellation cancellation;
+    private CancellationDto cancellation;
 }

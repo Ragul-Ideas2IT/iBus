@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.i2i.ibus.dto.BookingDto;
+import com.i2i.ibus.dto.CancellationDto;
 import com.i2i.ibus.model.Booking;
 import com.i2i.ibus.model.BookingDetail;
 import com.i2i.ibus.model.Bus;
@@ -83,8 +84,9 @@ public interface BookingService {
      * Cancel a booking.
      *
      * @param bookingId The booking id of the booking that is being cancelled.
+     * @return 
      */
-    public void cancellation(int bookingId);
+    public CancellationDto cancellation(int bookingId);
 
     /**
      * Given a list of booking details and a bus id, calculate the fare for the bus
@@ -102,7 +104,7 @@ public interface BookingService {
      * @param cancellation The cancellation object that contains the cancellation details.
      * @return A Cancellation object.
      */
-    public Cancellation cancelBooking(Booking booking, Cancellation cancellation);
+    public Booking cancelBooking(Booking booking);
 
     /**
      * Complete a booking.

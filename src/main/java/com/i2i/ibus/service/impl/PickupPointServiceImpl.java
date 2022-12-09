@@ -32,7 +32,7 @@ public class PickupPointServiceImpl implements PickupPointService {
 	PickupPoint pickupPoint = null;
 
 	try {
-	    if (pickupPointRepository.findByBusIdAndCityAndLandmarkAndStopName(busId, pickupPointDto.getCity(),
+	    if (pickupPointRepository.findByBusIdAndCityAndLandMarkAndStopName(busId, pickupPointDto.getCity(),
 		    pickupPointDto.getLandMark(), pickupPointDto.getStopName()).isEmpty()) {
 		pickupPointDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
 		pickupPoint = pickupPointRepository.save(Mapper.toPickupPoint(pickupPointDto));

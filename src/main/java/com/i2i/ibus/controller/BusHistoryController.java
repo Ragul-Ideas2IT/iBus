@@ -29,83 +29,91 @@ public class BusHistoryController {
 
     @Autowired
     private BusHistoryController(BusHistoryService busHistoryService) {
-	this.busHistoryService = busHistoryService;
+        this.busHistoryService = busHistoryService;
     }
 
     /**
-     * 
-     * @param BusHistoryDto
-     * @return
-     * @throws IBusException
+     * It takes a bus history DTO and a bus ID, and returns a bus history DTO
+     *
+     * @param busHistoryDto This is the object that will be sent to the server.
+     * @param busId The id of the bus that the history is being added to.
+     * @return ResponseEntity<BusHistoryDto>
      */
     @PostMapping("/buses/{busId}")
     private ResponseEntity<BusHistoryDto> addBusHistory(@RequestBody @Valid BusHistoryDto busHistoryDto,
-	    @PathVariable int busId) {
-
-	return new ResponseEntity<BusHistoryDto>(busHistoryService.addBusHistory(busHistoryDto, busId),
-		HttpStatus.CREATED);
+                                                        @PathVariable int busId) {
+        return new ResponseEntity<BusHistoryDto>(busHistoryService.addBusHistory(busHistoryDto, busId),
+                HttpStatus.CREATED);
     }
 
     /**
-     * 
-     * @return
-     * @throws IBusExistException
+     * This function returns a list of all bus histories
+     *
+     * @return A list of BusHistoryDto objects.
      */
     @GetMapping
     private ResponseEntity<List<BusHistoryDto>> getAllBusHistories() {
 
-	return new ResponseEntity<List<BusHistoryDto>>(busHistoryService.getAllBusHistories(), HttpStatus.OK);
+        return new ResponseEntity<List<BusHistoryDto>>(busHistoryService.getAllBusHistories(), HttpStatus.OK);
     }
 
+
     /**
-     * 
-     * @return
-     * @throws IBusExistException
+     * It returns a list of bus histories for a given bus id
+     *
+     * @param busId The id of the bus whose history you want to see.
+     * @return A list of BusHistoryDto objects.
      */
     @GetMapping("/buses/{busId}")
-    private ResponseEntity<List<BusHistoryDto>> getBusHistories(@PathVariable int busId) {
+    private ResponseEntity<List<BusHistoryDto>> getAllBusHistoriesByBusId(@PathVariable int busId) {
 
-	return new ResponseEntity<List<BusHistoryDto>>(busHistoryService.getBusHistories(busId), HttpStatus.OK);
+        return new ResponseEntity<List<BusHistoryDto>>(busHistoryService.getBusHistories(busId), HttpStatus.OK);
     }
 
+
     /**
-     * 
-     * @return
-     * @throws IBusExistException
+     * It takes in a departure date, source and destination and returns a list of bus history dto's
+     *
+     * @param departureDate The date on which the bus is scheduled to depart.
+     * @param source The source city of the bus
+     * @param destination The destination of the bus.
+     * @return A list of BusHistoryDto objects.
      */
     @GetMapping("/{departureDate}/{source}/{destination}")
     private ResponseEntity<List<BusHistoryDto>> getByDepartureDate(@PathVariable LocalDate departureDate,
-	    @PathVariable String source, @PathVariable String destination) {
+                                                                   @PathVariable String source, @PathVariable String destination) {
 
-	return new ResponseEntity<List<BusHistoryDto>>(
-		busHistoryService.getByDepartureDate(departureDate, source, destination), HttpStatus.OK);
+        return new ResponseEntity<List<BusHistoryDto>>(
+                busHistoryService.getByDepartureDate(departureDate, source, destination), HttpStatus.OK);
     }
 
     /**
-     * 
-     * @param Dto
-     * @return
-     * @throws IBusException
+     * It updates the bus history.
+     *
+     * @param busHistoryDto The object that will be updated.
+     * @param busHistoryId The id of the bus history you want to update.
+     * @param busId The id of the bus that you want to update.
+     * @return A ResponseEntity object is being returned.
      */
     @PutMapping("/{busHistoryId}/buses/{busId}")
-    private ResponseEntity<BusHistoryDto> updateBus(@RequestBody @Valid BusHistoryDto busHistoryDto,
-	    @PathVariable int busHistoryId, @PathVariable int busId) {
+    private ResponseEntity<BusHistoryDto> updateBusHistory(@RequestBody @Valid BusHistoryDto busHistoryDto,
+                                                    @PathVariable int busHistoryId, @PathVariable int busId) {
 
-	return new ResponseEntity<BusHistoryDto>(busHistoryService.updateBusHistory(busHistoryDto, busHistoryId, busId),
-		HttpStatus.OK);
+        return new ResponseEntity<BusHistoryDto>(busHistoryService.updateBusHistory(busHistoryDto, busHistoryId, busId),
+                HttpStatus.OK);
     }
 
     /**
-     * 
-     * @param busId
-     * @return
-     * @throws IBusException
+     * It deletes the bus history by id.
+     *
+     * @param busHistoryId The id of the bus history to be deleted.
+     * @return MessageDto is being returned.
      */
     @DeleteMapping("/{busHistoryId}")
-    private MessageDto deleteBus(@PathVariable int busHistoryId) {
+    private MessageDto deleteBusHistory(@PathVariable int busHistoryId) {
 
-	busHistoryService.deleteBusHistory(busHistoryId);
-	return new MessageDto("200", "Deleted Sucessfully");
+        busHistoryService.deleteBusHistory(busHistoryId);
+        return new MessageDto("200", "Deleted Sucessfully");
     }
 
 }

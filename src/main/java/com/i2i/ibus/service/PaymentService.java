@@ -1,19 +1,8 @@
 package com.i2i.ibus.service;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.i2i.ibus.dto.PaymentDto;
-import com.i2i.ibus.exception.IBusException;
-import com.i2i.ibus.mapper.Mapper;
-import com.i2i.ibus.model.Booking;
-import com.i2i.ibus.model.Payment;
-import com.i2i.ibus.repository.BookingRepository;
-import com.i2i.ibus.repository.PaymentRepository;
+
+import java.util.List;
 
 /**
  * @author Tamilmani

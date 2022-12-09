@@ -21,6 +21,7 @@ import lombok.Setter;
 @Setter
 public class SeatDto {
 
+    @JsonProperty(access = Access.READ_ONLY)
     private int id;
     @NotBlank
     @Pattern(regexp = "^((?i)(sleeper)|(semisleeper)|(seater))$")

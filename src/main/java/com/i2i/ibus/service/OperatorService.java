@@ -1,16 +1,8 @@
 package com.i2i.ibus.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.i2i.ibus.dto.OperatorDto;
-import com.i2i.ibus.exception.IBusException;
-import com.i2i.ibus.mapper.Mapper;
-import com.i2i.ibus.model.Operator;
-import com.i2i.ibus.repository.OperatorRepository;
+
+import java.util.List;
 
 /**
  * @author Ragul

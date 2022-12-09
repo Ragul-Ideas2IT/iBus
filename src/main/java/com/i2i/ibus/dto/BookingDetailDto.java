@@ -19,7 +19,7 @@ import lombok.Setter;
 public class BookingDetailDto {
 
     @Min(value = 2, message = "min age is 2")
-    @Max(value = 70, message = "max age is 70")
+    @Max(value = 120, message = "max age is 120")
     private int age;
     @NotBlank
     @Pattern(regexp = "([a-zA-Z][ ]?){2,50}", message = "Please enter the valid name format. ")
@@ -27,6 +27,8 @@ public class BookingDetailDto {
     @NotBlank
     @Pattern(regexp = "(?i)^(male)|(female)|(others)$", message = "Please enter the valid format gender.")
     private String gender;
+    @NotBlank
+    @Pattern(regexp = "^([L]|[R])([L]|[U])([S]|[B])([0-9]?[1-9])$")
     private String seatNumber;
 
 }

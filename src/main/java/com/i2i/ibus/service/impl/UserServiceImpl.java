@@ -4,8 +4,9 @@ import com.i2i.ibus.dto.UserDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.User;
-import com.i2i.ibus.service.UserService;
+import com.i2i.ibus.repository.OperatorRepository;
 import com.i2i.ibus.repository.UserRepository;
+import com.i2i.ibus.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +21,16 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
+    private OperatorRepository operatorRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, OperatorRepository operatorRepository) {
         this.userRepository = userRepository;
+        this.operatorRepository = operatorRepository;
     }
 
     /**
-     * If the user doesn't exist, throw an exception.
+     * > If the user is not present, throw an exception
      *
      * @param id The id of the user to be validated.
      */
@@ -41,23 +44,16 @@ public class UserServiceImpl implements UserService {
     /**
      * This function validates the mail id and phone number of the user
      *
-     * @param mailId The mailId of the user.
+     * @param mailId      The mailId of the user.
      * @param phoneNumber The phone number of the user.
      */
     public void validateMailIdAndPhoneNo(String mailId, String phoneNumber) {
-        Optional<User> user = userRepository.findByMailIdAndPhoneNo(mailId, phoneNumber);
-        if (user.isPresent()) {
+        if (userRepository.findByMailIdAndPhoneNumber(mailId, phoneNumber).isPresent()) {
             throw new IBusException("Mail Id and Phone No already exists");
         }
     }
 
-    /**
-     * It checks if the mail id and phone number already exists in the database for a given id
-     *
-     * @param mailId The mailId to be validated.
-     * @param phoneNumber The phone number to be validated.
-     * @param id The id of the user that is being updated.
-     */
+    @Override
     public void validateMailIdAndPhoneNoForUpdate(String mailId, String phoneNumber, int id) {
         Optional<User> user = userRepository.findByMailIdAndPhoneNoForUpdate(mailId, phoneNumber, id);
         if (user.isPresent()) {

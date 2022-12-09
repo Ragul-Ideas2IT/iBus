@@ -60,7 +60,7 @@ public class SeatServiceImpl implements SeatService {
 	Seat seat = null;
 
 	try {
-	    seat = seatRepository.findBySeatId(id).get();
+	    seat = seatRepository.findById(id).get();
 	} catch (NoSuchElementException exception) {
 	    throw new IBusException("Seat doesnot exixts");
 	}
@@ -71,7 +71,7 @@ public class SeatServiceImpl implements SeatService {
 	Seat seat = null;
 
 	try {
-	    if (!seatRepository.findBySeatNumberAndBusIdAndSeatId(seatDto.getSeatNumber(), busId, seatId).isPresent()) {
+	    if (!seatRepository.findBySeatNumberAndBusIdAndId(seatDto.getSeatNumber(), busId, seatId).isPresent()) {
 		seatDto.setId(seatId);
 		seatDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
 		seat = seatRepository.save(Mapper.toSeat(seatDto));

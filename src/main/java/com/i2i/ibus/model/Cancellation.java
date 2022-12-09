@@ -3,6 +3,7 @@ package com.i2i.ibus.model;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,14 +27,15 @@ import lombok.Setter;
 @NoArgsConstructor
 @Table
 @SQLDelete(sql = "UPDATE cancellation SET is_deleted = true WHERE id=?")
+@Where(clause = "is_deleted = false")
 public class Cancellation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(insertable = false)
-    private LocalDateTime dateAndTime;
+    private LocalDateTime dateTime;
     private double refundAmount;
-    private boolean isCancelled;
+    private String cancellationStatus;
+    private String refundStatus;
     private boolean isDeleted;
 }

@@ -20,9 +20,11 @@ public class CancellationDto {
     @JsonProperty(access = Access.READ_ONLY)
     private int id;
     @JsonProperty(access = Access.READ_ONLY)
-    private LocalDateTime dateAndTime;
+    private LocalDateTime dateTime;
     @JsonProperty(access = Access.READ_ONLY)
     private double refundAmount;
     @JsonProperty(access = Access.READ_ONLY)
-    private String status;
+    private String cancellationStatus;
+    @JsonProperty(access = Access.READ_ONLY)
+    private String refundStatus;
 }

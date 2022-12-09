@@ -28,59 +28,66 @@ public class PickupPointController {
 
     @Autowired
     private PickupPointController(PickupPointService pickupPointService) {
-	this.pickupPointService = pickupPointService;
+        this.pickupPointService = pickupPointService;
     }
 
+
     /**
-     * 
-     * @param seatDto
-     * @return
-     * @throws IBusException
+     * It takes a pickup point object and a bus id as input, and returns a pickup point object as output
+     *
+     * @param pickupPointDto This is the object that will be sent to the server.
+     * @param busId The id of the bus to which the pickup point is to be added.
+     * @return A ResponseEntity object is being returned.
      */
     @PostMapping("/buses/{busId}")
-    private ResponseEntity<PickupPointDto> addSeat(@RequestBody @Valid PickupPointDto pickupPointDto,
-	    @PathVariable int busId) {
+    private ResponseEntity<PickupPointDto> addPickupPoint(@RequestBody @Valid PickupPointDto pickupPointDto,
+                                                   @PathVariable int busId) {
 
-	return new ResponseEntity<PickupPointDto>(pickupPointService.addPickupPoint(pickupPointDto, busId),
-		HttpStatus.CREATED);
+        return new ResponseEntity<PickupPointDto>(pickupPointService.addPickupPoint(pickupPointDto, busId),
+                HttpStatus.CREATED);
     }
 
+
     /**
-     * 
-     * @return
-     * @throws IBusExistException
+     * It returns a list of pickup points for a given bus id
+     *
+     * @param busId The id of the bus whose pickup points are to be fetched.
+     * @return A list of pickup points for a given bus id.
      */
     @GetMapping("/buses/{busId}")
     private ResponseEntity<List<PickupPointDto>> getPickupPointsByBusId(@PathVariable int busId) {
 
-	return new ResponseEntity<List<PickupPointDto>>(pickupPointService.getPickupPointsByBusId(busId),
-		HttpStatus.OK);
+        return new ResponseEntity<List<PickupPointDto>>(pickupPointService.getPickupPointsByBusId(busId),
+                HttpStatus.OK);
     }
 
     /**
-     * 
-     * @param seatDto
-     * @return
-     * @throws IBusException
+     * It takes a pickupPointDto, a pickupPointId and a busId as parameters, and returns a pickupPointDto
+     *
+     * @param pickupPointDto The object that contains the data that will be used to update the pickup point.
+     * @param pickupPointId The id of the pickup point to be updated.
+     * @param busId The id of the bus that the pickup point is associated with.
+     * @return A ResponseEntity object is being returned.
      */
     @PutMapping("/{pickupPointId}/buses/{busId}")
     private ResponseEntity<PickupPointDto> updatePickupPoint(@RequestBody @Valid PickupPointDto pickupPointDto,
-	    @PathVariable int pickupPointId, @PathVariable int busId) {
+                                                             @PathVariable int pickupPointId, @PathVariable int busId) {
 
-	return new ResponseEntity<PickupPointDto>(
-		pickupPointService.updatePickupPoint(pickupPointDto, pickupPointId, busId), HttpStatus.OK);
+        return new ResponseEntity<PickupPointDto>(
+                pickupPointService.updatePickupPoint(pickupPointDto, pickupPointId, busId), HttpStatus.OK);
     }
 
+
     /**
-     * 
-     * @param seatId
-     * @return
-     * @throws IBusException
+     * It deletes the pickup point with the given id.
+     *
+     * @param pickupPointId The id of the pickup point to be deleted.
+     * @return MessageDto
      */
     @DeleteMapping("/{pickupPointId}")
-    private MessageDto deleteBus(@PathVariable int pickupPointId) {
+    private MessageDto deletePickupPoint(@PathVariable int pickupPointId) {
 
-	pickupPointService.deletePickupPoint(pickupPointId);
-	return new MessageDto("200", "Deleted Sucessfully");
+        pickupPointService.deletePickupPoint(pickupPointId);
+        return new MessageDto("200", "Deleted Sucessfully");
     }
 }

@@ -20,18 +20,10 @@ import com.i2i.ibus.model.Bus;
 @Repository
 public interface BusRepository extends JpaRepository<Bus, Integer> {
 
-    @Query("From Bus Where busNumber = :busNumber and isDeleted = false")
-    public Optional<Bus> findByBusNumber(String busNumber);
+    Optional<Bus> findByBusNumber(String busNumber);
 
     @Query("From Bus Where busNumber = :busNumber and id != :id")
-    public Optional<Bus> findByBusNumberForUpdate(String busNumber, int id);
+    Optional<Bus> findByBusNumberForUpdate(String busNumber, int id);
 
-    @Query("from Bus where isDeleted = false")
-    public List<Bus> findAll();
-    
-    @Query("from Bus where id = :id and isDeleted = false")
-    public Optional<Bus> findById(int id);
-    
-    @Query(value = "Select * from bus where operator_id = :operatorId", nativeQuery = true)
-    public List<Bus> findByOperatorId(int operatorId);
+    List<Bus> findByOperatorId(int operatorId);
 }
