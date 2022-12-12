@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.i2i.ibus.model.Cancellation;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.FutureOrPresent;
