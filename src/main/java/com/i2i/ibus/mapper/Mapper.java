@@ -3,9 +3,30 @@ package com.i2i.ibus.mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.i2i.ibus.dto.*;
-import com.i2i.ibus.model.*;
 import org.modelmapper.ModelMapper;
+
+import com.i2i.ibus.dto.AddressDto;
+import com.i2i.ibus.dto.BookingDetailDto;
+import com.i2i.ibus.dto.BookingDto;
+import com.i2i.ibus.dto.BusDto;
+import com.i2i.ibus.dto.ScheduleDto;
+import com.i2i.ibus.dto.CancellationDto;
+import com.i2i.ibus.dto.OperatorDto;
+import com.i2i.ibus.dto.PaymentDto;
+import com.i2i.ibus.dto.StopDto;
+import com.i2i.ibus.dto.SeatDto;
+import com.i2i.ibus.dto.UserDto;
+import com.i2i.ibus.model.Address;
+import com.i2i.ibus.model.Booking;
+import com.i2i.ibus.model.BookingDetail;
+import com.i2i.ibus.model.Bus;
+import com.i2i.ibus.model.Schedule;
+import com.i2i.ibus.model.Cancellation;
+import com.i2i.ibus.model.Operator;
+import com.i2i.ibus.model.Payment;
+import com.i2i.ibus.model.Stop;
+import com.i2i.ibus.model.Seat;
+import com.i2i.ibus.model.User;
 
 /**
  * @version 1.0
@@ -113,20 +134,20 @@ public class Mapper {
         return mapper.map(seat, SeatDto.class);
     }
 
-    public static BusHistory toBusHistory(BusHistoryDto busHistoryDto) {
-        return mapper.map(busHistoryDto, BusHistory.class);
+    public static Schedule toSchedule(ScheduleDto scheduleDto) {
+        return mapper.map(scheduleDto, Schedule.class);
     }
 
-    public static BusHistoryDto toBusHistoryDto(BusHistory busHistory) {
-        return mapper.map(busHistory, BusHistoryDto.class);
+    public static ScheduleDto toScheduleDto(Schedule schedule) {
+        return mapper.map(schedule, ScheduleDto.class);
     }
 
-    public static PickupPoint toPickupPoint(PickupPointDto pickupPointDto) {
-        return mapper.map(pickupPointDto, PickupPoint.class);
+    public static Stop toStop(StopDto stopDto) {
+        return mapper.map(stopDto, Stop.class);
     }
 
-    public static PickupPointDto toPickupPointDto(PickupPoint pickupPoint) {
-        return mapper.map(pickupPoint, PickupPointDto.class);
+    public static StopDto toStopDto(Stop stop) {
+        return mapper.map(stop, StopDto.class);
     }
 
     public static CancellationDto toCancellationDto(Cancellation cancellation) {

@@ -16,9 +16,16 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
+ * <h1>Bus Ticket Booking Application
+ * <h1>
+ * <p>
+ * Used to manipulate the Bus details in the application. Operators are
+ * manipulate the bus details.
+ * <p>
+ *
  * @author Ananth.
  * @version 1.0.
- * @created nov 30 2022
+ * @created Nov 29 2022
  */
 @Service
 public class BusServiceImpl implements BusService {
@@ -55,8 +62,9 @@ public class BusServiceImpl implements BusService {
     }
 
     /**
-     * @return
+     * {@inheritDoc}
      */
+    @Override
     public List<BusDto> getAllBuses() {
         List<Bus> buses = busRepository.findAll();
         List<BusDto> busesDto = new ArrayList<BusDto>();
@@ -70,8 +78,9 @@ public class BusServiceImpl implements BusService {
     }
 
     /**
-     * @return
+     * {@inheritDoc}
      */
+    @Override
     public List<BusDto> getAllByOperatorId(int OperatorId) {
         List<Bus> buses = busRepository.findByOperatorId(OperatorId);
         List<BusDto> busesDto = new ArrayList<BusDto>();
@@ -85,9 +94,9 @@ public class BusServiceImpl implements BusService {
     }
 
     /**
-     * @return
-     * @throws IBusException
+     * {@inheritDoc}
      */
+    @Override
     public BusDto getById(int id) {
         Bus bus = null;
         try {
@@ -99,15 +108,14 @@ public class BusServiceImpl implements BusService {
     }
 
     /**
-     * @param busDto
-     * @return
-     * @throws IBusException
+     * {@inheritDoc}
      */
-    public BusDto updateBus(BusDto busDto, int busId, int operatorId) {
+    @Override
+    public BusDto updateBus(BusDto busDto, int busId) {
 
         try {
             busDto.setId(busId);
-            busDto.setOperator(Mapper.toOperatorDto(operatorRepository.findById(operatorId).get()));
+            busDto.setOperator(Mapper.toOperatorDto(operatorRepository.findById(busDto.getOperatorId()).get()));
 
             Bus bus = Mapper.toBus(busDto);
 
@@ -123,8 +131,9 @@ public class BusServiceImpl implements BusService {
     }
 
     /**
-     * @param busId
+     * {@inheritDoc}
      */
+    @Override
     public void deleteBus(int busId) {
         busRepository.deleteById(busId);
     }

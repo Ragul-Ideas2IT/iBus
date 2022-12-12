@@ -8,7 +8,8 @@ import com.i2i.ibus.dto.CancellationDto;
 import com.i2i.ibus.model.Booking;
 import com.i2i.ibus.model.BookingDetail;
 import com.i2i.ibus.model.Bus;
-import com.i2i.ibus.model.BusHistory;
+import com.i2i.ibus.model.Schedule;
+import com.i2i.ibus.model.Cancellation;
 import com.i2i.ibus.model.User;
 
 /**

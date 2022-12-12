@@ -18,15 +18,15 @@ import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.Booking;
 import com.i2i.ibus.model.BookingDetail;
 import com.i2i.ibus.model.Bus;
-import com.i2i.ibus.model.BusHistory;
+import com.i2i.ibus.model.Schedule;
 import com.i2i.ibus.model.Cancellation;
-import com.i2i.ibus.model.PickupPoint;
+import com.i2i.ibus.model.Stop;
 import com.i2i.ibus.model.Seat;
 import com.i2i.ibus.model.User;
 import com.i2i.ibus.repository.BookingRepository;
-import com.i2i.ibus.repository.BusHistoryRepository;
+import com.i2i.ibus.repository.ScheduleRepository;
 import com.i2i.ibus.repository.BusRepository;
-import com.i2i.ibus.repository.PickupPointRepository;
+import com.i2i.ibus.repository.StopRepository;
 import com.i2i.ibus.repository.SeatRepository;
 import com.i2i.ibus.repository.UserRepository;
 import com.i2i.ibus.service.BookingService;
@@ -41,8 +41,8 @@ public class BookingServiceImpl implements BookingService {
 
     private BookingRepository bookingRepository;
     private BusRepository busRepository;
-    private BusHistoryRepository busHistoryRepository;
-    private PickupPointRepository pickupPointRepository;
+    private ScheduleRepository scheduleRepository;
+    private StopRepository stopRepository;
     private SeatRepository seatRepository;
     private UserRepository userRepository;
 
@@ -146,13 +146,12 @@ public class BookingServiceImpl implements BookingService {
     /**
      * {@inheritDoc}
      */
-    @Override
-    public BusHistory getBusHistoryByTravelDate(Bus bus, LocalDate travelDate) {
-	Optional<BusHistory> busHistory = busHistoryRepository.findByBusIdAndDepartureDate(bus.getId(), travelDate);
-	if (!busHistory.isPresent()) {
-	    throw new IBusException("This bus is not departure on this date");
-	}
-	return busHistory.get();
+    public Schedule getBusHistoryByTravelDate(Bus bus, LocalDate travelDate) {
+        Optional<Schedule> schedule = scheduleRepository.findByBusIdAndDepartureDate(bus.getId(), travelDate);
+        if (!schedule.isPresent()) {
+            throw new IBusException("This bus is not departure on this date");
+        }
+        return schedule.get();
     }
 
     /**
@@ -255,12 +254,9 @@ public class BookingServiceImpl implements BookingService {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public long calculateDifferenceOfTime(BusHistory busHistory) {
-	return ChronoUnit.MINUTES.between(LocalDateTime.now(),
-		LocalDateTime.of(busHistory.getArrivingDate(), busHistory.getArrivingTime()));
+    public long calculateDifferenceOfTime(Schedule schedule) {
+        return ChronoUnit.MINUTES.between(LocalDateTime.now(),
+                LocalDateTime.of(schedule.getArrivingDate(), schedule.getArrivingTime()));
     }
 
     /**
@@ -310,19 +306,19 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     public void validatePickupPoints(Booking booking, int busId) {
-	Optional<PickupPoint> dropOff = pickupPointRepository.findAllByBusIdAndCityAndStopName(busId,
-		booking.getDestination(), booking.getDropPoint());
-	Optional<PickupPoint> pickUp = pickupPointRepository.findAllByBusIdAndCityAndStopName(busId,
-		booking.getSource(), booking.getPickUpPoint());
-	if (booking.getSource().equals(booking.getDestination())) {
-	    throw new IBusException("Source and destination are same");
-	}
-	if (!dropOff.isPresent()) {
-	    throw new IBusException("Invalid Drop off point in ".concat(booking.getDestination()));
-	}
-	if (!pickUp.isPresent()) {
-	    throw new IBusException("Invalid Pick up point in ".concat(booking.getSource()));
-	}
+        Optional<Stop> dropOff = stopRepository.findAllByBusIdAndCityAndStopName(busId,
+                booking.getDestination(), booking.getDropPoint());
+        Optional<Stop> pickUp = stopRepository.findAllByBusIdAndCityAndStopName(busId, booking.getSource(),
+                booking.getPickUpPoint());
+        if (booking.getSource().equals(booking.getDestination())) {
+            throw new IBusException("Source and destination are same");
+        }
+        if (!dropOff.isPresent()) {
+            throw new IBusException("Invalid Drop off point in ".concat(booking.getDestination()));
+        }
+        if (!pickUp.isPresent()) {
+            throw new IBusException("Invalid Pick up point in ".concat(booking.getSource()));
+        }
     }
 
     /**

@@ -3,10 +3,10 @@ package com.i2i.ibus.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,6 +33,7 @@ public class BusDto {
     @NotBlank
     @Pattern(regexp = "^((?i)(NONAC)|(AC))$")
     private String type;
+    private int operatorId;
     @JsonProperty(access = Access.READ_ONLY)
     private OperatorDto operator;
 }

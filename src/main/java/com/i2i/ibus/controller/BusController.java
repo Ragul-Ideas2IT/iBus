@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.i2i.ibus.dto.BusDto;
 import com.i2i.ibus.dto.MessageDto;
-import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.service.BusService;
 
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 
 /**
  * <h1>Bus Ticket Booking Application
@@ -41,38 +40,35 @@ public class BusController {
 
     @Autowired
     private BusController(BusService busService) {
-        this.busService = busService;
+	this.busService = busService;
     }
 
-
     /**
-     * It takes a busDto object and an operatorId, and returns a busDto object
+     * It is used to add the bus details from the operators.
      *
-     * @param busDto This is the object that will be sent to the server.
+     * @param bus        details given by the operator.
      * @param operatorId The id of the operator to which the bus belongs.
-     * @return ResponseEntity<BusDto>
+     * @return the saved bus details and httpstatus.
      */
-    @PostMapping("/operators/{operatorId}")
+    @PostMapping
     private ResponseEntity<BusDto> addBus(@RequestBody @Valid BusDto busDto, @PathVariable int operatorId) {
 
-        return new ResponseEntity<BusDto>(busService.addBus(busDto, operatorId), HttpStatus.CREATED);
+	return new ResponseEntity<BusDto>(busService.addBus(busDto, operatorId), HttpStatus.CREATED);
     }
 
-
     /**
-     * It returns a list of all the buses in the database
+     * Used to get the all bus details.
      *
-     * @return A list of BusDto objects.
+     * @return A list of Bus details.
      */
     @GetMapping
     private ResponseEntity<List<BusDto>> getAllBuses() {
 
-        return new ResponseEntity<List<BusDto>>(busService.getAllBuses(), HttpStatus.OK);
+	return new ResponseEntity<List<BusDto>>(busService.getAllBuses(), HttpStatus.OK);
     }
 
-
     /**
-     * It returns a list of buses that are owned by a specific operator
+     * It gives a list of buses that are owned by a specific operator
      *
      * @param operatorId The id of the operator whose buses you want to find.
      * @return A list of buses that belong to the operator with the given id.
@@ -80,49 +76,45 @@ public class BusController {
     @GetMapping("/operators/{operatorId}")
     private ResponseEntity<List<BusDto>> getByOperatorId(@PathVariable int operatorId) {
 
-        return new ResponseEntity<List<BusDto>>(busService.getAllByOperatorId(operatorId), HttpStatus.OK);
+	return new ResponseEntity<List<BusDto>>(busService.getAllByOperatorId(operatorId), HttpStatus.OK);
     }
 
-
     /**
-     * It returns a bus object with the given id.
+     * It returns a bus details with the given id.
      *
      * @param busId The id of the bus you want to get.
-     * @return A ResponseEntity object is being returned.
+     * @return the bus details of the given bus id.
      */
     @GetMapping("/{busId}")
     private ResponseEntity<BusDto> getById(@PathVariable int busId) {
 
-        return new ResponseEntity<BusDto>(busService.getById(busId), HttpStatus.OK);
+	return new ResponseEntity<BusDto>(busService.getById(busId), HttpStatus.OK);
     }
 
-
     /**
-     * It updates the bus details.
+     * Used to update the bus details.
      *
-     * @param busDto The bus object that we want to update.
-     * @param busId The id of the bus to be updated.
+     * @param busDto     The bus deatils that we want to update.
+     * @param busId      The id of the bus to be updated.
      * @param operatorId The id of the operator who owns the bus.
-     * @return ResponseEntity<BusDto>
+     * @return the updated bus details.
      */
-    @PutMapping("/{busId}/operators/{operatorId}")
-    private ResponseEntity<BusDto> updateBus(@RequestBody @Valid BusDto busDto, @PathVariable int busId,
-                                             @PathVariable int operatorId) {
+    @PutMapping("/{busId}")
+    private ResponseEntity<BusDto> updateBus(@RequestBody @Valid BusDto busDto, @PathVariable int busId) {
 
-        return new ResponseEntity<BusDto>(busService.updateBus(busDto, busId, operatorId), HttpStatus.OK);
+	return new ResponseEntity<BusDto>(busService.updateBus(busDto, busId), HttpStatus.OK);
     }
 
-
     /**
-     * It deletes a bus from the database.
+     * Used to delete a bus by operators.
      *
      * @param busId The id of the bus to be deleted.
-     * @return MessageDto
+     * @return Deleted message when the bus details are deleted.
      */
     @DeleteMapping("/{busId}")
     private MessageDto deleteBus(@PathVariable int busId) {
 
-        busService.deleteBus(busId);
-        return new MessageDto("200", "Deleted Sucessfully");
+	busService.deleteBus(busId);
+	return new MessageDto("200", "Deleted Sucessfully");
     }
 }
