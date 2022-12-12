@@ -3,30 +3,9 @@ package com.i2i.ibus.mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.i2i.ibus.dto.*;
+import com.i2i.ibus.model.*;
 import org.modelmapper.ModelMapper;
-
-import com.i2i.ibus.dto.AddressDto;
-import com.i2i.ibus.dto.BookingDetailDto;
-import com.i2i.ibus.dto.BookingDto;
-import com.i2i.ibus.dto.BusDto;
-import com.i2i.ibus.dto.BusHistoryDto;
-import com.i2i.ibus.dto.CancellationDto;
-import com.i2i.ibus.dto.OperatorDto;
-import com.i2i.ibus.dto.PaymentDto;
-import com.i2i.ibus.dto.PickupPointDto;
-import com.i2i.ibus.dto.SeatDto;
-import com.i2i.ibus.dto.UserDto;
-import com.i2i.ibus.model.Address;
-import com.i2i.ibus.model.Booking;
-import com.i2i.ibus.model.BookingDetail;
-import com.i2i.ibus.model.Bus;
-import com.i2i.ibus.model.BusHistory;
-import com.i2i.ibus.model.Cancellation;
-import com.i2i.ibus.model.Operator;
-import com.i2i.ibus.model.Payment;
-import com.i2i.ibus.model.PickupPoint;
-import com.i2i.ibus.model.Seat;
-import com.i2i.ibus.model.User;
 
 /**
  * @version 1.0
@@ -152,5 +131,9 @@ public class Mapper {
 
     public static CancellationDto toCancellationDto(Cancellation cancellation) {
         return mapper.map(cancellation, CancellationDto.class);
+    }
+
+    public static Account toAccount(AccountDto accountDto) {
+        return mapper.map(accountDto, Account.class);
     }
 }

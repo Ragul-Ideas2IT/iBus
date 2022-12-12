@@ -38,6 +38,10 @@ public class OperatorServiceImpl implements OperatorService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void validateMailIdPhoneNoAndGstNumber(String mailId, String phoneNumber, String gstNumber) {
         Optional<Operator> operator = operatorRepository.findByMailIdAndPhoneNumberAndGstNumber(mailId, phoneNumber,
                 gstNumber);
@@ -46,6 +50,10 @@ public class OperatorServiceImpl implements OperatorService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void validateMailIdPhoneNoAndGstNumberForUpdate(String mailId, String phoneNumber, String gstNumber,
                                                            int id) {
         Optional<Operator> operator = operatorRepository.findByMailIdPhoneNoAndGstNumberForUpdate(mailId, phoneNumber,
@@ -55,21 +63,37 @@ public class OperatorServiceImpl implements OperatorService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public OperatorDto saveOperator(OperatorDto operatorDto) {
         validateMailIdPhoneNoAndGstNumber(operatorDto.getMailId(), operatorDto.getPhoneNumber(),
                 operatorDto.getGstNumber());
         return Mapper.toOperatorDto(operatorRepository.save(Mapper.toOperator(operatorDto)));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<OperatorDto> getAllOperatorDtos() {
         return Mapper.toOperatorDtos(operatorRepository.findAll());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public OperatorDto getOperatorDtoById(int id) {
         validateOperator(id);
         return Mapper.toOperatorDto(operatorRepository.findById(id).get());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public OperatorDto updateOperatorById(int id, OperatorDto operatorDto) {
         validateOperator(id);
         validateMailIdPhoneNoAndGstNumberForUpdate(operatorDto.getMailId(), operatorDto.getPhoneNumber(),
@@ -78,6 +102,10 @@ public class OperatorServiceImpl implements OperatorService {
         return Mapper.toOperatorDto(operatorRepository.save(Mapper.toOperator(operatorDto)));
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void deleteOperatorById(int id) {
         validateOperator(id);
         operatorRepository.deleteById(id);
