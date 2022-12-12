@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.i2i.ibus.dto.BookingDto;
 import com.i2i.ibus.dto.CancellationDto;
 import com.i2i.ibus.dto.MessageDto;
-import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.service.BookingService;
 
-import jakarta.validation.Valid;
+import  javax.validation.Valid;
 
 /**
  * @author Esakkiraja E
@@ -34,11 +33,11 @@ public class BookingController {
 
     @Autowired
     private BookingController(BookingService bookingService) {
-        this.bookingService = bookingService;
+	this.bookingService = bookingService;
     }
 
     /**
-     * > Add a booking for a user on a bus
+     * Add a booking for a user.
      *
      * @param userId     The id of the user who is making the booking.
      * @param busId      The id of the bus that the user wants to book.
@@ -47,23 +46,26 @@ public class BookingController {
      */
     @PostMapping("/users/{userId}/buses/{busId}")
     @ResponseStatus(value = HttpStatus.CREATED)
-    private BookingDto addBooking(@PathVariable @Valid int userId, @PathVariable int busId, @RequestBody BookingDto bookingDto) {
-        return bookingService.addBooking(userId, busId, bookingDto);
+    private BookingDto book(@PathVariable @Valid int userId, @PathVariable int busId,
+	    @RequestBody BookingDto bookingDto) {
+	return bookingService.book(userId, busId, bookingDto);
     }
 
     /**
-     * > This function returns a list of all the bookings in the database
+     *  Get all bookings.
+     * This function returns a list of all the bookings.
      *
      * @return List of BookingDto
      */
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    private List<BookingDto> getAllBookings() throws IBusException {
-        return bookingService.getAllBooking();
+    private List<BookingDto> getAllBookings() {
+	return bookingService.getAllBookings();
     }
 
     /**
-     * > This function returns a booking by id
+     * Get all booking for booking for id(booking).
+     * This function returns a bookingDto
      *
      * @param id The id of the booking to be retrieved.
      * @return A BookingDto object
@@ -71,11 +73,12 @@ public class BookingController {
     @GetMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     private BookingDto getById(@PathVariable int id) {
-        return bookingService.getBookingById(id);
+	return bookingService.getById(id);
     }
 
     /**
-     * This function returns a list of bookingDto objects that are associated with the userId passed in as a parameter
+     * Get all booking for id(user).
+     * This function returns a list of bookingDto 
      *
      * @param userId The id of the user whose bookings are to be fetched.
      * @return A list of BookingDto objects.
@@ -83,11 +86,24 @@ public class BookingController {
     @GetMapping("/users/{userId}")
     @ResponseStatus(value = HttpStatus.OK)
     private List<BookingDto> getByUserId(@PathVariable int userId) {
-        return bookingService.getBookingByUserId(userId);
+	return bookingService.getByUserId(userId);
     }
 
     /**
-     * It deletes a booking with the given id.
+     * Get all booking for id(bus).
+     * This function returns a list of bookingDto 
+     *
+     * @param userId The id of the bus whose bookings are to be fetched.
+     * @return A list of BookingDto objects.
+     */
+    @GetMapping("/buses/{busId}")
+    @ResponseStatus(value = HttpStatus.OK)
+    private List<BookingDto> getByBusId(@PathVariable int busId) {
+	return bookingService.getByBusId(busId);
+    }
+
+    /**
+     * It deletes a booking with the given bookingid.
      *
      * @param id The id of the booking to be deleted.
      * @return A MessageDto object with a status code and a message.
@@ -95,8 +111,8 @@ public class BookingController {
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     private MessageDto deleteBooking(@PathVariable int id) {
-        bookingService.deleteBooking(id);
-        return new MessageDto("200", "Booking deleted sucessfully");
+	bookingService.deleteBooking(id);
+	return new MessageDto("200", "Booking deleted sucessfully");
     }
 
     /**
@@ -107,7 +123,7 @@ public class BookingController {
      */
     @PostMapping("/cancellations/{bookingId}")
     @ResponseStatus(value = HttpStatus.OK)
-    private CancellationDto cancellation(@PathVariable @Valid int bookingId) {
-        return bookingService.cancellation(bookingId);
+    private CancellationDto cancel(@PathVariable @Valid int bookingId) {
+	return bookingService.cancel(bookingId);
     }
 }

@@ -153,4 +153,8 @@ public class Mapper {
     public static CancellationDto toCancellationDto(Cancellation cancellation) {
         return mapper.map(cancellation, CancellationDto.class);
     }
+
+    public static Account toAccount(AccountDto accountDto) {
+        return mapper.map(accountDto, Account.class);
+    }
 }
