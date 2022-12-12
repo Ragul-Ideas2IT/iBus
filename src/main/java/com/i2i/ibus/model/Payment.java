@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ */
 package com.i2i.ibus.model;
 
 import java.time.LocalDateTime;
@@ -15,6 +20,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Payment are used to connect the database.
+ * 
+ * @author Tamilmani K
+ * @version 1.0
+ * @created Nov 29 2022
+ *
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -34,6 +47,7 @@ public class Payment {
     private long cardNumber;
     private String cardHolderName;
     private LocalDateTime time;
+    private String message;
     @ManyToOne
     private Booking booking;
     private boolean isDeleted;
