@@ -2,6 +2,7 @@ package com.i2i.ibus;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
 /**
  * @author Ragul
@@ -10,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @created Nov 28 2022
  *
  */
-@SpringBootApplication 
+@SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class IBusApplication {
     
     public static void main(String[] args) {
