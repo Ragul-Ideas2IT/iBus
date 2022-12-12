@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ */
 package com.i2i.ibus.controller;
 
 import java.util.List;
@@ -13,96 +18,106 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.i2i.ibus.constants.Constants;
 import com.i2i.ibus.dto.MessageDto;
 import com.i2i.ibus.dto.PaymentDto;
-import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.service.PaymentService;
 
 import jakarta.validation.Valid;
 
+/**
+ * The payment details are passed to the payment service for validation to store
+ * the details in the database, otherwise it throws {@code IBusException}.
+ * 
+ * @author Tamilmani K
+ * @version 1.0
+ * @created Nov 29 2022
+ *
+ */
 @RestController
 @RequestMapping("api/v1/payments")
 public class PaymentController {
 
     private PaymentService paymentService;
 
+    /**
+     * Create a new payment service to initialing the specified targets for
+     * validating the payment details.
+     * 
+     * @param paymentService to validating the payment details.
+     */
     @Autowired
     private PaymentController(PaymentService paymentService) {
-        this.paymentService = paymentService;
+	this.paymentService = paymentService;
     }
 
     /**
-     * Create a payment for a booking
+     * Create a payment for a booking. If the payment is validated successfully it
+     * returns {@code MessageDto}, otherwise it throws {@code IBusException}.
      *
-     * @param bookingId The id of the booking that the payment is for.
-     * @param paymentDto This is the object that will be sent to the server.
-     * @return PaymentDto
+     * @param bookingId  Id for get the book id.
+     * @param paymentDto Payment details for validating.
+     * @return MessageDto If the payment created successfully it return
+     *         {@code MessageDto}.
      */
     @PostMapping("/bookings/{bookingId}")
-    @ResponseStatus(code = HttpStatus.OK)
-    private PaymentDto createPayment(@PathVariable int bookingId, @RequestBody @Valid PaymentDto paymentDto) {
-        return paymentService.createPayment(bookingId, paymentDto);
+    private MessageDto createPayment(@PathVariable int bookingId, @RequestBody @Valid PaymentDto paymentDto) {
+	paymentService.createPayment(bookingId, paymentDto);
+	return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.PAID_MESSAGE);
     }
 
     /**
-     * This function returns a list of all payments for a given booking
+     * This function returns a list of all payments for a given booking id. If the
+     * booking id aren't found it throws {@code IBusException}.
      *
-     * @param bookingId The booking id of the booking for which you want to get all the payments.
-     * @return A list of PaymentDto objects.
+     * @param bookingId The booking id of the booking for which you want to get all
+     *                  the payments.
+     * @return List<PaymentDto> A list of PaymentDto objects.
      */
     @GetMapping("/bookings/{bookingId}")
     @ResponseStatus(code = HttpStatus.OK)
     private List<PaymentDto> getAllByBookingId(@PathVariable int bookingId) {
-        return paymentService.getAllPaymentsByBookingId(bookingId);
+	return paymentService.getAllByBookingId(bookingId);
     }
 
     /**
-     * This function is a GET request that takes in a paymentId and returns a PaymentDto
+     * It get the payment by payment id. If the payment id aren't found it throws
+     * {@code IBusException}.
      *
-     * @param paymentId The paymentId is the unique identifier for the payment.
-     * @return PaymentDto
+     * @param paymentId Id for get the payment details.
+     * @return PaymentDto If the payment id is found it returns {@code PaymentDto}.
      */
     @GetMapping("/{paymentId}")
     @ResponseStatus(code = HttpStatus.OK)
-    private PaymentDto getByPaymentId(@PathVariable int paymentId) {
-        return paymentService.getPaymentByPaymentId(paymentId);
+    private PaymentDto getById(@PathVariable int paymentId) {
+	return paymentService.getById(paymentId);
     }
 
     /**
-     * It deletes all payments associated with a booking
+     * It deletes all payments associated with a booking. If the booking id aren't
+     * found it throws {@code IBusException}.
      *
-     * @param bookingId The booking id of the booking whose payments you want to delete.
-     * @return A MessageDto object with a status code and message.
+     * @param bookingId The booking id of the booking whose payments you want to
+     *                  delete.
+     * @return MessageDto A MessageDto object with a status code and message.
      */
     @DeleteMapping("/bookings/{bookingId}")
     @ResponseStatus(code = HttpStatus.OK)
     private MessageDto deleteAllByBookingId(@PathVariable int bookingId) {
-        paymentService.deleteAllPaymentsByBookingId(bookingId);
-        return new MessageDto("200", "Deleted Successfully.");
+	paymentService.deleteAllByBookingId(bookingId);
+	return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
     }
 
     /**
-     * It deletes a payment by paymentId
+     * It deletes all the payments in the database.
      *
-     * @param paymentId The paymentId of the payment you want to delete.
-     * @return A MessageDto object with a status code and message.
-     */
-    @DeleteMapping("/{paymentId}")
-    @ResponseStatus(code = HttpStatus.OK)
-    private MessageDto deleteById(@PathVariable int paymentId) {
-        paymentService.deleteByPaymentId(paymentId);
-        return new MessageDto("200", "Deleted Successfully.");
-    }
-
-    /**
-     * It deletes all the payments in the database
-     *
-     * @return A MessageDto object with a status code and a message.
+     * @return MessageDto A MessageDto object with a status code and a message.
      */
     @DeleteMapping
     @ResponseStatus(code = HttpStatus.OK)
-    private MessageDto deleteAllPayments() {
-        paymentService.deleteAllPayments();
-        return new MessageDto("200", "Deleted Successfully.");
+    private MessageDto deleteAll() {
+	paymentService.deleteAll();
+	return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
     }
+
 }
