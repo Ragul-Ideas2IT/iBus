@@ -5,13 +5,13 @@ import java.time.LocalTime;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,7 +31,7 @@ import lombok.Setter;
 @Table
 @SQLDelete(sql = "UPDATE PickupPoint SET is_deleted = true WHERE id=?")
 @Where(clause = "is_deleted = false")
-public class PickupPoint {
+public class Stop {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

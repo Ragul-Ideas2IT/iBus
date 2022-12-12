@@ -1,35 +1,29 @@
 package com.i2i.ibus.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.i2i.ibus.dto.BusDto;
-import com.i2i.ibus.exception.IBusException;
-import com.i2i.ibus.mapper.Mapper;
-import com.i2i.ibus.model.Bus;
-import com.i2i.ibus.repository.BusRepository;
-import com.i2i.ibus.repository.OperatorRepository;
 
 /**
- * 
+ * <h1>Bus Ticket Booking Application
+ * <h1>
+ * <p>
+ * Used to manipulate the Bus details in the application. Operators are
+ * manipulate the bus details.
+ * <p>
+ *
  * @author Ananth.
  * @version 1.0.
- * 
- * @created nov 30 2022
- *
+ * @created Nov 29 2022
  */
  public interface BusService {
 
      /**
-      * It adds a bus to the database.
+      * It is used to add the bus details from the operators.
       *
-      * @param busDto This is the bus object that you want to add.
-      * @param operatorId The id of the operator who owns the bus.
-      * @return BusDto
+      * @param bus details given by the operator.
+      * @param operatorId The id of the operator to which the bus belongs.
+      * @return the saved bus details and httpstatus.
       */
      BusDto addBus(BusDto busDto, int operatorId);
 
@@ -57,7 +51,7 @@ import com.i2i.ibus.repository.OperatorRepository;
       * @param operatorId The id of the operator who owns the bus.
       * @return BusDto
       */
-     BusDto updateBus(BusDto busDto, int busId, int operatorId);
+     BusDto updateBus(BusDto busDto, int busId);
 
      /**
       * Deletes the bus with the given id.

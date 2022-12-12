@@ -8,7 +8,7 @@ import com.i2i.ibus.dto.CancellationDto;
 import com.i2i.ibus.model.Booking;
 import com.i2i.ibus.model.BookingDetail;
 import com.i2i.ibus.model.Bus;
-import com.i2i.ibus.model.BusHistory;
+import com.i2i.ibus.model.Schedule;
 import com.i2i.ibus.model.Cancellation;
 import com.i2i.ibus.model.User;
 
@@ -78,7 +78,7 @@ public interface BookingService {
      * @param travelDate The date of travel
      * @return A BusHistory object
      */
-    public BusHistory getBusHistoryByTravelDate(Bus bus, LocalDate travelDate);
+    public Schedule getBusHistoryByTravelDate(Bus bus, LocalDate travelDate);
 
     /**
      * Cancel a booking.
@@ -123,10 +123,10 @@ public interface BookingService {
     /**
      * It calculates the difference of time between the current time and the time when the bus was last seen.
      *
-     * @param busHistory The BusHistory object that contains the time of the bus.
+     * @param schedule The BusHistory object that contains the time of the bus.
      * @return The difference of time between the current time and the time the bus was last seen.
      */
-    public long calculateDifferenceOfTime(BusHistory busHistory);
+    public long calculateDifferenceOfTime(Schedule schedule);
 
     /**
      * Delete a booking with the given bookingId.

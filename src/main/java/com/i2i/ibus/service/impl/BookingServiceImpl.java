@@ -17,15 +17,15 @@ import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.Booking;
 import com.i2i.ibus.model.BookingDetail;
 import com.i2i.ibus.model.Bus;
-import com.i2i.ibus.model.BusHistory;
+import com.i2i.ibus.model.Schedule;
 import com.i2i.ibus.model.Cancellation;
-import com.i2i.ibus.model.PickupPoint;
+import com.i2i.ibus.model.Stop;
 import com.i2i.ibus.model.Seat;
 import com.i2i.ibus.model.User;
 import com.i2i.ibus.repository.BookingRepository;
-import com.i2i.ibus.repository.BusHistoryRepository;
+import com.i2i.ibus.repository.ScheduleRepository;
 import com.i2i.ibus.repository.BusRepository;
-import com.i2i.ibus.repository.PickupPointRepository;
+import com.i2i.ibus.repository.StopRepository;
 import com.i2i.ibus.repository.SeatRepository;
 import com.i2i.ibus.repository.UserRepository;
 import com.i2i.ibus.service.BookingService;
@@ -40,20 +40,20 @@ public class BookingServiceImpl implements BookingService {
 
     private BookingRepository bookingRepository;
     private BusRepository busRepository;
-    private BusHistoryRepository busHistoryRepository;
-    private PickupPointRepository pickupPointRepository;
+    private ScheduleRepository scheduleRepository;
+    private StopRepository stopRepository;
     private SeatRepository seatRepository;
     private UserRepository userRepository;
 
     @Autowired
-    public BookingServiceImpl(BookingRepository bookingRepository, PickupPointRepository pickupPointRepository,
-                              BusRepository busRepository, BusHistoryRepository busHistoryRepository, UserRepository userRepository,
+    public BookingServiceImpl(BookingRepository bookingRepository, StopRepository stopRepository,
+                              BusRepository busRepository, ScheduleRepository scheduleRepository, UserRepository userRepository,
                               SeatRepository seatRepository) {
         this.bookingRepository = bookingRepository;
         this.busRepository = busRepository;
         this.userRepository = userRepository;
-        this.busHistoryRepository = busHistoryRepository;
-        this.pickupPointRepository = pickupPointRepository;
+        this.scheduleRepository = scheduleRepository;
+        this.stopRepository = stopRepository;
         this.seatRepository = seatRepository;
     }
 
@@ -144,12 +144,12 @@ public class BookingServiceImpl implements BookingService {
      * @param travelDate
      * @return
      */
-    public BusHistory getBusHistoryByTravelDate(Bus bus, LocalDate travelDate) {
-        Optional<BusHistory> busHistory = busHistoryRepository.findByBusIdAndDepartureDate(bus.getId(), travelDate);
-        if (!busHistory.isPresent()) {
+    public Schedule getBusHistoryByTravelDate(Bus bus, LocalDate travelDate) {
+        Optional<Schedule> schedule = scheduleRepository.findByBusIdAndDepartureDate(bus.getId(), travelDate);
+        if (!schedule.isPresent()) {
             throw new IBusException("This bus is not departure on this date");
         }
-        return busHistory.get();
+        return schedule.get();
     }
 
     /**
@@ -239,12 +239,12 @@ public class BookingServiceImpl implements BookingService {
     /**
      * method is used to Calculate the time.
      *
-     * @param busHistory
+     * @param schedule
      * @return
      */
-    public long calculateDifferenceOfTime(BusHistory busHistory) {
+    public long calculateDifferenceOfTime(Schedule schedule) {
         return ChronoUnit.MINUTES.between(LocalDateTime.now(),
-                LocalDateTime.of(busHistory.getArrivingDate(), busHistory.getArrivingTime()));
+                LocalDateTime.of(schedule.getArrivingDate(), schedule.getArrivingTime()));
     }
 
     /**
@@ -300,9 +300,9 @@ public class BookingServiceImpl implements BookingService {
      * @param busId
      */
     public void validatePickupPoints(Booking booking, int busId) {
-        Optional<PickupPoint> dropOff = pickupPointRepository.findAllByBusIdAndCityAndStopName(busId,
+        Optional<Stop> dropOff = stopRepository.findAllByBusIdAndCityAndStopName(busId,
                 booking.getDestination(), booking.getDropPoint());
-        Optional<PickupPoint> pickUp = pickupPointRepository.findAllByBusIdAndCityAndStopName(busId, booking.getSource(),
+        Optional<Stop> pickUp = stopRepository.findAllByBusIdAndCityAndStopName(busId, booking.getSource(),
                 booking.getPickUpPoint());
         if (booking.getSource().equals(booking.getDestination())) {
             throw new IBusException("Source and destination are same");

@@ -15,6 +15,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * <h1>Bus Ticket Booking Application
+ * <h1>
+ * <p>
+ * Used to manipulate the Bus seat details in the application. Operators are
+ * manipulate the bus seat details.
+ * <p>
+ *
+ * @author Ananth.
+ * @version 1.0.
+ * @created Nov 29 2022
+ */
 @Service
 public class SeatServiceImpl implements SeatService {
 
@@ -28,6 +40,9 @@ public class SeatServiceImpl implements SeatService {
 	this.busRepository = busRepository;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public SeatDto addSeat(SeatDto seatDto, int busId) {
 	Seat seat = null;
 
@@ -44,6 +59,9 @@ public class SeatServiceImpl implements SeatService {
 	return Mapper.toSeatDto(seat);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public List<SeatDto> getAllByBusId(int busId) {
 	List<Seat> seats = seatRepository.findAllByBusId(busId);
 	List<SeatDto> seatsDto = new ArrayList<SeatDto>();
@@ -56,6 +74,9 @@ public class SeatServiceImpl implements SeatService {
 	return seatsDto;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public SeatDto getBySeatId(int id) {
 	Seat seat = null;
 
@@ -67,6 +88,9 @@ public class SeatServiceImpl implements SeatService {
 	return Mapper.toSeatDto(seat);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public SeatDto updateSeat(SeatDto seatDto, int seatId, int busId) {
 	Seat seat = null;
 
@@ -84,6 +108,9 @@ public class SeatServiceImpl implements SeatService {
 	return Mapper.toSeatDto(seat);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public void deleteSeat(int seatId) {
 	seatRepository.deleteById(seatId);
     }

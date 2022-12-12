@@ -16,33 +16,44 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.i2i.ibus.dto.MessageDto;
 import com.i2i.ibus.dto.SeatDto;
-import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.service.SeatService;
 
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 
+/**
+ * <h1>Bus Ticket Booking Application
+ * <h1>
+ * <p>
+ * Used to manipulate the Bus seat details in the application. Operators are
+ * manipulate the bus seat details.
+ * <p>
+ *
+ * @author Ananth.
+ * @version 1.0.
+ * @created Nov 29 2022
+ */
 @RestController
-@RequestMapping("api/v1/seats")
+@RequestMapping("api/v1//buses/seats")
 public class SeatController {
 
     private SeatService seatService;
 
     @Autowired
     private SeatController(SeatService seatService) {
-        this.seatService = seatService;
+	this.seatService = seatService;
     }
 
     /**
-     * It takes a seatDto and a busId, and returns a seatDto
+     * Uses to add bus seat deatils given by the operators.
      *
-     * @param seatDto This is the object that will be sent to the server.
-     * @param busId The id of the bus to which the seat is to be added.
-     * @return A ResponseEntity object is being returned.
+     * @param seatDto seat deatils given by the operators.
+     * @param busId   The id of the bus to which the seat is to be added.
+     * @return the saved bus seat deatils will return.
      */
-    @PostMapping("/buses/{busId}")
+    @PostMapping("/{busId}")
     private ResponseEntity<SeatDto> addSeat(@RequestBody @Valid SeatDto seatDto, @PathVariable int busId) {
 
-        return new ResponseEntity<SeatDto>(seatService.addSeat(seatDto, busId), HttpStatus.CREATED);
+	return new ResponseEntity<SeatDto>(seatService.addSeat(seatDto, busId), HttpStatus.CREATED);
     }
 
     /**
@@ -51,49 +62,49 @@ public class SeatController {
      * @param busId The id of the bus whose seats are to be fetched.
      * @return A list of seats for a specific bus.
      */
-    @GetMapping("/buses/{busId}")
+    @GetMapping("/{busId}")
     private ResponseEntity<List<SeatDto>> getAllSeats(@PathVariable int busId) {
 
-        return new ResponseEntity<List<SeatDto>>(seatService.getAllByBusId(busId), HttpStatus.OK);
+	return new ResponseEntity<List<SeatDto>>(seatService.getAllByBusId(busId), HttpStatus.OK);
     }
 
     /**
-     * This function is a GET request that takes in a seatId and returns a SeatDto object
+     * Used to get the seat details of the bus by given seat id.
      *
      * @param seatId The id of the seat you want to get.
-     * @return A SeatDto object is being returned.
+     * @return A Seat details is being returned.
      */
     @GetMapping("/{seatId}")
     private ResponseEntity<SeatDto> getBySeatId(@PathVariable int seatId) {
 
-        return new ResponseEntity<SeatDto>(seatService.getBySeatId(seatId), HttpStatus.OK);
+	return new ResponseEntity<SeatDto>(seatService.getBySeatId(seatId), HttpStatus.OK);
     }
 
     /**
-     * It takes a seatDto, a seatId, and a busId, and returns a seatDto
+     * Used to update seat details.
      *
-     * @param seatDto The object that will be updated.
-     * @param seatId The id of the seat you want to update.
-     * @param busId The id of the bus that the seat belongs to.
-     * @return A response entity with the updated seat and a status of OK.
+     * @param seatDto seat details given by operators will be updated.
+     * @param seatId  The id of the seat you want to update.
+     * @param busId   The id of the bus that the seat belongs to.
+     * @return the update seat details.
      */
-    @PutMapping("/{seatId}/buses/{busId}")
+    @PutMapping("/{seatId}/{busId}")
     private ResponseEntity<SeatDto> updateSeat(@RequestBody @Valid SeatDto seatDto, @PathVariable int seatId,
-                                              @PathVariable int busId) {
+	    @PathVariable int busId) {
 
-        return new ResponseEntity<SeatDto>(seatService.updateSeat(seatDto, seatId, busId), HttpStatus.OK);
+	return new ResponseEntity<SeatDto>(seatService.updateSeat(seatDto, seatId, busId), HttpStatus.OK);
     }
 
     /**
-     * It deletes a seat from the database.
+     * It deletes a seat deatils.
      *
      * @param seatId The id of the seat to be deleted.
-     * @return MessageDto
+     * @return Deleted message when the bus seat details are deleted.
      */
     @DeleteMapping("/{seatId}")
     private MessageDto deleteSeat(@PathVariable int seatId) {
 
-        seatService.deleteSeat(seatId);
-        return new MessageDto("200", "Deleted Sucessfully");
+	seatService.deleteSeat(seatId);
+	return new MessageDto("200", "Deleted Sucessfully");
     }
 }
