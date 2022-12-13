@@ -23,13 +23,13 @@ import javax.validation.Valid;
 /**
  * @author Ragul
  * @version 1.0
- * @created Nov 29 2022
+ * @since Nov 29 2022
  */
 
 @RestController
 @RequestMapping("api/v1/operators")
 public class OperatorController {
-    private OperatorService operatorService;
+    private final OperatorService operatorService;
 
     @Autowired
     private OperatorController(OperatorService operatorService) {

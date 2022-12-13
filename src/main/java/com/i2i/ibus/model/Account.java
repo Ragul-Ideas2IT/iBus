@@ -1,7 +1,6 @@
 package com.i2i.ibus.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +10,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
+@Table
 public class Account {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String mailId;
     private String role;
     private String password;
 }

@@ -1,5 +1,6 @@
 package com.i2i.ibus.security;
 
+import com.i2i.ibus.model.Account;
 import com.i2i.ibus.repository.AccountRepository;
 import com.i2i.ibus.model.User;
 import com.i2i.ibus.repository.UserRepository;
@@ -14,11 +15,11 @@ import java.util.Optional;
 
 @Service
 public class AccountDetailService implements UserDetailsService {
-    private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
 
     @Autowired
-    public AccountDetailService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public AccountDetailService(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
     }
 
     /**
@@ -27,7 +28,7 @@ public class AccountDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String mailId)
             throws UsernameNotFoundException {
-        Optional<User> accountOptional = userRepository.findByMailId(mailId);
+        Optional<Account> accountOptional = accountRepository.findByMailId(mailId);
         if (accountOptional.isEmpty()) {
             throw new UsernameNotFoundException(mailId.concat(" not found"));
         }

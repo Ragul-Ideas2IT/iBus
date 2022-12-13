@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author Ragul
  * @version 1.0
- * @created Nov 29 2022
+ * @since Nov 29 2022
  */
 public interface UserService {
 
@@ -44,7 +44,7 @@ public interface UserService {
      *
      * @return A list of UserDto objects.
      */
-    List<UserDto> getAllUserDtos();
+    List<UserDto> getAllUsersDto();
 
     /**
      * Get a user DTO by id.
