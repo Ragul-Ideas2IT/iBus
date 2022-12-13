@@ -16,7 +16,7 @@ import java.util.Optional;
 /**
  * @author Ragul
  * @version 1.0
- * @created Nov 29 2022
+ * @since Nov 29 2022
  */
 @Service
 public class UserServiceImpl implements UserService {
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public List<UserDto> getAllUserDtos() {
+    public List<UserDto> getAllUsersDto() {
         return Mapper.toUserDtos(userRepository.findAll());
     }
     /**

@@ -3,16 +3,18 @@ package com.i2i.ibus.security;
 import com.i2i.ibus.model.Account;
 import com.i2i.ibus.model.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class AccountDetails implements UserDetails {
-    private final User user;
+    private final Account account;
 
-    public AccountDetails(User user) {
-        this.user = user;
+    public AccountDetails(Account account) {
+        this.account = account;
     }
     /**
      * Returns the authorities granted to the user. Cannot return <code>null</code>.
@@ -21,7 +23,7 @@ public class AccountDetails implements UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
+        return List.of(new SimpleGrantedAuthority(account.getRole()));
     }
 
     /**
@@ -31,7 +33,7 @@ public class AccountDetails implements UserDetails {
      */
     @Override
     public String getPassword() {
-        return user.getPhoneNumber();
+        return account.getPassword();
     }
 
     /**
@@ -42,7 +44,7 @@ public class AccountDetails implements UserDetails {
      */
     @Override
     public String getUsername() {
-        return user.getMailId();
+        return account.getMailId();
     }
 
     /**

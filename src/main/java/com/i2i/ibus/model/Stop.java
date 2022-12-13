@@ -29,7 +29,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@SQLDelete(sql = "UPDATE stop SET is_deleted = true WHERE id=?")
+@Data
+@SQLDelete(sql = "UPDATE PickupPoint SET is_deleted = true WHERE id=?")
 @Where(clause = "is_deleted = false")
 public class Stop {
 

@@ -28,8 +28,9 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@NoArgsConstructor
+@Data
 @Entity
+@Table
 @SQLDelete(sql = "UPDATE schedule SET is_deleted = true WHERE id=?")
 @Where(clause = "is_deleted = false")
 public class Schedule {

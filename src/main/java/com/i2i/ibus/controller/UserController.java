@@ -23,13 +23,13 @@ import javax.validation.Valid;
 /**
  * @author Ragul
  * @version 1.0
- * @created Nov 29 2022
+ * @since Nov 29 2022
  */
 @RestController
 @RequestMapping("api/v1/users")
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     private UserController(UserService userService) {
@@ -45,6 +45,7 @@ public class UserController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     private UserDto createUser(@RequestBody @Valid UserDto userDto) {
+        System.out.println("=============1============");
         return userService.saveUser(userDto);
     }
 
@@ -57,7 +58,7 @@ public class UserController {
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
     private List<UserDto> getAllUsers() {
-        return userService.getAllUserDtos();
+        return userService.getAllUsersDto();
     }
 
     /**

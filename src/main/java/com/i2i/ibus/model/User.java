@@ -11,6 +11,9 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
 
 /**
  * @author Ragul
@@ -36,5 +39,5 @@ public class User {
     private String mailId;
     private String gender;
     private int age;
-    private boolean isDeleted; 
+    private boolean isDeleted;
 }

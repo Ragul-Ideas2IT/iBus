@@ -1,10 +1,7 @@
 package com.i2i.ibus.security;
 
-import com.i2i.ibus.repository.UserRepository;
-import com.i2i.ibus.service.impl.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,8 +19,12 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
 
+    private final AccountDetailService accountDetailService;
+
     @Autowired
-    private AccountDetailService accountDetailService;
+    public SecurityConfiguration(AccountDetailService accountDetailService) {
+        this.accountDetailService = accountDetailService;
+    }
 
 
     /**
@@ -34,28 +35,32 @@ public class SecurityConfiguration {
      */
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity)
             throws Exception {
-        System.out.println("Security filter chain");
-        httpSecurity.csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.GET,"/api/v1/**").permitAll()
-//                .antMatchers("*/**").permitAll()//securityMatcher("*/**").authorizeHttpRequests()
-                .and().formLogin();
-//                .requestMatchers("*/user/**").hasRole("user")
-//                .requestMatchers("*/operator/**").hasRole("operator")
-//                .requestMatchers("/bus/**").hasRole("operator")
-//                .requestMatchers(HttpMethod.POST,"*/bookings/**").hasRole("user")
-//                .requestMatchers(HttpMethod.GET,"*/bookings/users/**").hasRole("user")
-//                .requestMatchers(HttpMethod.GET,"*/bookings/{id}").hasAnyRole()
-//                .requestMatchers(HttpMethod.DELETE,"*/bookings/**").hasAnyRole()
-//                .requestMatchers(HttpMethod.GET,"*/bookings/buses/**").hasRole("operator")
-//                .requestMatchers("*/payments/**").hasRole("user").and().httpBasic();
+        httpSecurity.csrf().disable().authorizeRequests();
+//                antMatchers(HttpMethod.POST,"/api/v1/accounts").hasAnyRole()
+//                .antMatchers(HttpMethod.POST,"**/api/v1/users").hasAnyRole("ADMIN","USER","user")
+//                .antMatchers(HttpMethod.GET,"**/api/v1/users").hasAnyRole("ADMIN","USER","user").
+        //                .antMatchers(HttpMethod.PUT,"**/api/v1/users/{id}").hasRole("user")
+//                .antMatchers(HttpMethod.DELETE,"**/api/v1/users/{id}").hasRole("user")
+//                .antMatchers(HttpMethod.POST, "**/api/v1/operator").hasRole("operator")
+//                .antMatchers(HttpMethod.GET, "**/api/v1/operator").hasRole("operator")
+//                .antMatchers(HttpMethod.PUT, "**/api/v1/operator/{id}").hasRole("operator")
+//                .antMatchers(HttpMethod.DELETE, "**/api/v1/operator/{id}").hasRole("operator")
+//                .antMatchers("/bus/**").hasRole("operator")
+//                .antMatchers(HttpMethod.POST,"*/bookings/**").hasRole("user")
+//                .antMatchers(HttpMethod.GET,"*/bookings/users/**").hasRole("user")
+//                .antMatchers(HttpMethod.GET,"*/bookings/{id}").hasAnyRole()
+//                .antMatchers(HttpMethod.DELETE,"*/bookings/**").hasAnyRole()
+//                .antMatchers(HttpMethod.GET,"*/bookings/buses/**").hasRole("operator")
+//                .antMatchers("*/payments/**").hasRole("user").and().httpBasic();
         return httpSecurity.build();
     }
 
-//    public AccountServiceImpl accountDetailService() {
-//        return new AccountServiceImpl(userRepository) {
-//        });
-//    }
-
+    /**
+     * This function creates a DaoAuthenticationProvider object, sets the userDetailsService to the AccountDetailService
+     * object, and sets the passwordEncoder to NoOpPasswordEncoder.getInstance().
+     *
+     * @return A DaoAuthenticationProvider object.
+     */
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
