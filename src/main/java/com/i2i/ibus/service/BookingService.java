@@ -74,9 +74,9 @@ public interface BookingService {
      *
      * @param bus        The bus object that you want to get the history for.
      * @param travelDate The date of travel
-     * @return A BusHistory object
+     * @return A Schedule object
      */
-    BusHistory getBusHistoryByTravelDate(Bus bus, LocalDate travelDate);
+    Schedule getScheduleByTravelDate(Bus bus, LocalDate travelDate);
 
     /**
      * Method is used to Cancel a booking.
@@ -99,7 +99,6 @@ public interface BookingService {
      * Method is used to Cancel a booking, calculate the refund.
      *
      * @param booking      The booking to be cancelled.
-     * @param cancellation The cancellation object that contains the cancellation
      *                     details.
      * @return A Cancellation object.
      */
@@ -124,12 +123,12 @@ public interface BookingService {
      * Method is used to calculates the difference of time between the current time
      * and time(bus arriving time), then it convert into minutes.
      *
-     * @param busHistory The BusHistory object that contains the time of the bus.
+     * @param Schedule The Schedule object that contains the time of the bus.
      * @return The difference of time between the current time and the time the bus
      *      was last seen.
      */
     
-    long calculateDifferenceOfTime(BusHistory busHistory);
+    long calculateDifferenceOfTime(Schedule Schedule);
 
     /**
      * Delete a booking with the given bookingId.
@@ -165,7 +164,7 @@ public interface BookingService {
      * @param booking The booking object that contains the pickup points.
      * @param busId   The id of the bus that the user has selected.
      */
-    void validatePickupPoints(Booking booking, int busId);
+    void validateStops(Booking booking, int busId);
 
     /**
      * Method is used to Validate the Seats(BookingDetails).

@@ -42,20 +42,20 @@ public class BookingServiceImpl implements BookingService {
     private BookingRepository bookingRepository;
     private BusRepository busRepository;
     private ScheduleRepository scheduleRepository;
-    private StopRepository stopRepository;
     private SeatRepository seatRepository;
     private UserRepository userRepository;
+	private StopRepository stopRepository;
 
-    @Autowired
-    public BookingServiceImpl(BookingRepository bookingRepository, PickupPointRepository pickupPointRepository,
-	    BusRepository busRepository, BusHistoryRepository busHistoryRepository, UserRepository userRepository,
+	@Autowired
+    public BookingServiceImpl(BookingRepository bookingRepository, StopRepository StopRepository,
+	    BusRepository busRepository, ScheduleRepository ScheduleRepository, UserRepository userRepository,
 	    SeatRepository seatRepository) {
 	this.bookingRepository = bookingRepository;
 	this.busRepository = busRepository;
 	this.userRepository = userRepository;
-	this.busHistoryRepository = busHistoryRepository;
-	this.pickupPointRepository = pickupPointRepository;
+	this.scheduleRepository = ScheduleRepository;
 	this.seatRepository = seatRepository;
+	this.stopRepository = StopRepository;
     }
 
     /**
@@ -64,9 +64,9 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingDto book(int userId, int busId, BookingDto bookingDto) {
 	Booking booking = Mapper.toBooking(bookingDto);
-	validatePickupPoints(booking, busId);
+	validateStops(booking, busId);
 	booking.setBus(getBusById(busId));
-	getBusHistoryByTravelDate(booking.getBus(), booking.getTravelDate());
+	getScheduleByTravelDate(booking.getBus(), booking.getTravelDate());
 	validateBookingDetails(booking.getBookingDetails(), busId);
 	booking.setTotalFare(calculateFare(booking.getBookingDetails(), busId));
 	booking.setDateTime(LocalDateTime.now());
@@ -83,16 +83,16 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingDto> getAllBookings() {
 	List<Booking> bookings = bookingRepository.findAll();
-	List<BookingDto> bookingDtos = new ArrayList<BookingDto>();
+	List<BookingDto> bookingsDto = new ArrayList<BookingDto>();
 	if (!bookings.isEmpty()) {
 	    for (Booking booking : bookings) {
 		completeBooking(booking.getId());
-		bookingDtos.add(Mapper.toBookingDto(booking));
+		bookingsDto.add(Mapper.toBookingDto(booking));
 	    }
 	} else {
 	    throw new IBusException("Booking doesn't exists");
 	}
-	return bookingDtos;
+	return bookingsDto;
     }
 
     /**
@@ -146,7 +146,7 @@ public class BookingServiceImpl implements BookingService {
     /**
      * {@inheritDoc}
      */
-    public Schedule getBusHistoryByTravelDate(Bus bus, LocalDate travelDate) {
+    public Schedule getScheduleByTravelDate(Bus bus, LocalDate travelDate) {
         Optional<Schedule> schedule = scheduleRepository.findByBusIdAndDepartureDate(bus.getId(), travelDate);
         if (!schedule.isPresent()) {
             throw new IBusException("This bus is not departure on this date");
@@ -195,7 +195,7 @@ public class BookingServiceImpl implements BookingService {
 	    booking.getCancellation().setRefundAmount(0);
 	    booking.getCancellation().setRefundStatus("Not paid");
 	} else {
-	    long min = calculateDifferenceOfTime(getBusHistoryByTravelDate(booking.getBus(), booking.getTravelDate()));
+	    long min = calculateDifferenceOfTime(getScheduleByTravelDate(booking.getBus(), booking.getTravelDate()));
 	    if (min >= 600) {
 		booking.getCancellation().setRefundAmount((booking.getTotalFare() - (booking.getTotalFare() * 0.1)));
 	    } else {
@@ -233,7 +233,7 @@ public class BookingServiceImpl implements BookingService {
     public void completeBooking(int id) {
 	validateBooking(id);
 	Booking booking = bookingRepository.findById(id).get();
-	if (calculateDifferenceOfTime(getBusHistoryByTravelDate(booking.getBus(), booking.getTravelDate())) <= 0) {
+	if (calculateDifferenceOfTime(getScheduleByTravelDate(booking.getBus(), booking.getTravelDate())) <= 0) {
 	    booking.setStatus("Completed");
 	}
 	bookingRepository.save(booking);
@@ -253,7 +253,9 @@ public class BookingServiceImpl implements BookingService {
 	}
     }
 
-    /**
+	/**
+	 * {@inheritDoc}
+	 */
     public long calculateDifferenceOfTime(Schedule schedule) {
         return ChronoUnit.MINUTES.between(LocalDateTime.now(),
                 LocalDateTime.of(schedule.getArrivingDate(), schedule.getArrivingTime()));
@@ -305,7 +307,7 @@ public class BookingServiceImpl implements BookingService {
      * {@inheritDoc}
      */
     @Override
-    public void validatePickupPoints(Booking booking, int busId) {
+    public void validateStops(Booking booking, int busId) {
         Optional<Stop> dropOff = stopRepository.findAllByBusIdAndCityAndStopName(busId,
                 booking.getDestination(), booking.getDropPoint());
         Optional<Stop> pickUp = stopRepository.findAllByBusIdAndCityAndStopName(busId, booking.getSource(),

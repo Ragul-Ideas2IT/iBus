@@ -23,12 +23,12 @@ import com.i2i.ibus.dto.MessageDto;
 import com.i2i.ibus.dto.PaymentDto;
 import com.i2i.ibus.service.PaymentService;
 
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 
 /**
  * The payment details are passed to the payment service for validation to store
  * the details in the database, otherwise it throws {@code IBusException}.
- * 
+ *
  * @author Tamilmani K
  * @version 1.0
  * @created Nov 29 2022
@@ -43,7 +43,7 @@ public class PaymentController {
     /**
      * Create a new payment service to initialing the specified targets for
      * validating the payment details.
-     * 
+     *
      * @param paymentService to validating the payment details.
      */
     @Autowired

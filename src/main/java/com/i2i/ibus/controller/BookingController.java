@@ -18,7 +18,7 @@ import com.i2i.ibus.dto.CancellationDto;
 import com.i2i.ibus.dto.MessageDto;
 import com.i2i.ibus.service.BookingService;
 
-import  javax.validation.Valid;
+import javax.validation.Valid;
 
 /**
  * @author Esakkiraja E
@@ -33,7 +33,7 @@ public class BookingController {
 
     @Autowired
     private BookingController(BookingService bookingService) {
-	this.bookingService = bookingService;
+        this.bookingService = bookingService;
     }
 
     /**
@@ -47,12 +47,12 @@ public class BookingController {
     @PostMapping("/users/{userId}/buses/{busId}")
     @ResponseStatus(value = HttpStatus.CREATED)
     private BookingDto book(@PathVariable @Valid int userId, @PathVariable int busId,
-	    @RequestBody BookingDto bookingDto) {
-	return bookingService.book(userId, busId, bookingDto);
+                            @RequestBody BookingDto bookingDto) {
+        return bookingService.book(userId, busId, bookingDto);
     }
 
     /**
-     *  Get all bookings.
+     * Get all bookings.
      * This function returns a list of all the bookings.
      *
      * @return List of BookingDto
@@ -60,7 +60,7 @@ public class BookingController {
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
     private List<BookingDto> getAllBookings() {
-	return bookingService.getAllBookings();
+        return bookingService.getAllBookings();
     }
 
     /**
@@ -73,12 +73,12 @@ public class BookingController {
     @GetMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     private BookingDto getById(@PathVariable int id) {
-	return bookingService.getById(id);
+        return bookingService.getById(id);
     }
 
     /**
      * Get all booking for id(user).
-     * This function returns a list of bookingDto 
+     * This function returns a list of bookingDto
      *
      * @param userId The id of the user whose bookings are to be fetched.
      * @return A list of BookingDto objects.
@@ -86,20 +86,19 @@ public class BookingController {
     @GetMapping("/users/{userId}")
     @ResponseStatus(value = HttpStatus.OK)
     private List<BookingDto> getByUserId(@PathVariable int userId) {
-	return bookingService.getByUserId(userId);
+        return bookingService.getByUserId(userId);
     }
 
     /**
      * Get all booking for id(bus).
-     * This function returns a list of bookingDto 
+     * This function returns a list of bookingDto
      *
-     * @param userId The id of the bus whose bookings are to be fetched.
      * @return A list of BookingDto objects.
      */
     @GetMapping("/buses/{busId}")
     @ResponseStatus(value = HttpStatus.OK)
     private List<BookingDto> getByBusId(@PathVariable int busId) {
-	return bookingService.getByBusId(busId);
+        return bookingService.getByBusId(busId);
     }
 
     /**
@@ -111,8 +110,8 @@ public class BookingController {
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     private MessageDto deleteBooking(@PathVariable int id) {
-	bookingService.deleteBooking(id);
-	return new MessageDto("200", "Booking deleted sucessfully");
+        bookingService.deleteBooking(id);
+        return new MessageDto("200", "Booking deleted sucessfully");
     }
 
     /**
@@ -124,6 +123,6 @@ public class BookingController {
     @PostMapping("/cancellations/{bookingId}")
     @ResponseStatus(value = HttpStatus.OK)
     private CancellationDto cancel(@PathVariable @Valid int bookingId) {
-	return bookingService.cancel(bookingId);
+        return bookingService.cancel(bookingId);
     }
 }

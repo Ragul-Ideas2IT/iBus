@@ -1,17 +1,17 @@
 package com.i2i.ibus.security;
 
+import com.i2i.ibus.repository.UserRepository;
+import com.i2i.ibus.service.impl.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
 /**
  * SecurityConfiguration Configuration class for Security
  *
@@ -21,12 +21,10 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    private final AccountDetailService accountDetailService;
 
     @Autowired
-    public SecurityConfiguration(AccountDetailService accountDetailService) {
-        this.accountDetailService = accountDetailService;
-    }
+    private AccountDetailService accountDetailService;
+
 
     /**
      * A function that is used to create a security filter chain.
@@ -37,8 +35,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity)
             throws Exception {
         System.out.println("Security filter chain");
-        httpSecurity.csrf().disable().authorizeHttpRequests().antMatchers("*/**").permitAll()//securityMatcher("*/**").authorizeHttpRequests()
-                .and().httpBasic();
+        httpSecurity.csrf().disable().authorizeRequests()
+                .antMatchers(HttpMethod.GET,"/api/v1/**").permitAll()
+//                .antMatchers("*/**").permitAll()//securityMatcher("*/**").authorizeHttpRequests()
+                .and().formLogin();
 //                .requestMatchers("*/user/**").hasRole("user")
 //                .requestMatchers("*/operator/**").hasRole("operator")
 //                .requestMatchers("/bus/**").hasRole("operator")
@@ -51,28 +51,16 @@ public class SecurityConfiguration {
         return httpSecurity.build();
     }
 
-    /**
-     * This function is used to create an AuthenticationManager bean that is used to authenticate users
-     *
-     * @param authenticationConfiguration This is the bean that is created by the @EnableWebSecurity annotation.
-     * @return The AuthenticationManager
-     */
-    public AuthenticationManager authenticationManagerBean(
-            AuthenticationConfiguration authenticationConfiguration)
-            throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+//    public AccountServiceImpl accountDetailService() {
+//        return new AccountServiceImpl(userRepository) {
+//        });
+//    }
 
-
-    /**
-     * This function is used to configure the AuthenticationManagerBuilder object, which is used to create an
-     * AuthenticationManager object
-     *
-     * @param authBuilder This is the AuthenticationManagerBuilder object that is used to build the AuthenticationManager.
-     */
-    public void configure(AuthenticationManagerBuilder authBuilder)
-            throws Exception {
-        authBuilder.userDetailsService(accountDetailService)
-                .passwordEncoder(NoOpPasswordEncoder.getInstance());
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(accountDetailService);
+        authProvider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
+        return authProvider;
     }
 }
