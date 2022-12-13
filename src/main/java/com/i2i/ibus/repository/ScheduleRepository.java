@@ -38,7 +38,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
      * @param destination   given by the operator or user.
      * @return return the bus details from the given matched details.
      */
-    @Query("from BusHistory where departureDate = :departureDate and source = :source and destination = :destination and status = 'started' and isDeleted = false")
+    @Query("from Schedule where departureDate = :departureDate and source = :source and destination = :destination and status = 'started' and isDeleted = false")
     List<Schedule> findByDepartureDate(LocalDate departureDate, String source, String destination);
 
     /**

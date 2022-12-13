@@ -18,7 +18,7 @@ import com.i2i.ibus.dto.MessageDto;
 import com.i2i.ibus.dto.UserDto;
 import com.i2i.ibus.service.UserService;
 
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 
 /**
  * @author Ragul

@@ -3,6 +3,7 @@ package com.i2i.ibus.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -29,8 +30,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table
-@SQLDelete(sql = "UPDATE bus_history SET is_deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE schedule SET is_deleted = true WHERE id=?")
 @Where(clause = "is_deleted = false")
 public class Schedule {
 

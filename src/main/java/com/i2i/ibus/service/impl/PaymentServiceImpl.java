@@ -24,7 +24,7 @@ import com.i2i.ibus.service.PaymentService;
 /**
  * The validated payment details are passed to the payment repository to store
  * the details in the database, otherwise it throws {@code IBusException}.
- * 
+ *
  * @author Tamilmani K
  * @version 1.0
  * @created Nov 29 2022
@@ -39,7 +39,7 @@ public class PaymentServiceImpl implements PaymentService {
     /**
      * Create a new payment repository and booking repository to initialing the
      * specified targets to connect the database.
-     * 
+     *
      * @param paymentRepositary To save, read and delete the payment details.
      * @param bookingRepository To save, read and delete the booking details.
      */

@@ -12,9 +12,9 @@ public class AccountDto {
     @NotBlank(message = "Mail ID is mandatory")
     @Email(message = "Email ID should be in valid format")
     private String id;
-    @Pattern(regexp = "(?i)^(user)|(operator)$", message = "Role should be user or operator")
-    @NotBlank(message = "Role is mandatory")
-    private String role;
+//    @Pattern(regexp = "(?i)^(user)|(operator)$", message = "Role should be user or operator")
+//    @NotBlank(message = "Role is mandatory")
+//    private String role;
     @NotBlank(message = "Password is mandatory")
     private String password;
 }

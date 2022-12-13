@@ -9,22 +9,18 @@ import java.util.List;
  * @version 1.0
  * @created Nov 29 2022
  */
- public interface UserService {
+public interface UserService {
 
     /**
      * If the user doesn't exist, throw an exception.
      *
      * @param id The id of the user to be validated.
      */
-     void validateUser(int id);
+    void validateUser(int id);
 
-    /**
-     * This function validates the mail id and phone number of the user
-     *
-     * @param mailId The mailId of the user.
-     * @param phoneNumber The phone number of the user.
-     */
-     void validateMailIdAndPhoneNo(String mailId, String phoneNumber);
+    void validateMailId(String mailId);
+
+    void validatePhoneNumber(String phoneNumber);
 
     /**
      * It checks if the mail id and phone number already exists in the database for a given id
@@ -33,7 +29,7 @@ import java.util.List;
      * @param phoneNumber The phone number to be validated.
      * @param id The id of the user that is being updated.
      */
-     void validateMailIdAndPhoneNoForUpdate(String mailId, String phoneNumber, int id);
+    void validateMailIdAndPhoneNoForUpdate(String mailId, String phoneNumber, int id);
 
     /**
      * Save a user and return the saved user.
@@ -68,9 +64,9 @@ import java.util.List;
     UserDto updateUserById(int id, UserDto userDto);
 
     /**
-      * Delete a user by id, but first validate that the user exists.
-      *
-      * @param id The id of the user to be deleted.
-      */
-     void deleteUserById(int id);
+     * Delete a user by id, but first validate that the user exists.
+     *
+     * @param id The id of the user to be deleted.
+     */
+    void deleteUserById(int id);
 }

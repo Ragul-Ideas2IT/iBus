@@ -44,9 +44,16 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public void validateMailIdAndPhoneNo(String mailId, String phoneNumber) {
-        if (userRepository.findByMailIdAndPhoneNumber(mailId, phoneNumber).isPresent()) {
-            throw new IBusException("Mail Id and Phone No already exists");
+    public void validateMailId(String mailId) {
+        if (userRepository.findByMailId(mailId).isPresent()) {
+            throw new IBusException("Mail Id already exists");
+        }
+    }
+
+    @Override
+    public void validatePhoneNumber(String phoneNumber) {
+        if (userRepository.findByPhoneNumber(phoneNumber).isPresent()) {
+            throw new IBusException("Phone number already exists");
         }
     }
 
@@ -65,7 +72,8 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserDto saveUser(UserDto userDto) {
-        validateMailIdAndPhoneNo(userDto.getMailId(), userDto.getPhoneNumber());
+        validateMailId(userDto.getMailId());
+        validatePhoneNumber(userDto.getPhoneNumber());
         User user = Mapper.toUser(userDto);
         return Mapper.toUserDto(userRepository.save(user));
     }
