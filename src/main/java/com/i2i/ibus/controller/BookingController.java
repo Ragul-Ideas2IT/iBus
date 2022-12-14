@@ -21,9 +21,11 @@ import com.i2i.ibus.service.BookingService;
 import javax.validation.Valid;
 
 /**
+ * class for booking that creates, displays and deletes the bookings.
+ * 
  * @author Esakkiraja E
  * @version 1.0
- * @created Nov 29 2022
+ * @since Nov 29 2022
  */
 @RestController
 @RequestMapping("api/v1/bookings")
@@ -33,39 +35,36 @@ public class BookingController {
 
     @Autowired
     private BookingController(BookingService bookingService) {
-        this.bookingService = bookingService;
+	this.bookingService = bookingService;
     }
 
     /**
      * Add a booking for a user.
      *
      * @param userId     The id of the user who is making the booking.
-     * @param busId      The id of the bus that the user wants to book.
      * @param bookingDto This is the object that will be sent in the request body.
      * @return BookingDto
      */
-    @PostMapping("/users/{userId}/buses/{busId}")
+    @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    private BookingDto book(@PathVariable @Valid int userId, @PathVariable int busId,
-                            @RequestBody BookingDto bookingDto) {
-        return bookingService.book(userId, busId, bookingDto);
+    private BookingDto book( @RequestBody BookingDto bookingDto) {
+	return bookingService.book(bookingDto);
     }
 
     /**
-     * Get all bookings.
-     * This function returns a list of all the bookings.
+     * Get all bookings. This function returns a list of all the bookings.
      *
      * @return List of BookingDto
      */
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
     private List<BookingDto> getAllBookings() {
-        return bookingService.getAllBookings();
+	return bookingService.getAllBookings();
     }
 
     /**
-     * Get all booking for booking for id(booking).
-     * This function returns a bookingDto
+     * Get all booking for booking for id(booking). This function returns a
+     * bookingDto
      *
      * @param id The id of the booking to be retrieved.
      * @return A BookingDto object
@@ -73,12 +72,11 @@ public class BookingController {
     @GetMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     private BookingDto getById(@PathVariable int id) {
-        return bookingService.getById(id);
+	return bookingService.getById(id);
     }
 
     /**
-     * Get all booking for id(user).
-     * This function returns a list of bookingDto
+     * Get all booking for id(user). This function returns a list of bookingDto
      *
      * @param userId The id of the user whose bookings are to be fetched.
      * @return A list of BookingDto objects.
@@ -86,19 +84,18 @@ public class BookingController {
     @GetMapping("/users/{userId}")
     @ResponseStatus(value = HttpStatus.OK)
     private List<BookingDto> getByUserId(@PathVariable int userId) {
-        return bookingService.getByUserId(userId);
+	return bookingService.getByUserId(userId);
     }
 
     /**
-     * Get all booking for id(bus).
-     * This function returns a list of bookingDto
+     * Get all booking for id(bus). This function returns a list of bookingDto
      *
      * @return A list of BookingDto objects.
      */
     @GetMapping("/buses/{busId}")
     @ResponseStatus(value = HttpStatus.OK)
     private List<BookingDto> getByBusId(@PathVariable int busId) {
-        return bookingService.getByBusId(busId);
+	return bookingService.getByBusId(busId);
     }
 
     /**
@@ -110,8 +107,8 @@ public class BookingController {
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     private MessageDto deleteBooking(@PathVariable int id) {
-        bookingService.deleteBooking(id);
-        return new MessageDto("200", "Booking deleted sucessfully");
+	bookingService.deleteBooking(id);
+	return new MessageDto("200", "Booking deleted sucessfully");
     }
 
     /**
@@ -123,6 +120,6 @@ public class BookingController {
     @PostMapping("/cancellations/{bookingId}")
     @ResponseStatus(value = HttpStatus.OK)
     private CancellationDto cancel(@PathVariable @Valid int bookingId) {
-        return bookingService.cancel(bookingId);
+	return bookingService.cancel(bookingId);
     }
 }

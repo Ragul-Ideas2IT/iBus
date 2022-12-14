@@ -1,8 +1,10 @@
 package com.i2i.ibus.repository;
 
 import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
 import com.i2i.ibus.model.Booking;
 
 /**
@@ -11,12 +13,12 @@ import com.i2i.ibus.model.Booking;
  * @author Esakkiraja E
  * @version 1.0
  *
- * @created Nov 29 2022
+ * @since Nov 29 2022
  */
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
     
-    /*
+    /** 
      * method used to find all user by userId
      * 
      * @param userId 
