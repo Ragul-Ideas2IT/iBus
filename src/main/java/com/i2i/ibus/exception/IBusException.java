@@ -5,10 +5,10 @@ package com.i2i.ibus.exception;
  * subclass of RuntimeException that is thrown when an error occurs in
  * the IBus
  *
- * @author Ragul
+ * @author  Ragul
  * @version 1.0
  * 
- * @created Nov 28 2022
+ * @since   Nov 28 2022
  */
 public class IBusException extends RuntimeException {
     /**

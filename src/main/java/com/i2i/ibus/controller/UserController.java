@@ -45,7 +45,6 @@ public class UserController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     private UserDto createUser(@RequestBody @Valid UserDto userDto) {
-        System.out.println("=============1============");
         return userService.saveUser(userDto);
     }
 
@@ -81,7 +80,7 @@ public class UserController {
      * @return UserDto
      */
     @PutMapping("/{id}")
-    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    @ResponseStatus(value = HttpStatus.OK)
     private UserDto updateUser(@PathVariable int id, @RequestBody @Valid UserDto userDto) {
         return userService.updateUserById(id, userDto);
     }

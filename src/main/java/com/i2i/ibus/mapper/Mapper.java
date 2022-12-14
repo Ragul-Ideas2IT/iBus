@@ -1,8 +1,5 @@
 package com.i2i.ibus.mapper;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.i2i.ibus.dto.AccountDto;
 import com.i2i.ibus.dto.AddressDto;
 import com.i2i.ibus.dto.BookingDetailDto;
@@ -15,33 +12,77 @@ import com.i2i.ibus.dto.ScheduleDto;
 import com.i2i.ibus.dto.SeatDto;
 import com.i2i.ibus.dto.StopDto;
 import com.i2i.ibus.dto.UserDto;
-import com.i2i.ibus.model.*;
+import com.i2i.ibus.model.Account;
+import com.i2i.ibus.model.Address;
+import com.i2i.ibus.model.Booking;
+import com.i2i.ibus.model.BookingDetail;
+import com.i2i.ibus.model.Bus;
+import com.i2i.ibus.model.Cancellation;
+import com.i2i.ibus.model.Operator;
+import com.i2i.ibus.model.Payment;
+import com.i2i.ibus.model.Schedule;
+import com.i2i.ibus.model.Seat;
+import com.i2i.ibus.model.Stop;
+import com.i2i.ibus.model.User;
 import org.modelmapper.ModelMapper;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @version 1.0
- * @created Dec 05 2022
+ * @since Dec 05 2022
  */
 public class Mapper {
 
     private static ModelMapper mapper = new ModelMapper();
 
+    /**
+     * Convert a UserDto object to a User object.
+     *
+     * @param userDto The source object to map from.
+     * @return A User object
+     */
     public static User toUser(UserDto userDto) {
         return mapper.map(userDto, User.class);
     }
 
+    /**
+     * Convert a User object to a UserDto object.
+     *
+     * @param user The user object to be converted to a UserDto object.
+     * @return A UserDto object
+     */
     public static UserDto toUserDto(User user) {
         return mapper.map(user, UserDto.class);
     }
 
-    public static List<User> toUsers(List<UserDto> userDtos) {
-        return userDtos.stream().map(userDto -> toUser(userDto)).collect(Collectors.toList());
+    /**
+     * It takes a list of UserDTOs and returns a list of Users
+     *
+     * @param userDTOs The list of UserDto objects that we want to convert to User objects.
+     * @return A list of users
+     */
+    public static List<User> toUsers(List<UserDto> userDTOs) {
+        return userDTOs.stream().map(userDto -> toUser(userDto)).collect(Collectors.toList());
     }
 
-    public static List<UserDto> toUserDtos(List<User> users) {
+    /**
+     * Convert a list of users to a list of user DTOs.
+     *
+     * @param users The list of users to convert
+     * @return A list of UserDto objects
+     */
+    public static List<UserDto> toUserDTOs(List<User> users) {
         return users.stream().map(user -> toUserDto(user)).collect(Collectors.toList());
     }
 
+    /**
+     * Convert an OperatorDto to an Operator
+     *
+     * @param operatorDto The OperatorDto object that we want to convert to an Operator object.
+     * @return A list of addresses
+     */
     public static Operator toOperator(OperatorDto operatorDto) {
         Operator operator = mapper.map(operatorDto, Operator.class);
         operator.setAddresses(
@@ -49,6 +90,13 @@ public class Mapper {
         return operator;
     }
 
+    /**
+     * Convert an Operator object to an OperatorDto object by mapping the fields and converting the list of addresses to a
+     * list of AddressDto objects.
+     *
+     * @param operator The source object to be mapped.
+     * @return A list of OperatorDto objects
+     */
     public static OperatorDto toOperatorDto(Operator operator) {
         OperatorDto operatorDto = mapper.map(operator, OperatorDto.class);
         operatorDto.setAddresses(
@@ -60,7 +108,7 @@ public class Mapper {
         return operatorDtos.stream().map(operatorDto -> toOperator(operatorDto)).toList();
     }
 
-    public static List<OperatorDto> toOperatorDtos(List<Operator> operators) {
+    public static List<OperatorDto> toOperatorDTOs(List<Operator> operators) {
         return operators.stream().map(operator -> toOperatorDto(operator)).toList();
     }
 
@@ -76,7 +124,7 @@ public class Mapper {
         return bookingDtos.stream().map(bookingDto -> toBooking(bookingDto)).toList();
     }
 
-    public static List<BookingDto> toBookingDtos(List<Booking> bookings) {
+    public static List<BookingDto> toBookingDTOs(List<Booking> bookings) {
         return bookings.stream().map(booking -> toBookingDto(booking)).toList();
     }
 
@@ -146,5 +194,9 @@ public class Mapper {
 
     public static Account toAccount(AccountDto accountDto) {
         return mapper.map(accountDto, Account.class);
+    }
+
+    public static AccountDto toAccountDto(Account account) {
+        return mapper.map(account, AccountDto.class);
     }
 }

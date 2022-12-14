@@ -1,6 +1,7 @@
 package com.i2i.ibus.service;
 
 import com.i2i.ibus.dto.UserDto;
+import com.i2i.ibus.model.User;
 
 import java.util.List;
 
@@ -11,25 +12,16 @@ import java.util.List;
  */
 public interface UserService {
 
-    /**
-     * If the user doesn't exist, throw an exception.
-     *
-     * @param id The id of the user to be validated.
-     */
-    void validateUser(int id);
+    User validateUser(int id);
 
     void validateMailId(String mailId);
 
     void validatePhoneNumber(String phoneNumber);
 
-    /**
-     * It checks if the mail id and phone number already exists in the database for a given id
-     *
-     * @param mailId The mailId to be validated.
-     * @param phoneNumber The phone number to be validated.
-     * @param id The id of the user that is being updated.
-     */
-    void validateMailIdAndPhoneNoForUpdate(String mailId, String phoneNumber, int id);
+
+    void validateMailIdForUpdate(String mailId, int id);
+
+    void validatePhoneNoForUpdate(String phoneNumber, int id);
 
     /**
      * Save a user and return the saved user.
