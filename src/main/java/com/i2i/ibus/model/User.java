@@ -1,5 +1,8 @@
 package com.i2i.ibus.model;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -8,19 +11,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
 
 /**
  * @author Ragul
  * @version 1.0
- * 
  * @created Nov 28 2022
- *
  */
 @Getter
 @Setter
@@ -31,7 +26,7 @@ import java.util.Collection;
 @Where(clause = "is_deleted = false")
 public class User {
 
-    @Id 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
