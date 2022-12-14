@@ -9,14 +9,16 @@ import com.i2i.ibus.model.Booking;
 import com.i2i.ibus.model.BookingDetail;
 import com.i2i.ibus.model.Bus;
 import com.i2i.ibus.model.Schedule;
-import com.i2i.ibus.model.Cancellation;
 import com.i2i.ibus.model.User;
 
 /**
+ * Used to manipulate the Booking details in the application. Operators are
+ * manipulate the booking details.
+ * 
  * @author Esakkiraja E
  * @version 1.0
  *
- * @created Nov 29 2022
+ * @since Nov 29 2022
  */
 public interface BookingService {
 
@@ -25,10 +27,11 @@ public interface BookingService {
      *
      * @param userId     The id of the user who is booking the ticket.
      * @param busId      The id of the bus that the user wants to book.
-     * @param bookingDto This is the object that contains the details of the booking.
+     * @param bookingDto This is the object that contains the details of the
+     *                   booking.
      * @return BookingDto
      */
-    BookingDto book(int userId, int busId, BookingDto bookingDto);
+    BookingDto book(BookingDto bookingDto);
 
     /**
      * Get all bookings
@@ -38,7 +41,7 @@ public interface BookingService {
     List<BookingDto> getAllBookings();
 
     /**
-     * This function returns a booking.
+     * Get booking details for a bookingId returns a booking details.
      *
      * @param id The id of the booking you want to retrieve.
      * @return A BookingDto object.
@@ -46,7 +49,8 @@ public interface BookingService {
     BookingDto getById(int id);
 
     /**
-     * Get all bookings for a user.
+     * Get all bookings for a user and 
+     * return list of bookingsDto.
      *
      * @param userId The id of the user who made the booking.
      * @return A list of BookingDto objects.
@@ -54,7 +58,8 @@ public interface BookingService {
     List<BookingDto> getByUserId(int userId);
 
     /**
-     * This function returns a Bus object with the given id(bus).
+     * The method used to get bus details and 
+     * returns a Bus object with the given id(bus).
      *
      * @param id The id of the bus you want to get.
      * @return A bus object
@@ -62,7 +67,8 @@ public interface BookingService {
     Bus getBusById(int id);
 
     /**
-     * This function returns a User object with the given id(user).
+     * The method used to get user details and
+     * returns a User object with the given id(user).
      *
      * @param id The id of the user to be retrieved.
      * @return A User object
@@ -72,7 +78,7 @@ public interface BookingService {
     /**
      * Get the bus history for a bus on a given travel date.
      *
-     * @param bus        The bus object that you want to get the history for.
+     * @param bus  The bus object that you want to get the history for.
      * @param travelDate The date of travel
      * @return A Schedule object
      */
@@ -96,10 +102,9 @@ public interface BookingService {
     double calculateFare(List<BookingDetail> bookingDetails, int busId);
 
     /**
-     * Method is used to Cancel a booking, calculate the refund.
+     * Method is used to Cancel a booking and calculate the refund amount.
      *
-     * @param booking      The booking to be cancelled.
-     *                     details.
+     * @param booking The booking to be cancelled. details.
      * @return A Cancellation object.
      */
     Booking cancelBooking(Booking booking);
@@ -125,9 +130,9 @@ public interface BookingService {
      *
      * @param Schedule The Schedule object that contains the time of the bus.
      * @return The difference of time between the current time and the time the bus
-     *      was last seen.
+     *         was last seen.
      */
-    
+
     long calculateDifferenceOfTime(Schedule Schedule);
 
     /**
@@ -155,8 +160,9 @@ public interface BookingService {
      * Methos is used to Validate a bookingId present or not.
      *
      * @param id The id of the booking to be validated.
+     * @return 
      */
-    void validateBooking(int id);
+    Booking validateBooking(int id);
 
     /**
      * Method is used to Validate the pickup points of a booking.
@@ -167,8 +173,8 @@ public interface BookingService {
     void validateStops(Booking booking, int busId);
 
     /**
-     * Method is used to Validate the Seats(BookingDetails).
-     *
+     * Method is used to check the seat availablity and check the gender of bookingDetails.
+     * 
      * @param bookingDetails
      * @param busId
      */

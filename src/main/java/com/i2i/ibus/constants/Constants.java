@@ -90,10 +90,13 @@ public class Constants {
     // Stable messages.
     public static final String ALREADY_EXIST = "already exists";
     public static final String NOT_EXIST= "dosen't exists";
+    public static final String CANCELLED = "cancelled";
     public static final String COMPLETED = "completed";
     public static final String DECLINED = "declined";
     public static final String ENDED = "ended";
     public static final String PAID = "paid";
+    public static final String REFUND = "refund";
+    public static final String REFUNDED = "refunded";
     public static final String SUCCESS = "success";
     public static final String UNPAID = "unpaid";
     public static final String UPCOMING = "upcoming";
@@ -123,4 +126,11 @@ public class Constants {
     // Same data provided messages.
     public static final String SAME_SOURCE_AND_DESTINATION = "Source and destination are same";
     public static final String SAME_DEPATURE_AND_ARRIVAL_DATETIME = "Departue and arrival date and time not to be same";
+
+    //other messges.
+    public static final String BOOKING_CANCELLED = "Booking is cancelled";
+    public static final String BOOKING_ID = "Booking Id :";
+    public static final String BUS_ID = "Bus Id :";
+    public static final String REFUND_AMOUNT = "Refund amount :";
+    public static final String USER_ID = "User Id :";
 }
