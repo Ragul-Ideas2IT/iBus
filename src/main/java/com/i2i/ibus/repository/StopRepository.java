@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.i2i.ibus.model.Stop;
@@ -15,7 +14,7 @@ import com.i2i.ibus.model.Stop;
  * @author Ananth.
  * @version 1.0.
  * 
- * @created Nov 29 2022
+ * @since Nov 29 2022
  *
  */
 @Repository
@@ -57,11 +56,21 @@ public interface StopRepository extends JpaRepository<Stop, Integer> {
      * @param city given by the operator.
      * @param landMark given by the operator.
      * @param stopName given by the operator.
-     * @return the bus details found or else nothing.
+     * @return the bus details if found or else nothing.
      */
     Optional<Stop> findByBusIdAndCityAndLandMarkAndStopName(int busId, String city, String landMark, String stopName);
 
-    @Query(value = "Select * from pickup_point where bus_id = :busId and city = :city and land_mark = :landMark and stop_name = :stopName and is_deleted = false and id != :id", nativeQuery = true)
-    Optional<Stop> findByBusIdAndCityAndLandmarkAndStopName(int busId, String city, String landMark, String stopName,
+    /**
+     * Used to get the bus stop details by the given bus id and city name and stop
+     * name and landmark but not for the given seat id.
+     * 
+     * @param busId given by the operator.
+     * @param city given by the operator.
+     * @param landMark given by the operator.
+     * @param stopName given by the operator.
+     * @param id given by the operator.
+     * @return the bus details if found or else nothing.
+     */
+    Optional<Stop> findByBusIdAndCityAndLandmarkAndStopNameAndIdNot(int busId, String city, String landMark, String stopName,
 	    int id);
 }

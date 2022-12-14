@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.i2i.ibus.model.Schedule;
@@ -16,7 +15,7 @@ import com.i2i.ibus.model.Schedule;
  * @author Ananth.
  * @version 1.0.
  * 
- * @created Nov 29 2022
+ * @since Nov 29 2022
  *
  */
 @Repository
@@ -38,8 +37,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
      * @param destination   given by the operator or user.
      * @return return the bus details from the given matched details.
      */
-    @Query("from Schedule where departureDate = :departureDate and source = :source and destination = :destination and status = 'started' and isDeleted = false")
-    List<Schedule> findByDepartureDate(LocalDate departureDate, String source, String destination);
+    List<Schedule> findByDepartureDateAndSourceAndDestinationAndIdNot(LocalDate departureDate, String source,
+	    String destination);
 
     /**
      * Used to get the bus details from the given bus id and departure date.

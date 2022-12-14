@@ -28,7 +28,7 @@ import java.util.NoSuchElementException;
  *
  * @author Ananth.
  * @version 1.0.
- * @created Nov 29 2022
+ * @since Nov 29 2022
  */
 @Service
 public class SeatServiceImpl implements SeatService {
@@ -44,7 +44,7 @@ public class SeatServiceImpl implements SeatService {
     }
 
     private Logger logger = LogManager.getLogger(SeatServiceImpl.class);
-    
+
     /**
      * {@inheritDoc}
      */
@@ -55,6 +55,7 @@ public class SeatServiceImpl implements SeatService {
 	    if (!seatRepository.findBySeatNumberAndBusId(seatDto.getSeatNumber(), seatDto.getBusId()).isPresent()) {
 		seatDto.setBus(Mapper.toBusDto(busRepository.findById(seatDto.getBusId()).get()));
 		seat = seatRepository.save(Mapper.toSeat(seatDto));
+		logger.info(Constants.CREATE_MESSAGE + " seatId: " + seat.getId());
 	    } else {
 		logger.error("SeatID " + seatDto.getSeatNumber() + Constants.ALREADY_EXIST);
 		throw new IBusException(seatDto.getSeatNumber().concat(Constants.ALREADY_EXIST));
@@ -103,10 +104,12 @@ public class SeatServiceImpl implements SeatService {
 	Seat seat = null;
 
 	try {
-	    if (!seatRepository.findBySeatNumberAndBusIdAndId(seatDto.getSeatNumber(), seatDto.getBusId(), seatId).isPresent()) {
+	    if (!seatRepository.findBySeatNumberAndBusIdAndId(seatDto.getSeatNumber(), seatDto.getBusId(), seatId)
+		    .isPresent()) {
 		seatDto.setId(seatId);
 		seatDto.setBus(Mapper.toBusDto(busRepository.findById(seatDto.getBusId()).get()));
 		seat = seatRepository.save(Mapper.toSeat(seatDto));
+		logger.info(Constants.CREATE_MESSAGE + " seatId: " + seat.getId());
 	    } else {
 		logger.error("SeatID " + seatDto.getSeatNumber() + Constants.ALREADY_EXIST);
 		throw new IBusException(seatDto.getSeatNumber().concat(Constants.ALREADY_EXIST));
@@ -122,6 +125,14 @@ public class SeatServiceImpl implements SeatService {
      * {@inheritDoc}
      */
     public void deleteSeat(int seatId) {
-	seatRepository.deleteById(seatId);
+	try {
+	    Seat seat = seatRepository.findById(seatId).get();
+	    seat.setDeleted(true);
+	    seatRepository.save(seat);
+	    logger.info(Constants.DELETE_MESSAGE + " seatId: " + seatId);
+	} catch (NoSuchElementException exception) {
+	    logger.error(exception.getMessage());
+	    throw new IBusException(Constants.SEAT_NOT_EXIST);
+	}
     }
 }

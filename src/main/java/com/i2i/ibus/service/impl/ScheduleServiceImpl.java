@@ -30,7 +30,7 @@ import java.util.NoSuchElementException;
  *
  * @author Ananth.
  * @version 1.0.
- * @created Nov 29 2022
+ * @since Nov 29 2022
  */
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
@@ -45,7 +45,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     private Logger logger = LogManager.getLogger(ScheduleServiceImpl.class);
-    
+
     /**
      * {@inheritDoc}
      */
@@ -58,12 +58,13 @@ public class ScheduleServiceImpl implements ScheduleService {
 		scheduleDto.setStatus("started");
 		scheduleDto.setBus(Mapper.toBusDto(busRepository.findById(scheduleDto.getBusId()).get()));
 		schedule = scheduleRepository.save(Mapper.toSchedule(scheduleDto));
+		logger.info(Constants.CREATE_MESSAGE + " scheduleId: " + schedule.getId());
 	    } else {
 		logger.error(Constants.SAME_DEPATURE_AND_ARRIVAL_DATETIME);
 		throw new IBusException(Constants.SAME_DEPATURE_AND_ARRIVAL_DATETIME);
 	    }
 	} catch (NoSuchElementException exception) {
-	    logger.error("BusID " + scheduleDto.getBusId() + Constants.NOT_EXIST);
+	    logger.error(exception.getMessage());
 	    throw new IBusException(Constants.BUSID_NOT_EXIST);
 	}
 	return Mapper.toScheduleDto(schedule);
@@ -108,7 +109,8 @@ public class ScheduleServiceImpl implements ScheduleService {
      */
     @Override
     public List<ScheduleDto> getByDepartureDate(LocalDate departureDate, String source, String destination) {
-	List<Schedule> schedules = scheduleRepository.findByDepartureDate(departureDate, source, destination);
+	List<Schedule> schedules = scheduleRepository.findByDepartureDateAndSourceAndDestinationAndIdNot(departureDate,
+		source, destination);
 	List<ScheduleDto> schedulesDto = new ArrayList<ScheduleDto>();
 
 	for (Schedule schedule : schedules) {
@@ -133,12 +135,13 @@ public class ScheduleServiceImpl implements ScheduleService {
 		scheduleDto.setStatus("started");
 		scheduleDto.setBus(Mapper.toBusDto(busRepository.findById(scheduleDto.getBusId()).get()));
 		schedule = scheduleRepository.save(Mapper.toSchedule(scheduleDto));
+		logger.info(Constants.CREATE_MESSAGE + " scheduleId: " + schedule.getId());
 	    } else {
 		logger.error(Constants.SAME_DEPATURE_AND_ARRIVAL_DATETIME);
 		throw new IBusException(Constants.SAME_DEPATURE_AND_ARRIVAL_DATETIME);
 	    }
 	} catch (NoSuchElementException exception) {
-	    logger.error("BusID " + scheduleDto.getBusId() + Constants.NOT_EXIST);
+	    logger.error(exception.getMessage());
 	    throw new IBusException(Constants.BUSID_NOT_EXIST);
 	}
 	return Mapper.toScheduleDto(schedule);
@@ -149,7 +152,15 @@ public class ScheduleServiceImpl implements ScheduleService {
      */
     @Override
     public void deleteSchedule(int scheduleId) {
-	scheduleRepository.deleteById(scheduleId);
+	try {
+	    Schedule schedule = scheduleRepository.findById(scheduleId).get();
+	    schedule.setDeleted(true);
+	    scheduleRepository.save(schedule);
+	    logger.info(Constants.DELETE_MESSAGE + " scheduleId: " + scheduleId);
+	} catch (NoSuchElementException exception) {
+	    logger.error(exception.getMessage());
+	    throw new IBusException(Constants.SCHEDULE_NOT_EXIST);
+	}
     }
 
     /**
