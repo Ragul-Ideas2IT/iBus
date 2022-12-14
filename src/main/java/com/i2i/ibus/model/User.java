@@ -22,7 +22,6 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Entity
 @Table
-@SQLDelete(sql = "UPDATE user SET is_deleted = true WHERE id=?")
 @Where(clause = "is_deleted = false")
 public class User {
 

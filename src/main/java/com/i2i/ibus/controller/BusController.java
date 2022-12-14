@@ -47,7 +47,6 @@ public class BusController {
     /**
      * It is used to add the bus details from the operators.
      *
-     * @param bus        details given by the operator.
      * @param operatorId The id of the operator to which the bus belongs.
      * @return the saved bus details and httpstatus.
      */
@@ -97,7 +96,6 @@ public class BusController {
      *
      * @param busDto     The bus deatils that we want to update.
      * @param busId      The id of the bus to be updated.
-     * @param operatorId The id of the operator who owns the bus.
      * @return the updated bus details.
      */
     @PutMapping("/{busId}")

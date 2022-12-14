@@ -28,7 +28,6 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table
-@SQLDelete(sql = "UPDATE operator SET is_deleted = true WHERE id=?")
 @Where(clause = "is_deleted = false")
 public class Operator {
 

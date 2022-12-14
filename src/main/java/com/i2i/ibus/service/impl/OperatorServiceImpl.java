@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @author Ragul
+ * @author  Ragul
  * @version 1.0
- * @created Nov 29 2022
+ * @since   Nov 29 2022
  */
 @Service
 public class OperatorServiceImpl implements OperatorService {
@@ -29,13 +29,16 @@ public class OperatorServiceImpl implements OperatorService {
 
     /**
      * {@inheritDoc}
+     *
+     * @return
      */
     @Override
-    public void validateOperator(int id) {
+    public Operator validateOperator(int id) {
         Optional<Operator> operator = operatorRepository.findById(id);
-        if (!operator.isPresent()) {
+        if (operator.isEmpty()) {
             throw new IBusException("Operator Id doesn't exists");
         }
+        return operator.get();
     }
 
     /**
@@ -43,11 +46,9 @@ public class OperatorServiceImpl implements OperatorService {
      */
     @Override
     public void validateMailIdPhoneNoAndGstNumber(String mailId, String phoneNumber, String gstNumber) {
-        Optional<Operator> operator = operatorRepository.findByMailIdAndPhoneNumberAndGstNumber(mailId, phoneNumber,
-                gstNumber);
-        if (operator.isPresent()) {
-            throw new IBusException("MailId, Phone no, GST number are already exist");
-        }
+        operatorRepository.findByMailId(mailId).orElseThrow(() -> new IBusException("Mail Id already exists"));
+        operatorRepository.findByPhoneNumber(phoneNumber).orElseThrow(() -> new IBusException("Phone Number already exists"));
+        operatorRepository.findByGstNumber(gstNumber).orElseThrow(() -> new IBusException("GST number already exists"));
     }
 
     /**
@@ -56,11 +57,9 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     public void validateMailIdPhoneNoAndGstNumberForUpdate(String mailId, String phoneNumber, String gstNumber,
                                                            int id) {
-        Optional<Operator> operator = operatorRepository.findByMailIdPhoneNoAndGstNumberForUpdate(mailId, phoneNumber,
-                gstNumber, id);
-        if (operator.isPresent()) {
-            throw new IBusException("MailId, Phone no, GST number are already exist");
-        }
+        operatorRepository.findByMailIdAndIdNot(mailId, id).orElseThrow(() -> new IBusException("Mail Id already exists"));
+        operatorRepository.findByPhoneNumberAndIdNot(phoneNumber, id).orElseThrow(() -> new IBusException("Phone Number already exists"));
+        operatorRepository.findByGstNumberAndIdNot(gstNumber, id).orElseThrow(() -> new IBusException("GST number already exists"));
     }
 
     /**
@@ -77,8 +76,8 @@ public class OperatorServiceImpl implements OperatorService {
      * {@inheritDoc}
      */
     @Override
-    public List<OperatorDto> getAllOperatorDtos() {
-        return Mapper.toOperatorDtos(operatorRepository.findAll());
+    public List<OperatorDto> getAllOperatorDTOs() {
+        return Mapper.toOperatorDTOs(operatorRepository.findAll());
     }
 
     /**
@@ -107,8 +106,9 @@ public class OperatorServiceImpl implements OperatorService {
      */
     @Override
     public void deleteOperatorById(int id) {
-        validateOperator(id);
-        operatorRepository.deleteById(id);
+        Operator operator = validateOperator(id);
+        operator.setDeleted(true);
+        operatorRepository.save(operator);
     }
 
 }

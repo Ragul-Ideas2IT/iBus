@@ -4,7 +4,6 @@ import com.i2i.ibus.dto.UserDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.User;
-import com.i2i.ibus.repository.OperatorRepository;
 import com.i2i.ibus.repository.UserRepository;
 import com.i2i.ibus.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,23 +20,24 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
-    private OperatorRepository operatorRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, OperatorRepository operatorRepository) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.operatorRepository = operatorRepository;
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @return
      */
     @Override
-    public void validateUser(int id) {
+    public User validateUser(int id) {
         Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) {
+        if (user.isEmpty()) {
             throw new IBusException("User Id doesn't exists");
         }
+        return user.get();
     }
 
     /**
@@ -50,6 +50,9 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void validatePhoneNumber(String phoneNumber) {
         if (userRepository.findByPhoneNumber(phoneNumber).isPresent()) {
@@ -61,12 +64,24 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public void validateMailIdAndPhoneNoForUpdate(String mailId, String phoneNumber, int id) {
-        Optional<User> user = userRepository.findByMailIdAndPhoneNoForUpdate(mailId, phoneNumber, id);
+    public void validateMailIdForUpdate(String mailId, int id) {
+       Optional<User> user = userRepository.findByMailIdAndIdNot(mailId, id);
         if (user.isPresent()) {
-            throw new IBusException("Mail Id and Phone No already exists");
+            throw new IBusException("Mail Id already exists");
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validatePhoneNoForUpdate(String phoneNumber, int id) {
+        Optional<User> user = userRepository.findByPhoneNumberAndIdNot(phoneNumber, id);
+        if (user.isPresent()) {
+            throw new IBusException("Phone number already exists");
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -77,13 +92,15 @@ public class UserServiceImpl implements UserService {
         User user = Mapper.toUser(userDto);
         return Mapper.toUserDto(userRepository.save(user));
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public List<UserDto> getAllUsersDto() {
-        return Mapper.toUserDtos(userRepository.findAll());
+        return Mapper.toUserDTOs(userRepository.findAll());
     }
+
     /**
      * {@inheritDoc}
      */
@@ -92,23 +109,27 @@ public class UserServiceImpl implements UserService {
         validateUser(id);
         return Mapper.toUserDto(userRepository.findById(id).get());
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public UserDto updateUserById(int id, UserDto userDto) {
         validateUser(id);
-        validateMailIdAndPhoneNoForUpdate(userDto.getMailId(), userDto.getPhoneNumber(), id);
+        validateMailIdForUpdate(userDto.getMailId(), id);
+        validatePhoneNoForUpdate(userDto.getPhoneNumber(), id);
         userDto.setId(id);
         User user = Mapper.toUser(userDto);
         return Mapper.toUserDto(userRepository.save(user));
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void deleteUserById(int id) {
-        validateUser(id);
-        userRepository.deleteById(id);
+        User user = validateUser(id);
+        user.setDeleted(true);
+        userRepository.save(user);
     }
 }

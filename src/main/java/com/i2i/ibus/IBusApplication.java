@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
  * @created Nov 28 2022
  *
  */
-@SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
+@SpringBootApplication
 public class IBusApplication {
     
     public static void main(String[] args) {

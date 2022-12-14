@@ -1,6 +1,7 @@
 package com.i2i.ibus.service;
 
 import com.i2i.ibus.dto.OperatorDto;
+import com.i2i.ibus.model.Operator;
 
 import java.util.List;
 
@@ -17,8 +18,9 @@ public interface OperatorService {
       * Validate the operator with the given id.
       *
       * @param id The id of the operator to validate.
+      * @return
       */
-     void validateOperator(int id);
+     Operator validateOperator(int id);
 
 	/**
 	 * It validates the mail id, phone number and GST number
@@ -51,11 +53,11 @@ public interface OperatorService {
 	/**
 	 * Get all operator DTOs.
 	 *
-	 * @return A list of OperatorDtos
+	 * @return A list of OperatorDTOs
 	 */
-	List<OperatorDto> getAllOperatorDtos();
+    List<OperatorDto> getAllOperatorDTOs();
 
-	/**
+    /**
 	 * Get an operator by id.
 	 *
 	 * @param id The id of the operator you want to get.

@@ -56,7 +56,7 @@ public class OperatorController {
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
     private List<OperatorDto> getAllOperators() {
-        return operatorService.getAllOperatorDtos();
+        return operatorService.getAllOperatorDTOs();
     }
 
     /**
@@ -79,7 +79,7 @@ public class OperatorController {
      * @return OperatorDto
      */
     @PutMapping("/{id}")
-    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    @ResponseStatus(value = HttpStatus.OK)
     private OperatorDto updateOperator(@PathVariable int id, @RequestBody @Valid OperatorDto operatorDto) {
         return operatorService.updateOperatorById(id, operatorDto);
     }

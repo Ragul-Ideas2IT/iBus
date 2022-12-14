@@ -1,12 +1,14 @@
 package com.i2i.ibus.dto;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
@@ -17,9 +19,8 @@ public class AccountDto {
     @NotBlank(message = "Mail ID is mandatory")
     @Email(message = "Email ID should be in valid format")
     private String mailId;
-    @Pattern(regexp = "(?i)^(user)|(operator)$", message = "Role should be user or operator")
-    @NotBlank(message = "Role is mandatory")
-    private String role;
+    @Valid
+    private RoleDto role;
     @NotBlank(message = "Password is mandatory")
     private String password;
 }
