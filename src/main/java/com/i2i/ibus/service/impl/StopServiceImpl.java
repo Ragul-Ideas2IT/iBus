@@ -28,7 +28,7 @@ import java.util.NoSuchElementException;
  *
  * @author Ananth.
  * @version 1.0.
- * @created Nov 29 2022
+ * @since Nov 29 2022
  */
 @Service
 public class StopServiceImpl implements StopService {
@@ -44,7 +44,7 @@ public class StopServiceImpl implements StopService {
     }
 
     private Logger logger = LogManager.getLogger(StopServiceImpl.class);
-    
+
     /**
      * {@inheritDoc}
      */
@@ -57,6 +57,7 @@ public class StopServiceImpl implements StopService {
 		    stopDto.getLandMark(), stopDto.getStopName()).isEmpty()) {
 		stopDto.setBus(Mapper.toBusDto(busRepository.findById(stopDto.getBusId()).get()));
 		stop = stopRepository.save(Mapper.toStop(stopDto));
+		logger.info(Constants.CREATE_MESSAGE + " stopId: " + stop.getId());
 	    } else {
 		logger.error(Constants.SAME_SOURCE_AND_DESTINATION);
 		throw new IBusException(Constants.SAME_SOURCE_AND_DESTINATION);
@@ -88,15 +89,16 @@ public class StopServiceImpl implements StopService {
      * {@inheritDoc}
      */
     @Override
-    public StopDto updateStop(StopDto stopDto, int StopId) {
+    public StopDto updateStop(StopDto stopDto, int stopId) {
 	Stop stop = null;
 
 	try {
-	    if (stopRepository.findByBusIdAndCityAndLandmarkAndStopName(stopDto.getBusId(), stopDto.getCity(),
-		    stopDto.getLandMark(), stopDto.getStopName(), StopId).isEmpty()) {
-		stopDto.setId(StopId);
+	    if (stopRepository.findByBusIdAndCityAndLandmarkAndStopNameAndIdNot(stopDto.getBusId(), stopDto.getCity(),
+		    stopDto.getLandMark(), stopDto.getStopName(), stopId).isEmpty()) {
+		stopDto.setId(stopId);
 		stopDto.setBus(Mapper.toBusDto(busRepository.findById(stopDto.getBusId()).get()));
 		stop = stopRepository.save(Mapper.toStop(stopDto));
+		logger.info(Constants.CREATE_MESSAGE + " stopId: " + stop.getId());
 	    } else {
 		logger.error(Constants.SAME_SOURCE_AND_DESTINATION);
 		throw new IBusException(Constants.SAME_SOURCE_AND_DESTINATION);
@@ -112,7 +114,15 @@ public class StopServiceImpl implements StopService {
      * {@inheritDoc}
      */
     @Override
-    public void deleteStop(int StopId) {
-	stopRepository.deleteById(StopId);
+    public void deleteStop(int stopId) {
+	try {
+	    Stop stop = stopRepository.findById(stopId).get();
+	    stop.setDeleted(true);
+	    stopRepository.save(stop);
+	    logger.info(Constants.DELETE_MESSAGE + " stopId: " + stopId);
+	} catch (NoSuchElementException exception) {
+	    logger.error(exception.getMessage());
+	    throw new IBusException(Constants.STOP_NOT_EXIST);
+	}
     }
 }

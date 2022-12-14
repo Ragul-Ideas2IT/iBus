@@ -16,7 +16,7 @@ import com.i2i.ibus.model.Schedule;
  *
  * @author Ananth.
  * @version 1.0.
- * @created Nov 29 2022
+ * @since Nov 29 2022
  */
 public interface ScheduleService {
 

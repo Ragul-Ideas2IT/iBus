@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.i2i.ibus.model.Bus;
@@ -15,7 +14,7 @@ import com.i2i.ibus.model.Bus;
  * @author Ananth.
  * @version 1.0.
  * 
- * @created Nov 29 2022
+ * @since Nov 29 2022
  *
  */
 @Repository
@@ -37,8 +36,7 @@ public interface BusRepository extends JpaRepository<Bus, Integer> {
      *           to avoid updating bus number is already exists.
      * @return the bus details found or else nothing.
      */
-    @Query("From Bus Where busNumber = :busNumber and id != :id")
-    Optional<Bus> findByBusNumberForUpdate(String busNumber, int id);
+    Optional<Bus> findByBusNumberAndIdNot(String busNumber, int id);
 
     /**
      * used to get the bus details by given operator id.

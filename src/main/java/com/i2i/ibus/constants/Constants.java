@@ -104,6 +104,8 @@ public class Constants {
     public static final String OPERATORID_NOT_EXIST = "Operator details doesn't exist.";
     public static final String PAYMENT_NOT_EXIST = "Payment details doesn't exist.";
     public static final String SEAT_NOT_EXIST = "Seat doesn't exixts";
+    public static final String SCHEDULE_NOT_EXIST = "Schedule doesn't exixts";
+    public static final String STOP_NOT_EXIST = "Stop doesn't exixts";
     public static final String USER_NOT_EXIST = "User details doesn't exists";
 
     // Already present and dublicate found messages.
