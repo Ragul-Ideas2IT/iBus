@@ -89,6 +89,7 @@ public class Constants {
 
     // Stable messages.
     public static final String ALREADY_EXIST = "already exists";
+    public static final String NOT_EXIST= "dosen't exists";
     public static final String COMPLETED = "completed";
     public static final String DECLINED = "declined";
     public static final String ENDED = "ended";

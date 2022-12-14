@@ -10,8 +10,8 @@ import com.i2i.ibus.model.Schedule;
  * <h1>Bus Ticket Booking Application
  * <h1>
  * <p>
- * Used to manipulate the Bus schhedule details in the application. Operators are
- * manipulate the bus details.
+ * Used to manipulate the Bus schhedule details in the application. Operators
+ * are manipulate the bus details.
  * <p>
  *
  * @author Ananth.
@@ -24,10 +24,10 @@ public interface ScheduleService {
      * It is used to add the bus schedule details from the operators.
      *
      * @param scheduleDto given by the operator.
-     * @param busId The id of the bus that the schedule is being added to.
+     * @param busId       The id of the bus that the schedule is being added to.
      * @return the added bus schedule.
      */
-    ScheduleDto addSchedule(ScheduleDto scheduleDto, int busId);
+    ScheduleDto addSchedule(ScheduleDto scheduleDto);
 
     /**
      * Used to get the all bus details.
@@ -45,11 +45,12 @@ public interface ScheduleService {
     List<ScheduleDto> getSchedulesByBusId(int busId);
 
     /**
-     * It takes in a departure date, source and destination and returns a list of bus schedule dto's
+     * It takes in a departure date, source and destination and returns a list of
+     * bus schedule dto's
      *
      * @param departureDate The date on which the bus is scheduled to depart.
-     * @param source The source city of the bus
-     * @param destination The destination of the bus.
+     * @param source        The source city of the bus
+     * @param destination   The destination of the bus.
      * @return A list of ScheduleDto objects.
      */
     List<ScheduleDto> getByDepartureDate(LocalDate departureDate, String source, String destination);
@@ -58,11 +59,11 @@ public interface ScheduleService {
      * Used to updates the bus schedule.
      *
      * @param scheduleDto The schedule that will be updated.
-     * @param ScheduleId The id of the bus schedule you want to update.
-     * @param busId The id of the bus that you want to update.
+     * @param ScheduleId  The id of the bus schedule you want to update.
+     * @param busId       The id of the bus that you want to update.
      * @return the bus schedule.
      */
-    ScheduleDto updateSchedule(ScheduleDto scheduleDto, int ScheduleId, int busId);
+    ScheduleDto updateSchedule(ScheduleDto scheduleDto, int ScheduleId);
 
     /**
      * used to deletes the bus schedule by id.

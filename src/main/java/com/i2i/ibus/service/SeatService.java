@@ -25,7 +25,7 @@ public interface SeatService {
      * @param busId   The id of the bus to which the seat is to be added.
      * @return the saved bus seat deatils will return.
      */
-    SeatDto addSeat(SeatDto seatDto, int busId);
+    SeatDto addSeat(SeatDto seatDto);
 
     /**
      * It returns a list of all seats in a bus
@@ -51,7 +51,7 @@ public interface SeatService {
      * @param busId The id of the bus that the seat belongs to.
      * @return the update seat details.
      */
-    SeatDto updateSeat(SeatDto seatDto, int seatId, int busId);
+    SeatDto updateSeat(SeatDto seatDto, int seatId);
 
     /**
      * It deletes a seat deatils.

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.i2i.ibus.dto.ScheduleDto;
+import com.i2i.ibus.constants.Constants;
 import com.i2i.ibus.dto.MessageDto;
 import com.i2i.ibus.service.ScheduleService;
 import javax.validation.Valid;
@@ -50,10 +51,9 @@ public class ScheduleController {
      * @param busId       The id of the bus that the schedule is being added to.
      * @return the added bus schedule.
      */
-    @PostMapping("/{busId}")
-    private ResponseEntity<ScheduleDto> addSchedule(@RequestBody @Valid ScheduleDto scheduleDto,
-	    @PathVariable int busId) {
-	return new ResponseEntity<ScheduleDto>(scheduleService.addSchedule(scheduleDto, busId), HttpStatus.CREATED);
+    @PostMapping
+    private ResponseEntity<ScheduleDto> addSchedule(@RequestBody @Valid ScheduleDto scheduleDto) {
+	return new ResponseEntity<ScheduleDto>(scheduleService.addSchedule(scheduleDto), HttpStatus.CREATED);
     }
 
     /**
@@ -104,12 +104,11 @@ public class ScheduleController {
      * @param busId       The id of the bus that you want to update.
      * @return the bus schedule.
      */
-    @PutMapping("/{scheduleId}/{busId}")
+    @PutMapping("/{scheduleId}")
     private ResponseEntity<ScheduleDto> updateSchedule(@RequestBody @Valid ScheduleDto scheduleDto,
-	    @PathVariable int scheduleId, @PathVariable int busId) {
+	    @PathVariable int scheduleId) {
 
-	return new ResponseEntity<ScheduleDto>(scheduleService.updateSchedule(scheduleDto, scheduleId, busId),
-		HttpStatus.OK);
+	return new ResponseEntity<ScheduleDto>(scheduleService.updateSchedule(scheduleDto, scheduleId), HttpStatus.OK);
     }
 
     /**
@@ -122,7 +121,7 @@ public class ScheduleController {
     private MessageDto deleteSchedule(@PathVariable int scheduleId) {
 
 	scheduleService.deleteSchedule(scheduleId);
-	return new MessageDto("200", "Deleted Sucessfully");
+	return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
     }
 
 }

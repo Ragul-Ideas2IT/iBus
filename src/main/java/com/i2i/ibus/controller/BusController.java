@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.i2i.ibus.constants.Constants;
 import com.i2i.ibus.dto.BusDto;
 import com.i2i.ibus.dto.MessageDto;
 import com.i2i.ibus.service.BusService;
@@ -51,9 +52,9 @@ public class BusController {
      * @return the saved bus details and httpstatus.
      */
     @PostMapping
-    private ResponseEntity<BusDto> addBus(@RequestBody @Valid BusDto busDto, @PathVariable int operatorId) {
+    private ResponseEntity<BusDto> addBus(@RequestBody @Valid BusDto busDto) {
 
-	return new ResponseEntity<BusDto>(busService.addBus(busDto, operatorId), HttpStatus.CREATED);
+	return new ResponseEntity<BusDto>(busService.addBus(busDto), HttpStatus.CREATED);
     }
 
     /**
@@ -115,6 +116,6 @@ public class BusController {
     private MessageDto deleteBus(@PathVariable int busId) {
 
 	busService.deleteBus(busId);
-	return new MessageDto("200", "Deleted Sucessfully");
+	return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
     }
 }

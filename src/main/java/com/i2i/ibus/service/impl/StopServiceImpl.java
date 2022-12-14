@@ -1,5 +1,6 @@
 package com.i2i.ibus.service.impl;
 
+import com.i2i.ibus.constants.Constants;
 import com.i2i.ibus.dto.StopDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.mapper.Mapper;
@@ -8,6 +9,8 @@ import com.i2i.ibus.repository.BusRepository;
 import com.i2i.ibus.repository.StopRepository;
 import com.i2i.ibus.service.StopService;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,23 +43,27 @@ public class StopServiceImpl implements StopService {
 	this.busRepository = busRepository;
     }
 
+    private Logger logger = LogManager.getLogger(StopServiceImpl.class);
+    
     /**
      * {@inheritDoc}
      */
     @Override
-    public StopDto addStop(StopDto stopDto, int busId) {
+    public StopDto addStop(StopDto stopDto) {
 	Stop stop = null;
 
 	try {
-	    if (stopRepository.findByBusIdAndCityAndLandMarkAndStopName(busId, stopDto.getCity(),
+	    if (stopRepository.findByBusIdAndCityAndLandMarkAndStopName(stopDto.getBusId(), stopDto.getCity(),
 		    stopDto.getLandMark(), stopDto.getStopName()).isEmpty()) {
-		stopDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
+		stopDto.setBus(Mapper.toBusDto(busRepository.findById(stopDto.getBusId()).get()));
 		stop = stopRepository.save(Mapper.toStop(stopDto));
 	    } else {
-		throw new IBusException("This stop is already exists.");
+		logger.error(Constants.SAME_SOURCE_AND_DESTINATION);
+		throw new IBusException(Constants.SAME_SOURCE_AND_DESTINATION);
 	    }
 	} catch (NoSuchElementException exception) {
-	    throw new IBusException("Bus doesnot exist");
+	    logger.error("BusID " + stopDto.getBusId() + Constants.NOT_EXIST);
+	    throw new IBusException(Constants.BUSID_NOT_EXIST);
 	}
 	return Mapper.toStopDto(stop);
     }
@@ -67,34 +74,36 @@ public class StopServiceImpl implements StopService {
     @Override
     public List<StopDto> getStopsByBusId(int busId) {
 	List<Stop> stops = stopRepository.findAllByBusId(busId);
-	List<StopDto> StopsDto = new ArrayList<StopDto>();
+	List<StopDto> stopsDto = new ArrayList<StopDto>();
 
 	for (Stop stop : stops) {
 	    StopDto stopDto = null;
 	    stopDto = Mapper.toStopDto(stop);
-	    StopsDto.add(stopDto);
+	    stopsDto.add(stopDto);
 	}
-	return StopsDto;
+	return stopsDto;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public StopDto updateStop(StopDto stopDto, int StopId, int busId) {
+    public StopDto updateStop(StopDto stopDto, int StopId) {
 	Stop stop = null;
 
 	try {
-	    if (stopRepository.findByBusIdAndCityAndLandmarkAndStopName(busId, stopDto.getCity(),
+	    if (stopRepository.findByBusIdAndCityAndLandmarkAndStopName(stopDto.getBusId(), stopDto.getCity(),
 		    stopDto.getLandMark(), stopDto.getStopName(), StopId).isEmpty()) {
 		stopDto.setId(StopId);
-		stopDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
+		stopDto.setBus(Mapper.toBusDto(busRepository.findById(stopDto.getBusId()).get()));
 		stop = stopRepository.save(Mapper.toStop(stopDto));
 	    } else {
-		throw new IBusException("This stop is already exists.");
+		logger.error(Constants.SAME_SOURCE_AND_DESTINATION);
+		throw new IBusException(Constants.SAME_SOURCE_AND_DESTINATION);
 	    }
 	} catch (NoSuchElementException exception) {
-	    throw new IBusException("Bus doesnot exist");
+	    logger.error("BusID " + stopDto.getBusId() + Constants.NOT_EXIST);
+	    throw new IBusException(Constants.BUSID_NOT_EXIST);
 	}
 	return Mapper.toStopDto(stop);
     }

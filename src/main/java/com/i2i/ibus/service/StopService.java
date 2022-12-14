@@ -25,7 +25,7 @@ public interface StopService {
      * @param busId   The id of the bus to which the stop is to be added.
      * @return returns the added bus stop details.
      */
-    StopDto addStop(StopDto stopDto, int busId);
+    StopDto addStop(StopDto stopDto);
 
     /**
      * It returns a list of stops for a given bus id
@@ -36,14 +36,14 @@ public interface StopService {
     List<StopDto> getStopsByBusId(int busId);
 
     /**
-     * Update the stop details 
+     * Update the stop details
      *
      * @param stopDto given by operators will be used to update the stop.
-     * @param StopId The id of the stop to be updated.
-     * @param busId The id of the bus that the stop is associated with.
+     * @param StopId  The id of the stop to be updated.
+     * @param busId   The id of the bus that the stop is associated with.
      * @return returns the updated stop details.
      */
-    StopDto updateStop(StopDto stopDto, int StopId, int busId);
+    StopDto updateStop(StopDto stopDto, int StopId);
 
     /**
      * It deletes the stop with the given id.
