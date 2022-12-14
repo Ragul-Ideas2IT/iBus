@@ -1,5 +1,6 @@
 package com.i2i.ibus.service.impl;
 
+import com.i2i.ibus.constants.Constants;
 import com.i2i.ibus.dto.BusDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.mapper.Mapper;
@@ -8,6 +9,8 @@ import com.i2i.ibus.repository.BusRepository;
 import com.i2i.ibus.repository.OperatorRepository;
 import com.i2i.ibus.service.BusService;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,23 +43,27 @@ public class BusServiceImpl implements BusService {
         this.operatorRepository = operatorRepository;
     }
 
+    private Logger logger = LogManager.getLogger(BusServiceImpl.class);
+    
     /**
      * {@inheritDoc}
      */
     @Override
-    public BusDto addBus(BusDto busDto, int operatorId) {
+    public BusDto addBus(BusDto busDto) {
         BusDto busDTO = null;
         try {
-            busDto.setOperator(Mapper.toOperatorDto(operatorRepository.findById(operatorId).get()));
+            busDto.setOperator(Mapper.toOperatorDto(operatorRepository.findById(busDto.getOperatorId()).get()));
             Bus bus = Mapper.toBus(busDto);
 
             if (!busRepository.findByBusNumber(busDto.getBusNumber()).isPresent()) {
                 busDTO = Mapper.toBusDto(busRepository.save(bus));
             } else {
-                throw new IBusException("Bus Number is Duplicate");
+        	logger.error("Busnumber " + busDto.getBusNumber() + Constants.ALREADY_EXIST);
+                throw new IBusException(Constants.DUBLICATE_BUSNUMBER_FOUND);
             }
         } catch (NoSuchElementException Exception) {
-            throw new IBusException("Operator does not exist");
+            logger.error("OperatorID" + busDto.getOperatorId() + Constants.NOT_EXIST);
+            throw new IBusException(Constants.OPERATORID_NOT_EXIST);
         }
         return busDTO;
     }
@@ -102,7 +109,8 @@ public class BusServiceImpl implements BusService {
         try {
             bus = busRepository.findById(id).get();
         } catch (NoSuchElementException exception) {
-            throw new IBusException("Bus doesnot exists");
+            logger.error("BusID" + id + Constants.NOT_EXIST);
+            throw new IBusException(Constants.BUSID_NOT_EXIST);
         }
         return Mapper.toBusDto(bus);
     }
@@ -122,10 +130,12 @@ public class BusServiceImpl implements BusService {
             if (!busRepository.findByBusNumberForUpdate(busDto.getBusNumber(), busDto.getId()).isPresent()) {
                 busDto = Mapper.toBusDto(busRepository.save(bus));
             } else {
-                throw new IBusException("Bus Number is Duplicate");
+        	logger.error("Busnumber " + busDto.getBusNumber() + Constants.ALREADY_EXIST);
+                throw new IBusException(Constants.DUBLICATE_BUSNUMBER_FOUND);
             }
         } catch (NoSuchElementException Exception) {
-            throw new IBusException("Operator doesnot exist");
+            logger.error("OperatorID" + busDto.getOperatorId() + Constants.NOT_EXIST);
+            throw new IBusException(Constants.OPERATORID_NOT_EXIST);
         }
         return busDto;
     }

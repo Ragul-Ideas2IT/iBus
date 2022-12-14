@@ -1,5 +1,6 @@
 package com.i2i.ibus.service.impl;
 
+import com.i2i.ibus.constants.Constants;
 import com.i2i.ibus.dto.SeatDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.mapper.Mapper;
@@ -8,6 +9,8 @@ import com.i2i.ibus.repository.BusRepository;
 import com.i2i.ibus.repository.SeatRepository;
 import com.i2i.ibus.service.SeatService;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,21 +43,25 @@ public class SeatServiceImpl implements SeatService {
 	this.busRepository = busRepository;
     }
 
+    private Logger logger = LogManager.getLogger(SeatServiceImpl.class);
+    
     /**
      * {@inheritDoc}
      */
-    public SeatDto addSeat(SeatDto seatDto, int busId) {
+    public SeatDto addSeat(SeatDto seatDto) {
 	Seat seat = null;
 
 	try {
-	    if (!seatRepository.findBySeatNumberAndBusId(seatDto.getSeatNumber(), busId).isPresent()) {
-		seatDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
+	    if (!seatRepository.findBySeatNumberAndBusId(seatDto.getSeatNumber(), seatDto.getBusId()).isPresent()) {
+		seatDto.setBus(Mapper.toBusDto(busRepository.findById(seatDto.getBusId()).get()));
 		seat = seatRepository.save(Mapper.toSeat(seatDto));
 	    } else {
-		throw new IBusException(seatDto.getSeatNumber().concat(" already exists"));
+		logger.error("SeatID " + seatDto.getSeatNumber() + Constants.ALREADY_EXIST);
+		throw new IBusException(seatDto.getSeatNumber().concat(Constants.ALREADY_EXIST));
 	    }
 	} catch (NoSuchElementException exception) {
-	    throw new IBusException("Bus doesnot exists");
+	    logger.error("BusID " + seatDto.getBusId() + Constants.NOT_EXIST);
+	    throw new IBusException(Constants.BUSID_NOT_EXIST);
 	}
 	return Mapper.toSeatDto(seat);
     }
@@ -83,7 +90,8 @@ public class SeatServiceImpl implements SeatService {
 	try {
 	    seat = seatRepository.findById(id).get();
 	} catch (NoSuchElementException exception) {
-	    throw new IBusException("Seat doesnot exixts");
+	    logger.error("SeatID " + id + Constants.NOT_EXIST);
+	    throw new IBusException(Constants.SEAT_NOT_EXIST);
 	}
 	return Mapper.toSeatDto(seat);
     }
@@ -91,19 +99,21 @@ public class SeatServiceImpl implements SeatService {
     /**
      * {@inheritDoc}
      */
-    public SeatDto updateSeat(SeatDto seatDto, int seatId, int busId) {
+    public SeatDto updateSeat(SeatDto seatDto, int seatId) {
 	Seat seat = null;
 
 	try {
-	    if (!seatRepository.findBySeatNumberAndBusIdAndId(seatDto.getSeatNumber(), busId, seatId).isPresent()) {
+	    if (!seatRepository.findBySeatNumberAndBusIdAndId(seatDto.getSeatNumber(), seatDto.getBusId(), seatId).isPresent()) {
 		seatDto.setId(seatId);
-		seatDto.setBus(Mapper.toBusDto(busRepository.findById(busId).get()));
+		seatDto.setBus(Mapper.toBusDto(busRepository.findById(seatDto.getBusId()).get()));
 		seat = seatRepository.save(Mapper.toSeat(seatDto));
 	    } else {
-		throw new IBusException(seatDto.getSeatNumber().concat(" already exists"));
+		logger.error("SeatID " + seatDto.getSeatNumber() + Constants.ALREADY_EXIST);
+		throw new IBusException(seatDto.getSeatNumber().concat(Constants.ALREADY_EXIST));
 	    }
 	} catch (NoSuchElementException exception) {
-	    throw new IBusException("Bus doesnot exists");
+	    logger.error("BusID " + seatDto.getBusId() + Constants.ALREADY_EXIST);
+	    throw new IBusException(Constants.BUSID_NOT_EXIST);
 	}
 	return Mapper.toSeatDto(seat);
     }

@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
+ * Used to get the bus seat details from the operators.
  * 
  * @author Ananth.
  * @version 1.0.
@@ -27,7 +28,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table
-@SQLDelete(sql = "UPDATE Seat SET is_deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE seat SET is_deleted = true WHERE id=?")
 @Where(clause = "is_deleted = false")
 public class Seat {
 

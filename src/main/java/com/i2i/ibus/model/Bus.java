@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * Used to get bus details from the operators.
  * 
  * @author Ananth.
  * @version 1.0.
@@ -25,7 +26,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table
-@SQLDelete(sql = "UPDATE Bus SET is_deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE bus SET is_deleted = true WHERE id=?")
 @Where(clause = "is_deleted = false")
 public class Bus {
 

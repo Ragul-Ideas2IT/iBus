@@ -5,6 +5,7 @@ import java.time.LocalTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.i2i.ibus.constants.Constants;
 
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
+ * Used to get the bus schedule details from the operators.
  * 
  * @author Ananth.
  * @version 1.0.
@@ -40,15 +42,17 @@ public class ScheduleDto {
     @NotNull
     private LocalTime arrivingTime;
     @NotBlank
-    @Pattern(regexp = "([a-zA-Z][ ]?){2,}")
+    @Pattern(regexp = Constants.NAME_PATTERN)
     private String source;
     @NotBlank
-    @Pattern(regexp = "([a-zA-Z][ ]?){2,}")
+    @Pattern(regexp = Constants.NAME_PATTERN)
     private String destination;
     @JsonProperty(access = Access.READ_ONLY)
     private BusDto bus;
     private LocalTime actualDepartureTime;
     private LocalTime actualArrivingTime;
+    @JsonProperty(access = Access.WRITE_ONLY)
+    private int busId;
     @JsonProperty(access = Access.READ_ONLY)
     private String status;
 

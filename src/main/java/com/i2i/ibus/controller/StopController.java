@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.i2i.ibus.constants.Constants;
 import com.i2i.ibus.dto.MessageDto;
 import com.i2i.ibus.dto.StopDto;
 import com.i2i.ibus.service.StopService;
@@ -49,10 +50,10 @@ public class StopController {
      * @param busId   The id of the bus to which the stop is to be added.
      * @return returns the added bus stop details.
      */
-    @PostMapping("/{busId}")
-    private ResponseEntity<StopDto> addStop(@RequestBody @Valid StopDto stopDto, @PathVariable int busId) {
+    @PostMapping
+    private ResponseEntity<StopDto> addStop(@RequestBody @Valid StopDto stopDto) {
 
-	return new ResponseEntity<StopDto>(stopService.addStop(stopDto, busId), HttpStatus.CREATED);
+	return new ResponseEntity<StopDto>(stopService.addStop(stopDto), HttpStatus.CREATED);
     }
 
     /**
@@ -75,11 +76,10 @@ public class StopController {
      * @param busId   The id of the bus that the stop is associated with.
      * @return returns the updated stop details.
      */
-    @PutMapping("/{stopId}{busId}")
-    private ResponseEntity<StopDto> updateStop(@RequestBody @Valid StopDto stopDto, @PathVariable int stopId,
-	    @PathVariable int busId) {
+    @PutMapping("/{stopId}")
+    private ResponseEntity<StopDto> updateStop(@RequestBody @Valid StopDto stopDto, @PathVariable int stopId) {
 
-	return new ResponseEntity<StopDto>(stopService.updateStop(stopDto, stopId, busId), HttpStatus.OK);
+	return new ResponseEntity<StopDto>(stopService.updateStop(stopDto, stopId), HttpStatus.OK);
     }
 
     /**
@@ -92,6 +92,6 @@ public class StopController {
     private MessageDto deleteStop(@PathVariable int stopId) {
 
 	stopService.deleteStop(stopId);
-	return new MessageDto("200", "Deleted Sucessfully");
+	return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
     }
 }
