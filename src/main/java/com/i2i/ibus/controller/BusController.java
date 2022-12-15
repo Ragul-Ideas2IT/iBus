@@ -25,16 +25,13 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * <h1>Bus Ticket Booking Application
- * <h1>
- * <p>
+ * Bus Ticket Booking Application
  * Used to manipulate the Bus details in the application. Operators are
  * manipulate the bus details.
- * <p>
  *
- * @author  Ananth.
+ * @author Ananth.
  * @version 1.0.
- * @since   Nov 29 2022
+ * @since Nov 29 2022
  */
 @RestController
 @RequestMapping("api/v1/buses")
@@ -44,11 +41,11 @@ public class BusController {
 
     @Autowired
     private BusController(BusService busService) {
-        this.busService = busService;
+	this.busService = busService;
     }
 
     /**
-     * It is used to add the bus details from the operators.
+     * Used to add the bus details from the operators.
      *
      * @param operatorId The id of the operator to which the bus belongs.
      * @return the saved bus details and httpstatus.
@@ -56,7 +53,7 @@ public class BusController {
     @PostMapping
     private ResponseEntity<BusDto> addBus(@RequestBody @Valid BusDto busDto) {
 
-        return new ResponseEntity<BusDto>(busService.addBus(busDto), HttpStatus.CREATED);
+	return new ResponseEntity<BusDto>(busService.addBus(busDto), HttpStatus.CREATED);
     }
 
     /**
@@ -67,11 +64,11 @@ public class BusController {
     @GetMapping
     private ResponseEntity<List<BusDto>> getAllBuses() {
 
-        return new ResponseEntity<List<BusDto>>(busService.getAllBuses(), HttpStatus.OK);
+	return new ResponseEntity<List<BusDto>>(busService.getAllBuses(), HttpStatus.OK);
     }
 
     /**
-     * It gives a list of buses that are owned by a specific operator
+     * Gives a list of buses that are owned by a specific operator
      *
      * @param operatorId The id of the operator whose buses you want to find.
      * @return A list of buses that belong to the operator with the given id.
@@ -79,11 +76,11 @@ public class BusController {
     @GetMapping("/operators/{operatorId}")
     private ResponseEntity<List<BusDto>> getByOperatorId(@PathVariable int operatorId) {
 
-        return new ResponseEntity<List<BusDto>>(busService.getAllByOperatorId(operatorId), HttpStatus.OK);
+	return new ResponseEntity<List<BusDto>>(busService.getAllByOperatorId(operatorId), HttpStatus.OK);
     }
 
     /**
-     * It returns a bus details with the given id.
+     * Returns a bus details with the given id.
      *
      * @param busId The id of the bus you want to get.
      * @return the bus details of the given bus id.
@@ -91,7 +88,7 @@ public class BusController {
     @GetMapping("/{busId}")
     private ResponseEntity<BusDto> getById(@PathVariable int busId) {
 
-        return new ResponseEntity<BusDto>(busService.getById(busId), HttpStatus.OK);
+	return new ResponseEntity<BusDto>(busService.getById(busId), HttpStatus.OK);
     }
 
     /**
@@ -104,7 +101,7 @@ public class BusController {
     @PutMapping("/{busId}")
     private ResponseEntity<BusDto> updateBus(@RequestBody @Valid BusDto busDto, @PathVariable int busId) {
 
-        return new ResponseEntity<BusDto>(busService.updateBus(busDto, busId), HttpStatus.OK);
+	return new ResponseEntity<BusDto>(busService.updateBus(busDto, busId), HttpStatus.OK);
     }
 
     /**
@@ -116,7 +113,7 @@ public class BusController {
     @DeleteMapping("/{busId}")
     private MessageDto deleteBus(@PathVariable int busId) {
 
-        busService.deleteBus(busId);
-        return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
+	busService.deleteBus(busId);
+	return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
     }
 }

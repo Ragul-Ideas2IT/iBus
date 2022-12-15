@@ -16,7 +16,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 /**
- * Used to get the bus seat details from the operators.
+ * Bus Ticket Booking Application
+ * Used to get the bus seat details from the operators and also used to read the
+ * saved details.
  *
  * @author Ananth.
  * @version 1.0.
@@ -29,13 +31,13 @@ public class SeatDto {
     @JsonProperty(access = Access.READ_ONLY)
     private int id;
     @NotBlank
-    @Pattern(regexp = Constants.SEAT_TYPE_PATTERN)
+    @Pattern(regexp = Constants.SEAT_TYPE_PATTERN, message = Constants.INVALID_SEAT_TYPE_PATTERN_MESSAGE)
     private String seatType;
     @NotBlank
-    @Pattern(regexp = Constants.SEAT_NUMBER_PATTERN)
+    @Pattern(regexp = Constants.SEAT_NUMBER_PATTERN, message = Constants.INVALID_SEAT_NUMBER_PATTERN_MESSAGE)
     private String seatNumber;
     @NotBlank
-    @Pattern(regexp = Constants.GENDER_PATTERN)
+    @Pattern(regexp = Constants.GENDER_PATTERN, message = Constants.INVALID_SEAT_GENDER_PATTERN_MESSAGE)
     private String gender;
     @JsonProperty(access = Access.READ_ONLY)
     private BusDto bus;

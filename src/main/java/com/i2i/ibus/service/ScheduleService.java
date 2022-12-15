@@ -9,14 +9,12 @@ import com.i2i.ibus.model.Schedule;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 /**
- * <h1>Bus Ticket Booking Application
- * <h1>
- * <p>
- * Used to manipulate the Bus schedule details in the application. Operators
- * are manipulate the bus details.
- * <p>
+ * Bus Ticket Booking Application
+ * Used to manipulate the Bus schedule details in the application. Operators are
+ * manipulate the bus details.
  *
  * @author Ananth.
  * @version 1.0.
@@ -25,7 +23,7 @@ import java.util.List;
 public interface ScheduleService {
 
     /**
-     * It is used to add the bus schedule details from the operators.
+     * Used to add the bus schedule details from the operators.
      *
      * @param scheduleDto given by the operator.
      * @param busId       The id of the bus that the schedule is being added to.
@@ -49,8 +47,8 @@ public interface ScheduleService {
     List<ScheduleDto> getSchedulesByBusId(int busId);
 
     /**
-     * It takes in a departure date, source and destination and returns a list of
-     * bus schedule dto's
+     * Takes in a departure date, source and destination and returns a list of bus
+     * schedule dto's
      *
      * @param departureDate The date on which the bus is scheduled to depart.
      * @param source        The source city of the bus
@@ -70,14 +68,14 @@ public interface ScheduleService {
     ScheduleDto updateSchedule(ScheduleDto scheduleDto, int ScheduleId);
 
     /**
-     * used to deletes the bus schedule by id.
+     * Used to deletes the bus schedule by id.
      *
      * @param ScheduleId The id of the bus schedule to be deleted.
      */
     void deleteSchedule(int ScheduleId);
 
     /**
-     * This is used to validates the time of the bus schedule
+     * Used to validates the time of the bus schedule
      *
      * @param scheduleDto shedule details that contains the data to be validated.
      * @return boolean if is correct date and time returns or else false.
@@ -85,9 +83,20 @@ public interface ScheduleService {
     boolean validateDateAndTime(ScheduleDto scheduleDto);
 
     /**
-     * It sets the status of the Schedule details to be ended.
+     * Used sets the status of the Schedule details to be ended.
      *
      * @param schedule The bus schedule object that you want to set the status of.
      */
     void setStatus(Schedule schedule);
+
+    /**
+     * Used to get the schedule details by the bus id and departure date. The
+     * schedule were given to the booking repository for validation process.
+     * 
+     * @param busId         from the booking user
+     * @param departureDate from the booking user
+     * @return returns the schedule or else nothing.
+     */
+    Optional<Schedule> findByBusIdAndDepartureDate(int busId, LocalDate departureDate);
+
 }

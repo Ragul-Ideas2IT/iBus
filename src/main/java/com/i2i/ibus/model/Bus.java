@@ -17,7 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
- * Used to get bus details from the operators.
+ * Bus Ticket Booking Application
+ * Used to get bus details from the operators and also used to save details.
  *
  * @author Ananth.
  * @version 1.0.

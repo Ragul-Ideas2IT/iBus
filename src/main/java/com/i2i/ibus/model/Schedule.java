@@ -19,7 +19,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 /**
- * Used to get the bus schedule from the operators.
+ * Bus Ticket Booking Application
+ * Used to get the bus schedule from the operators and also used to save
+ * details.
  *
  * @author Ananth.
  * @version 1.0.

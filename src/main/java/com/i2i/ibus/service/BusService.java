@@ -10,12 +10,9 @@ import com.i2i.ibus.dto.BusDto;
 import java.util.List;
 
 /**
- * <h1>Bus Ticket Booking Application
- * <h1>
- * <p>
+ * Bus Ticket Booking Application
  * Used to manipulate the Bus details in the application. Operators are
  * manipulate the bus details.
- * <p>
  *
  * @author Ananth.
  * @version 1.0.
@@ -24,7 +21,7 @@ import java.util.List;
 public interface BusService {
 
     /**
-     * It is used to add the bus details from the operators.
+     * Used to add the bus details from the operators.
      *
      * @param bus        details given by the operator.
      * @param operatorId The id of the operator to which the bus belongs.
@@ -33,7 +30,7 @@ public interface BusService {
     BusDto addBus(BusDto busDto);
 
     /**
-     * It returns a list of buses that belong to a specific operator.
+     * Returns a list of buses that belong to a specific operator.
      *
      * @param OperatorId The id of the operator.
      * @return A list of BusDto objects.

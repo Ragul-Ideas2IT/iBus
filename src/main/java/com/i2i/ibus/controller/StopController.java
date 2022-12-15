@@ -25,12 +25,9 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * <h1>Bus Ticket Booking Application
- * <h1>
- * <p>
+ * Bus Ticket Booking Application
  * Used to manipulate the Bus stop details in the application. Operators are
  * manipulate the bus stop details.
- * <p>
  *
  * @author Ananth.
  * @version 1.0.
@@ -44,7 +41,7 @@ public class StopController {
 
     @Autowired
     private StopController(StopService stopService) {
-        this.stopService = stopService;
+	this.stopService = stopService;
     }
 
     /**
@@ -57,11 +54,11 @@ public class StopController {
     @PostMapping
     private ResponseEntity<StopDto> addStop(@RequestBody @Valid StopDto stopDto) {
 
-        return new ResponseEntity<StopDto>(stopService.addStop(stopDto), HttpStatus.CREATED);
+	return new ResponseEntity<StopDto>(stopService.addStop(stopDto), HttpStatus.CREATED);
     }
 
     /**
-     * It returns a list of stops for a given bus id
+     * Returns a list of stops for a given bus id
      *
      * @param busId The id of the bus whose stops are to be fetched.
      * @return A list of stops for a given bus id.
@@ -69,7 +66,7 @@ public class StopController {
     @GetMapping("/{busId}")
     private ResponseEntity<List<StopDto>> getStopsByBusId(@PathVariable int busId) {
 
-        return new ResponseEntity<List<StopDto>>(stopService.getStopsByBusId(busId), HttpStatus.OK);
+	return new ResponseEntity<List<StopDto>>(stopService.getStopsByBusId(busId), HttpStatus.OK);
     }
 
     /**
@@ -82,11 +79,11 @@ public class StopController {
     @PutMapping("/{stopId}")
     private ResponseEntity<StopDto> updateStop(@RequestBody @Valid StopDto stopDto, @PathVariable int stopId) {
 
-        return new ResponseEntity<StopDto>(stopService.updateStop(stopDto, stopId), HttpStatus.OK);
+	return new ResponseEntity<StopDto>(stopService.updateStop(stopDto, stopId), HttpStatus.OK);
     }
 
     /**
-     * It deletes the stop with the given id.
+     * Deletes the stop with the given id.
      *
      * @param stopId The id of the stop to be deleted.
      * @return MessageDto
@@ -94,7 +91,7 @@ public class StopController {
     @DeleteMapping("/{stopId}")
     private MessageDto deleteStop(@PathVariable int stopId) {
 
-        stopService.deleteStop(stopId);
-        return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
+	stopService.deleteStop(stopId);
+	return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
     }
 }

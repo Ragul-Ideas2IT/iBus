@@ -175,4 +175,5 @@ public class Constants {
     public static final String BUS_NUMBER = " BUS NUMBER : ";
     
     public static final String BOOKING_CANCELLED_MESSAGE = "Booking cancelled.";
-}
+    public static final String INVALID_SOURCE_PATTERN_MESSAGE = "Given source is not valid (eg: aaaa)";
+   }

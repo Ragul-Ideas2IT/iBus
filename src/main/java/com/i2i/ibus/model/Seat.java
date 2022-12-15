@@ -5,21 +5,22 @@
  */
 package com.i2i.ibus.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.Where;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+
+import org.hibernate.annotations.Where;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
- * Used to get the bus seat details from the operators.
+ * Bus Ticket Booking Application
+ * Used to get the bus seat details from the operators and also used to save
+ * details.
  *
  * @author Ananth.
  * @version 1.0.
@@ -27,7 +28,6 @@ import javax.persistence.Table;
  */
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Where(clause = "is_deleted = false")
 public class Seat {

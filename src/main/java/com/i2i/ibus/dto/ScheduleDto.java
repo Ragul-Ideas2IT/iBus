@@ -5,22 +5,25 @@
  */
 package com.i2i.ibus.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.i2i.ibus.constants.Constants;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.time.LocalDate;
-import java.time.LocalTime;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.i2i.ibus.constants.Constants;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
- * Used to get the bus schedule details from the operators.
+ * Bus Ticket Booking Application
+ * Used to get the bus schedule details from the operators and also used to read the
+ * saved details.
  *
  * @author Ananth.
  * @version 1.0.
@@ -28,7 +31,6 @@ import java.time.LocalTime;
  */
 @Getter
 @Setter
-@NoArgsConstructor
 public class ScheduleDto {
 
     @JsonProperty(access = Access.READ_ONLY)
@@ -44,10 +46,10 @@ public class ScheduleDto {
     @NotNull
     private LocalTime arrivingTime;
     @NotBlank
-    @Pattern(regexp = Constants.NAME_PATTERN)
+    @Pattern(regexp = Constants.NAME_PATTERN, message = Constants.INVALID_SOURCE_PATTERN_MESSAGE)
     private String source;
     @NotBlank
-    @Pattern(regexp = Constants.NAME_PATTERN)
+    @Pattern(regexp = Constants.NAME_PATTERN, message = Constants.INVALID_DESTINATION_PATTERN_MESSAGE)
     private String destination;
     @JsonProperty(access = Access.READ_ONLY)
     private BusDto bus;

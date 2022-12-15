@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * Bus Ticket Booking Application
  * Used to save and retrieve the bus seat details.
  *
  * @author Ananth.
@@ -47,5 +48,5 @@ public interface SeatRepository extends JpaRepository<Seat, Integer> {
      * @param seatId     given by operator.
      * @return the bus details found or else nothing.
      */
-    Optional<Seat> findBySeatNumberAndBusIdAndId(String seatNumber, int busId, int seatId);
+    Optional<Seat> findBySeatNumberAndBusIdAndNotId(String seatNumber, int busId, int seatId);
 }
