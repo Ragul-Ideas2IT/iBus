@@ -5,7 +5,6 @@
  */
 package com.i2i.ibus.mapper;
 
-import com.i2i.ibus.dto.AccountDto;
 import com.i2i.ibus.dto.AddressDto;
 import com.i2i.ibus.dto.BookingDetailDto;
 import com.i2i.ibus.dto.BookingDto;
@@ -323,23 +322,13 @@ public class Mapper {
     }
 
     /**
-     * > It takes a Cancellation object and returns a CancellationDto object
+     * It takes a Cancellation object and returns a CancellationDto object
      *
      * @param cancellation The Cancellation object that we want to convert to a CancellationDto object.
      * @return A CancellationDto object
      */
     public static CancellationDto toCancellationDto(Cancellation cancellation) {
         return mapper.map(cancellation, CancellationDto.class);
-    }
-
-    /**
-     * Convert an AccountDto to an Account.
-     *
-     * @param accountDto The AccountDto object to be converted to Account object.
-     * @return A new Account object with the values from the AccountDto object.
-     */
-    public static Account toAccount(AccountDto accountDto) {
-        return mapper.map(accountDto, Account.class);
     }
 
 }

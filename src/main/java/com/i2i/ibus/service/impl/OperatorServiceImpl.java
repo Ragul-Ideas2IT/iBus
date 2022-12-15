@@ -9,8 +9,10 @@ import com.i2i.ibus.constants.Constants;
 import com.i2i.ibus.dto.OperatorDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.mapper.Mapper;
+import com.i2i.ibus.model.Account;
 import com.i2i.ibus.model.Operator;
 import com.i2i.ibus.repository.OperatorRepository;
+import com.i2i.ibus.service.AccountService;
 import com.i2i.ibus.service.OperatorService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,10 +35,12 @@ import java.util.Optional;
 public class OperatorServiceImpl implements OperatorService {
 
     private OperatorRepository operatorRepository;
+    private AccountService accountService;
 
     @Autowired
-    public OperatorServiceImpl(OperatorRepository operatorRepository) {
+    public OperatorServiceImpl(OperatorRepository operatorRepository, AccountService accountService) {
         this.operatorRepository = operatorRepository;
+        this.accountService = accountService;
     }
     private Logger logger = LogManager.getLogger(OperatorServiceImpl.class);
 
@@ -47,7 +51,8 @@ public class OperatorServiceImpl implements OperatorService {
     public Operator validateOperator(int id) {
         Optional<Operator> operator = operatorRepository.findById(id);
         if (operator.isEmpty()) {
-            throw new IBusException("Operator Id doesn't exists");
+            logger.error(id + Constants.OPERATORID_NOT_EXIST);
+            throw new IBusException(Constants.OPERATORID_NOT_EXIST);
         }
         return operator.get();
     }
@@ -58,12 +63,15 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     public void validateMailIdPhoneNoAndGstNumber(String mailId, String phoneNumber, String gstNumber) {
         if (operatorRepository.findByMailId(mailId).isPresent()) {
+            logger.error(Constants.MAIL_ID_ALREADY_EXISTS);
             throw new IBusException(Constants.MAIL_ID_ALREADY_EXISTS);
         }
         if (operatorRepository.findByPhoneNumber(phoneNumber).isPresent()) {
+            logger.error(Constants.PHONE_NUMBER_ALREADY_EXISTS);
             throw new IBusException(Constants.PHONE_NUMBER_ALREADY_EXISTS);
         }
         if (operatorRepository.findByGstNumber(gstNumber).isPresent()) {
+            logger.error(Constants.GST_NUMBER_ALREADY_EXISTS);
             throw new IBusException(Constants.GST_NUMBER_ALREADY_EXISTS);
         }
     }
@@ -75,12 +83,15 @@ public class OperatorServiceImpl implements OperatorService {
     public void validateMailIdPhoneNoAndGstNumberForUpdate(String mailId, String phoneNumber, String gstNumber,
                                                            int id) {
         if (operatorRepository.findByMailIdAndIdNot(mailId, id).isPresent()) {
+            logger.error(Constants.MAIL_ID_ALREADY_EXISTS);
             throw new IBusException(Constants.MAIL_ID_ALREADY_EXISTS);
         }
         if (operatorRepository.findByPhoneNumberAndIdNot(phoneNumber, id).isPresent()) {
+            logger.error(Constants.PHONE_NUMBER_ALREADY_EXISTS);
             throw new IBusException(Constants.PHONE_NUMBER_ALREADY_EXISTS);
         }
         if (operatorRepository.findByGstNumberAndIdNot(gstNumber, id).isPresent()) {
+            logger.error(Constants.GST_NUMBER_ALREADY_EXISTS);
             throw new IBusException(Constants.GST_NUMBER_ALREADY_EXISTS);
         }
     }
@@ -92,6 +103,8 @@ public class OperatorServiceImpl implements OperatorService {
     public OperatorDto saveOperator(OperatorDto operatorDto) {
         validateMailIdPhoneNoAndGstNumber(operatorDto.getMailId(), operatorDto.getPhoneNumber(),
                 operatorDto.getGstNumber());
+        accountService.addAccount(new Account(operatorDto.getMailId(), "ROLE_OPERATOR", operatorDto.getPassword()));
+        logger.info(Constants.CREATE_MESSAGE + operatorDto.getId());
         return Mapper.toOperatorDto(operatorRepository.save(Mapper.toOperator(operatorDto)));
     }
 
@@ -121,6 +134,7 @@ public class OperatorServiceImpl implements OperatorService {
         validateMailIdPhoneNoAndGstNumberForUpdate(operatorDto.getMailId(), operatorDto.getPhoneNumber(),
                 operatorDto.getGstNumber(), id);
         operatorDto.setId(id);
+        logger.info(Constants.UPDATE_MESSAGE + operatorDto.getId());
         return Mapper.toOperatorDto(operatorRepository.save(Mapper.toOperator(operatorDto)));
     }
 
@@ -131,6 +145,7 @@ public class OperatorServiceImpl implements OperatorService {
     public void deleteOperatorById(int id) {
         Operator operator = validateOperator(id);
         operator.setDeleted(true);
+        logger.info(Constants.DELETE_MESSAGE + id);
         operatorRepository.save(operator);
     }
 

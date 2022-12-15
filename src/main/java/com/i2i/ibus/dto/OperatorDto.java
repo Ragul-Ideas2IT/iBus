@@ -49,6 +49,10 @@ public class OperatorDto {
     @Pattern(regexp = Constants.GST_NUMBER_PATTERN, message = Constants.INVALID_GST_NUMBER_PATTERN_MESSAGE)
     @NotBlank
     private String gstNumber;
+    @JsonProperty(access = Access.WRITE_ONLY)
+    @NotBlank
+    @Pattern(regexp = Constants.PASSWORD_PATTERN, message = Constants.INVALID_PASSWORD_PATTERN_MESSAGE)
+    private String password;
     @NotEmpty
     @Valid
     private List<AddressDto> addresses;

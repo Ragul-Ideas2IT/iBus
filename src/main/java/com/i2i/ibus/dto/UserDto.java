@@ -45,4 +45,8 @@ public class UserDto {
     @Min(18)
     @Max(120)
     private int age;
+    @JsonProperty(access = Access.WRITE_ONLY)
+    @NotBlank
+    @Pattern(regexp = Constants.PASSWORD_PATTERN, message = Constants.INVALID_PASSWORD_PATTERN_MESSAGE)
+    private String password;
 }
