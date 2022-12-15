@@ -9,6 +9,8 @@ import com.i2i.ibus.dto.AccountDto;
 import com.i2i.ibus.model.Account;
 
 /**
+ * A service Interface contains required methods for service class of Account
+ *
  * @author Ragul
  * @version 1.0
  * @since Dec 12 2022

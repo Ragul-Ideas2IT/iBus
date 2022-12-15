@@ -5,12 +5,15 @@
  */
 package com.i2i.ibus.service.impl;
 
+import com.i2i.ibus.constants.Constants;
 import com.i2i.ibus.dto.OperatorDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.Operator;
 import com.i2i.ibus.repository.OperatorRepository;
 import com.i2i.ibus.service.OperatorService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,10 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * A service class that implements the OperatorService interface and uses the OperatorRepository to save an Operator
+ * object. It provides the implementation for all the methods. It contains all the business logic related to the
+ * Operator
+ *
  * @author Ragul
  * @version 1.0
  * @since Nov 29 2022
@@ -31,6 +38,7 @@ public class OperatorServiceImpl implements OperatorService {
     public OperatorServiceImpl(OperatorRepository operatorRepository) {
         this.operatorRepository = operatorRepository;
     }
+    private Logger logger = LogManager.getLogger(OperatorServiceImpl.class);
 
     /**
      * {@inheritDoc}
@@ -50,13 +58,13 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     public void validateMailIdPhoneNoAndGstNumber(String mailId, String phoneNumber, String gstNumber) {
         if (operatorRepository.findByMailId(mailId).isPresent()) {
-            throw new IBusException("Mail Id already exists");
+            throw new IBusException(Constants.MAIL_ID_ALREADY_EXISTS);
         }
         if (operatorRepository.findByPhoneNumber(phoneNumber).isPresent()) {
-            throw new IBusException("Phone Number already exists");
+            throw new IBusException(Constants.PHONE_NUMBER_ALREADY_EXISTS);
         }
         if (operatorRepository.findByGstNumber(gstNumber).isPresent()) {
-            throw new IBusException("GST number already exists");
+            throw new IBusException(Constants.GST_NUMBER_ALREADY_EXISTS);
         }
     }
 
@@ -67,13 +75,13 @@ public class OperatorServiceImpl implements OperatorService {
     public void validateMailIdPhoneNoAndGstNumberForUpdate(String mailId, String phoneNumber, String gstNumber,
                                                            int id) {
         if (operatorRepository.findByMailIdAndIdNot(mailId, id).isPresent()) {
-            throw new IBusException("Mail Id already exists");
+            throw new IBusException(Constants.MAIL_ID_ALREADY_EXISTS);
         }
         if (operatorRepository.findByPhoneNumberAndIdNot(phoneNumber, id).isPresent()) {
-            throw new IBusException("Phone Number already exists");
+            throw new IBusException(Constants.PHONE_NUMBER_ALREADY_EXISTS);
         }
         if (operatorRepository.findByGstNumberAndIdNot(gstNumber, id).isPresent()) {
-            throw new IBusException("GST number already exists");
+            throw new IBusException(Constants.GST_NUMBER_ALREADY_EXISTS);
         }
     }
 

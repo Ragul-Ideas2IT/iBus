@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * Simple DTO that holds a message code and a message with constructor, getters and setters
+ *
  * @author Ragul
  * @version 1.0
  * @since Nov 30 2022

@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
+ * Implements the UserDetailsService interface and overrides the loadUserByUsername method
+ *
  * @author Ragul
  * @version 1.0
  * @since Dec 12 2022

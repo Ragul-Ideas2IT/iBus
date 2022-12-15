@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
+ * Creating a repository for the Account model which extends JPA repository
+ *
  * @author Ragul
  * @version 1.0
  * @since Dec 12 2022

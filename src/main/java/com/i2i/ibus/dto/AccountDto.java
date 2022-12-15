@@ -6,14 +6,17 @@
 package com.i2i.ibus.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.i2i.ibus.constants.Constants;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 /**
+ * DTO class that contains the fields that are required to create an account with getters and setters
+ *
  * @author Ragul
  * @version 1.0
  * @since Dec 12 2022
@@ -24,11 +27,13 @@ public class AccountDto {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String id;
-    @NotBlank(message = "Mail ID is mandatory")
-    @Email(message = "Email ID should be in valid format")
+    @NotBlank
+    @Email(message = Constants.INVALID_EMAILID_PATTERN_MESSAGE)
     private String mailId;
-    @Valid
-    private RoleDto role;
-    @NotBlank(message = "Password is mandatory")
+    @NotBlank
+    @Pattern(regexp = Constants.ROLE_NAME_PATTERN, message = Constants.INVALID_ROLE_NAME_PATTERN_MESSAGE)
+    private String role;
+    @NotBlank
+    @Pattern(regexp = Constants.PASSWORD_PATTERN, message = Constants.INVALID_PASSWORD_PATTERN_MESSAGE)
     private String password;
 }

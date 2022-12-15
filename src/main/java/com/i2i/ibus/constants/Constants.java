@@ -10,7 +10,7 @@ package com.i2i.ibus.constants;
  * messages, etc.
  * 
  * @version 1.0
- * @created Nov 29 2022
+ * @since Nov 29 2022
  *
  */
 public class Constants {
@@ -137,4 +137,25 @@ public class Constants {
     public static final String NOT_PAID = "Not Paid";
     public static final String SEAT_ALREADY_BOOKED = "Seat already booked";
     public static final String SEAT_NOT_AVAILABLE = "Seat is not available";
+    public static final String MAIL_ID_ALREADY_EXISTS = "mail_id_already_exists";
+    public static final String PHONE_NUMBER_ALREADY_EXISTS = "phone_number_already_exists";
+    public static final String GST_NUMBER_ALREADY_EXISTS = "gst_number_already_exists";
+    public static final String ROLE_NAME_PATTERN = "(?i)^(user)|(operator)$";
+    public static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$";
+    public static final String INVALID_ROLE_NAME_PATTERN_MESSAGE = "Role should be user or operator";
+
+    public static final String INVALID_PASSWORD_PATTERN_MESSAGE = "A lower case alphabet must occur at least once.\n"
+            +("An upper case alphabet that must occur at least once.\n")
+            +("A special character that must occur at least once.\n")
+            +("White spaces don’t allowed in the entire string.\n")
+            +("At least 8 characters and At most 20 characters.");
+
+    public static final String INVALID_BUS_NUMBER_PATTERN_MESSAGE = "Given bus number is not vaild (eg: TN23BS3241)";
+    public static final String INVALID_BUS_TYPE_PATTERN_MESSAGE = "Given bus type is not vaild (eg: AC or NONAC)";
+    public static final String INVALID_SOURCE_PATTERN_MESSAGE = "Given source is not vaild (eg: chennai)";
+    public static final String INVALID_DESTINATION_PATTERN_MESSAGE = "Given destination is not vaild (eg: chennai)";
+    public static final String INVALID_SEAT_TYPE_PATTERN_MESSAGE = "Given seat type is not vaild (eg: seater or sleeper)";
+    public static final String INVALID_SEAT_NUMBER_PATTERN_MESSAGE = "Given seat number is not vaild (eg: LLS1,LUS1,RLS1,RUS2)";
+    public static final String INVALID_SEAT_GENDER_PATTERN_MESSAGE = "Given seat gender is not vaild (eg: male,female or other)";
+    public static final String INVALID_STOP_PATTERN_MESSAGE = "Given stop is not vaild (eg: guindy)";
 }

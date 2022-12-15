@@ -5,12 +5,15 @@
  */
 package com.i2i.ibus.service.impl;
 
+import com.i2i.ibus.constants.Constants;
 import com.i2i.ibus.dto.UserDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.User;
 import com.i2i.ibus.repository.UserRepository;
 import com.i2i.ibus.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,10 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * A service class that implements the UserService interface and uses the UserRepository to save a User
+ * object. It provides the implementation for all the methods. It contains all the business logic related to the
+ * User
+ *
  * @author Ragul
  * @version 1.0
  * @since Nov 29 2022
@@ -31,6 +38,8 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
+    private Logger logger = LogManager.getLogger(UserServiceImpl.class);
+
     /**
      * {@inheritDoc}
      */
@@ -38,7 +47,7 @@ public class UserServiceImpl implements UserService {
     public User validateUser(int id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
-            throw new IBusException("User Id doesn't exists");
+            throw new IBusException(Constants.USER_NOT_EXIST);
         }
         return user.get();
     }
@@ -49,7 +58,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void validateMailId(String mailId) {
         if (userRepository.findByMailId(mailId).isPresent()) {
-            throw new IBusException("Mail Id already exists");
+            throw new IBusException(Constants.MAIL_ID_ALREADY_EXISTS);
         }
     }
 
@@ -59,7 +68,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void validatePhoneNumber(String phoneNumber) {
         if (userRepository.findByPhoneNumber(phoneNumber).isPresent()) {
-            throw new IBusException("Phone number already exists");
+            throw new IBusException(Constants.PHONE_NUMBER_ALREADY_EXISTS);
         }
     }
 
@@ -70,7 +79,7 @@ public class UserServiceImpl implements UserService {
     public void validateMailIdForUpdate(String mailId, int id) {
         Optional<User> user = userRepository.findByMailIdAndIdNot(mailId, id);
         if (user.isPresent()) {
-            throw new IBusException("Mail Id already exists");
+            throw new IBusException(Constants.MAIL_ID_ALREADY_EXISTS);
         }
     }
 
@@ -81,7 +90,7 @@ public class UserServiceImpl implements UserService {
     public void validatePhoneNoForUpdate(String phoneNumber, int id) {
         Optional<User> user = userRepository.findByPhoneNumberAndIdNot(phoneNumber, id);
         if (user.isPresent()) {
-            throw new IBusException("Phone number already exists");
+            throw new IBusException(Constants.PHONE_NUMBER_ALREADY_EXISTS);
         }
     }
 
