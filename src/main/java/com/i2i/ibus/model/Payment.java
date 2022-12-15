@@ -5,20 +5,22 @@
  */
 package com.i2i.ibus.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.Where;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import java.time.LocalDateTime;
+
+import org.hibernate.annotations.Where;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
- * Payment are used to connect the database.
+ * Payment are used to connect the database, to save the payment details
+ * and get the payment details.
  *
  * @author Tamilmani K
  * @version 1.0
@@ -26,7 +28,6 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Where(clause = "is_deleted = false")
 public class Payment {

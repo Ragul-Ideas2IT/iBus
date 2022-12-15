@@ -6,6 +6,7 @@
 package com.i2i.ibus.dto;
 
 import lombok.Getter;
+
 import lombok.Setter;
 
 import javax.validation.constraints.Max;
@@ -13,26 +14,33 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+import com.i2i.ibus.constants.Constants;
+
 /**
- * @author Tamilmani
- * @version 1.0
- * @since Nov 30 2022
- */
+* BookingDetailDTO are used to get the passenger details from the server and send the passenger
+* details to the server in the type of {@link BookingDetailDto} object. It contains the
+* attributes of the passenger details. Here, the pattern of the attributes are specified.
+* 
+* @author Tamilmani K
+* @version 1.0
+* @since Nov 29 2022
+*
+*/
 @Getter
 @Setter
 public class BookingDetailDto {
 
-    @Min(value = 2, message = "min age is 2")
-    @Max(value = 120, message = "max age is 120")
+    @Min(value = 2)
+    @Max(value = 120)
     private int age;
     @NotBlank
-    @Pattern(regexp = "([a-zA-Z][ ]?){2,50}", message = "Please enter the valid name format. ")
+    @Pattern(regexp = Constants.NAME_PATTERN, message = Constants.INVALID_NAME_PATTERN_MESSAGE)
     private String name;
     @NotBlank
-    @Pattern(regexp = "(?i)^(male)|(female)|(others)$", message = "Please enter the valid format gender.")
+    @Pattern(regexp = Constants.GENDER_PATTERN, message = Constants.INVALID_GENDER_PATTERN_MESSAGE)
     private String gender;
     @NotBlank
-    @Pattern(regexp = "^([L]|[R])([L]|[U])([S]|[B])([0-9]?[1-9])$")
+    @Pattern(regexp = Constants.SEAT_NUMBER_PATTERN)
     private String seatNumber;
 
 }
