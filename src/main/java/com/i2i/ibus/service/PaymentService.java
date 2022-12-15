@@ -10,11 +10,12 @@ import java.util.List;
 
 /**
  * The validated payment details are passed to the payment repository to store
- * the details in the database, otherwise it throws {@code IBusException}.
- *
+ * the payment details in the database, to get payment details and delete operation are processed.
+ * 
  * @author Tamilmani K
  * @version 1.0
  * @since Nov 29 2022
+ *
  */
 public interface PaymentService {
 
@@ -23,21 +24,11 @@ public interface PaymentService {
      * successfully, it saves the payment details to the database, otherwise it
      * throws {@code IBusException}.
      *
-     * @param bookingId  Id for get the booking to map the details.
      * @param paymentDto The payment details for validation.
      * @return A PaymentDto If the payment details are validated successfully, it
-     * returns paymentDto.
+     *         returns paymentDto.
      */
-    PaymentDto createPayment(int bookingId, PaymentDto paymentDto);
-
-    /**
-     * Get a payment by its payment ID. If the payment aren't found it throw
-     * {@code IBusException}.
-     *
-     * @param paymentId The id of the payment details you want to get.
-     * @return PaymentDto If the payment details are found, it returns paymentDto.
-     */
-    PaymentDto getById(int paymentId);
+    PaymentDto createPayment(PaymentDto paymentDto);
 
     /**
      * Get all payments for a booking. If the booking aren't found it throw
@@ -46,15 +37,15 @@ public interface PaymentService {
      * @param bookingId The id of the booking you want to get the payment details.
      * @return List<PaymentDto> A list of PaymentDto objects.
      */
-    List<PaymentDto> getAllByBookingId(int bookingId);
+    List<PaymentDto> getByBookingId(int bookingId);
 
     /**
-     * Delete all payments for particular booking id.
+     * This function returns a list of all payments for a particular date and time.
      *
-     * @param bookingId The id of the booking to delete payments details.
+     * @return List<PaymentDto> A list of PaymentDto objects.
      */
-    void deleteAllByBookingId(int bookingId);
-
+    List<PaymentDto> getAll();
+    
     /**
      * Delete all payments from the database.
      */

@@ -5,6 +5,7 @@
 package com.i2i.ibus.service.impl;
 
 import com.i2i.ibus.constants.Constants;
+import com.i2i.ibus.controller.PaymentController;
 import com.i2i.ibus.dto.PaymentDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.mapper.Mapper;
@@ -13,26 +14,32 @@ import com.i2i.ibus.model.Payment;
 import com.i2i.ibus.repository.BookingRepository;
 import com.i2i.ibus.repository.PaymentRepository;
 import com.i2i.ibus.service.PaymentService;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * The validated payment details are passed to the payment repository to store
- * the details in the database, otherwise it throws {@code IBusException}.
- *
+ * the payment details in the database, to get payment details and delete operation are processed.
+ * 
  * @author Tamilmani K
  * @version 1.0
  * @since Nov 29 2022
+ *
  */
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
     private PaymentRepository paymentRepository;
     private BookingRepository bookingRepository;
+    private Logger logger = LogManager.getLogger(PaymentController.class);
 
     /**
      * Create a new payment repository and booking repository to initialing the
@@ -51,31 +58,38 @@ public class PaymentServiceImpl implements PaymentService {
      * {@inheritDoc}
      */
     @Override
-    public PaymentDto createPayment(int bookingId, PaymentDto paymentDto) {
-        Booking booking = bookingRepository.findById(bookingId)
+    public PaymentDto createPayment(PaymentDto paymentDto) {
+        Booking booking = bookingRepository.findById(paymentDto.getBookingId())
                 .orElseThrow(() -> new IBusException(Constants.BOOKING_NOT_EXIST));
         Payment payment = Mapper.toPayment(paymentDto);
         payment.setTime(LocalDateTime.now());
         payment.setBooking(booking);
         if (booking.getCancellation() != null) {
+            logger.error(Constants.PAYMENT_CANCEL_MESSAGE + Constants.BOOKING_ID + paymentDto.getBookingId());
             throw new IBusException(Constants.PAYMENT_CANCEL_MESSAGE);
         }
         if (0 == paymentDto.getCvvNumber()) {
+            logger.error(Constants.CVV_NUMBER_MANDATORY_MESSAGE + Constants.BOOKING_ID + paymentDto.getBookingId());
             throw new IBusException(Constants.CVV_NUMBER_MANDATORY_MESSAGE);
         }
         if (booking.getPaymentStatus().equalsIgnoreCase(Constants.SUCCESS)) {
+            logger.error(Constants.ALREADY_PAYMENT_SUCCEED_MESSAGE + Constants.BOOKING_ID
+        	    + paymentDto.getBookingId());
             throw new IBusException(Constants.ALREADY_PAYMENT_SUCCEED_MESSAGE);
         }
         if (booking.getTotalFare() != paymentDto.getAmount()) {
             booking.setPaymentStatus(Constants.DECLINED);
             payment.setStatus(Constants.UNPAID);
             paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
+            logger.error(Constants.INVALID_PAYMENT_MESSAGE + booking.getTotalFare() + Constants.BOOKING_ID
+        	    + paymentDto.getBookingId());
             throw new IBusException(Constants.INVALID_PAYMENT_MESSAGE + booking.getTotalFare());
         }
         if (5 < Duration.between(booking.getDateTime(), LocalDateTime.now()).toMinutes()) {
             booking.setPaymentStatus(Constants.DECLINED);
             payment.setStatus(Constants.UNPAID);
             paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
+            logger.error(Constants.EXPIRED_PAYMENT_TIME_MESSAGE);
             throw new IBusException(Constants.EXPIRED_PAYMENT_TIME_MESSAGE);
         } else {
             payment.setStatus(Constants.PAID);
@@ -89,18 +103,13 @@ public class PaymentServiceImpl implements PaymentService {
      * {@inheritDoc}
      */
     @Override
-    public PaymentDto getById(int paymentId) {
-        Payment payment = paymentRepository.findById(paymentId)
-                .orElseThrow(() -> new IBusException(Constants.PAYMENT_NOT_EXIST));
-        return Mapper.toPaymentDto(payment);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<PaymentDto> getAllByBookingId(int bookingId) {
-        bookingRepository.findById(bookingId).orElseThrow(() -> new IBusException(Constants.BOOKING_NOT_EXIST));
+    public List<PaymentDto> getByBookingId(int bookingId) {
+	try {
+	    bookingRepository.findById(bookingId).orElseThrow();
+	} catch (NoSuchElementException noBookingFound) {
+	    logger.error(Constants.BOOKING_NOT_EXIST + Constants.BOOKING_ID + bookingId, noBookingFound);
+	    throw new IBusException(Constants.BOOKING_NOT_EXIST);
+	}
         return Mapper.toPaymentDtos(paymentRepository.findAllByBookingId(bookingId));
     }
 
@@ -108,9 +117,12 @@ public class PaymentServiceImpl implements PaymentService {
      * {@inheritDoc}
      */
     @Override
-    public void deleteAllByBookingId(int bookingId) {
-        bookingRepository.findById(bookingId).orElseThrow(() -> new IBusException(Constants.BOOKING_NOT_EXIST));
-        paymentRepository.deleteAllByBookingId(bookingId);
+    public List<PaymentDto> getAll() {
+	LocalDateTime dateAndTime = LocalDateTime.now().minusDays(20);
+	List<Payment> payments = paymentRepository.findByTimeBetween(dateAndTime, LocalDateTime.now());
+	List<PaymentDto> paymentDtos = Mapper.toPaymentDtos(payments);
+	logger.info(Constants.PAYMENT_DETAILS_GET_MESSAGE, dateAndTime, LocalDateTime.now());
+	return paymentDtos;
     }
 
     /**
@@ -118,6 +130,10 @@ public class PaymentServiceImpl implements PaymentService {
      */
     @Override
     public void deleteAll() {
-        paymentRepository.deleteAll();
+	List<Payment> payments = paymentRepository.findAll();
+	for (Payment payment : payments) {
+	    payment.setDeleted(true);
+	    paymentRepository.save(payment);
+	}
     }
 }

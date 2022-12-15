@@ -5,17 +5,20 @@
  */
 package com.i2i.ibus.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.i2i.ibus.constants.Constants;
-import lombok.Getter;
-import lombok.Setter;
+import java.time.LocalDateTime;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.i2i.ibus.constants.Constants;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * PaymentDTO are used to get the request from the server and send the response
@@ -31,21 +34,25 @@ import java.time.LocalDateTime;
 @Setter
 public class PaymentDto {
 
+    @NotNull
+    @Min(value = 0)
+    @JsonProperty(access = Access.WRITE_ONLY)
+    int bookingId;
     @Min(value = 0)
     private double amount;
     @JsonProperty(access = Access.READ_ONLY)
     private String status;
-    @NotBlank(message = Constants.PAYMENT_TYPE_MANDATORY_MESSAGE)
+    @NotBlank
     @Pattern(regexp = Constants.PAYMENT_TYPE_PATTERN, message = Constants.INVALID_PAYMENT_TYPE_MESSAGE)
     private String modeOfPayment;
     @Min(0)
     @Max(999)
     @JsonProperty(access = Access.WRITE_ONLY)
     private int cvvNumber;
-    @NotBlank(message = Constants.CARD_NUMBER_MANDATORY_MESSAGE)
+    @NotBlank
     @Pattern(regexp = Constants.CARD_NUMBER_PATTERN, message = Constants.INVALID_CARD_NUMBER_PATTERN_MESSAGE)
     private String cardNumber;
-    @NotBlank(message = Constants.NAME_MANDATORY_MESSAGE)
+    @NotBlank
     @Pattern(regexp = Constants.NAME_PATTERN, message = Constants.INVALID_NAME_PATTERN_MESSAGE)
     private String cardHolderName;
     @JsonProperty(access = Access.READ_ONLY)

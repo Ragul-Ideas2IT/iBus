@@ -5,10 +5,12 @@
  */
 package com.i2i.ibus.controller;
 
-import com.i2i.ibus.constants.Constants;
-import com.i2i.ibus.dto.MessageDto;
-import com.i2i.ibus.dto.PaymentDto;
-import com.i2i.ibus.service.PaymentService;
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,23 +22,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.util.List;
+import com.i2i.ibus.constants.Constants;
+import com.i2i.ibus.dto.MessageDto;
+import com.i2i.ibus.dto.PaymentDto;
+import com.i2i.ibus.service.PaymentService;
 
 /**
  * The payment details are passed to the payment service for validation to store
- * the details in the database, otherwise it throws {@code IBusException}.
+ * the details in the database, read and delete processes are passed.
  *
- * @author  Tamilmani K
+ * @author Tamilmani K
  * @version 1.0
- * @since   Nov 29 2022
+ * @since Nov 29 2022
  *
  */
 @RestController
-@RequestMapping("api/v1/payments")
+@RequestMapping("api/v1/bookings/payments")
 public class PaymentController {
 
     private PaymentService paymentService;
+    private Logger logger = LogManager.getLogger(PaymentController.class);
 
     /**
      * Create a new payment service to initialing the specified targets for
@@ -53,14 +58,15 @@ public class PaymentController {
      * Create a payment for a booking. If the payment is validated successfully it
      * returns {@code MessageDto}, otherwise it throws {@code IBusException}.
      *
-     * @param bookingId  Id for get the book id.
      * @param paymentDto Payment details for validating.
      * @return MessageDto If the payment created successfully it return
      *         {@code MessageDto}.
      */
-    @PostMapping("/bookings/{bookingId}")
-    private MessageDto createPayment(@PathVariable int bookingId, @RequestBody @Valid PaymentDto paymentDto) {
-	paymentService.createPayment(bookingId, paymentDto);
+    @PostMapping
+    @ResponseStatus(code = HttpStatus.OK)
+    private MessageDto createPayment(@RequestBody @Valid PaymentDto paymentDto) {
+	paymentService.createPayment(paymentDto);
+	logger.info(Constants.PAID_MESSAGE + Constants.BOOKING_ID + paymentDto.getBookingId());
 	return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.PAID_MESSAGE);
     }
 
@@ -72,38 +78,21 @@ public class PaymentController {
      *                  the payments.
      * @return List<PaymentDto> A list of PaymentDto objects.
      */
-    @GetMapping("/bookings/{bookingId}")
+    @GetMapping("/{bookingId}")
     @ResponseStatus(code = HttpStatus.OK)
-    private List<PaymentDto> getAllByBookingId(@PathVariable int bookingId) {
-	return paymentService.getAllByBookingId(bookingId);
+    private List<PaymentDto> getByBookingId(@PathVariable int bookingId) {
+	return paymentService.getByBookingId(bookingId);
     }
 
     /**
-     * It get the payment by payment id. If the payment id aren't found it throws
-     * {@code IBusException}.
+     * This function returns a list of all payments for a last 20 days.
      *
-     * @param paymentId Id for get the payment details.
-     * @return PaymentDto If the payment id is found it returns {@code PaymentDto}.
+     * @return List<PaymentDto> A list of PaymentDto objects.
      */
-    @GetMapping("/{paymentId}")
+    @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    private PaymentDto getById(@PathVariable int paymentId) {
-	return paymentService.getById(paymentId);
-    }
-
-    /**
-     * It deletes all payments associated with a booking. If the booking id aren't
-     * found it throws {@code IBusException}.
-     *
-     * @param bookingId The booking id of the booking whose payments you want to
-     *                  delete.
-     * @return MessageDto A MessageDto object with a status code and message.
-     */
-    @DeleteMapping("/bookings/{bookingId}")
-    @ResponseStatus(code = HttpStatus.OK)
-    private MessageDto deleteAllByBookingId(@PathVariable int bookingId) {
-	paymentService.deleteAllByBookingId(bookingId);
-	return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
+    private List<PaymentDto> getAll() {
+	return paymentService.getAll();
     }
 
     /**
@@ -115,6 +104,7 @@ public class PaymentController {
     @ResponseStatus(code = HttpStatus.OK)
     private MessageDto deleteAll() {
 	paymentService.deleteAll();
+	logger.info(Constants.DELETE_MESSAGE);
 	return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
     }
 

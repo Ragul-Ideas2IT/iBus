@@ -9,9 +9,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * NotificationDto are used to notifying the messages to user.
+ * 
  * @author Tamilmani
  * @version 1.0
- * @since Nov 30 2022
+ * @since Nov 29 2022
  */
 @Getter
 @Setter

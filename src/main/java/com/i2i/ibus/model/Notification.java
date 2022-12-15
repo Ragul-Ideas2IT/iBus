@@ -15,13 +15,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
+ * Notification are connect to the database to save notified messages.
+ * 
  * @author Tamilmani
  * @version 1.0
- * @since Nov 30 2022
+ * @since Nov 29 2022
  */
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 public class Notification {
 
