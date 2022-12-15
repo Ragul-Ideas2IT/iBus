@@ -7,6 +7,7 @@ package com.i2i.ibus.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.i2i.ibus.constants.Constants;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,8 @@ import javax.validation.constraints.Pattern;
 import java.util.List;
 
 /**
+ * DTO class that contains the fields that are required to create an Operator with getters and setters
+ *
  * @author Ragul
  * @version 1.0
  * @since Nov 29 2022
@@ -28,23 +31,23 @@ public class OperatorDto {
 
     @JsonProperty(access = Access.READ_ONLY)
     private int id;
-    @Pattern(regexp = "^([a-zA-Z][ ]?){2,}$", message = "Travel's name should be in valid format...(a-zA-Z)")
-    @NotBlank(message = "Travel's name is mandatory")
+    @Pattern(regexp = Constants.NAME_PATTERN, message = Constants.INVALID_TRAVELSNAME_PATTERN_MESSAGE)
+    @NotBlank
     private String travelsName;
-    @Pattern(regexp = "^([a-zA-Z][ ]?){2,}$", message = "Owner's name should be in valid format...(a-zA-Z)")
-    @NotBlank(message = "Owner's name is mandatory")
+    @Pattern(regexp = Constants.NAME_PATTERN, message = Constants.INVALID_OWNERNAME_PATTERN_MESSAGE)
+    @NotBlank
     private String ownerName;
-    @Pattern(regexp = "^(\\+91|0)?[6789][0-9]{9}$", message = "Phone no should be 10 digits or with \"+91\" or \"0\"")
-    @NotBlank(message = "Phone number is mandatory")
+    @Pattern(regexp = Constants.PHONENUMBER_PATTERN, message = Constants.INVALID_PHONENUMBER_PATTERN_MESSAGE)
+    @NotBlank
     private String phoneNumber;
-    @NotBlank(message = "Mail ID is mandatory")
-    @Email(message = "Email ID should be in valid format")
+    @NotBlank
+    @Email(message = Constants.INVALID_EMAILID_PATTERN_MESSAGE)
     private String mailId;
-    @Pattern(regexp = "^[A-Z]{5}[0-9]{4}[A-Z]$", message = "PAN number should be in valid format...(ABCDE1234A)")
-    @NotBlank(message = "PAN number is mandatory")
+    @Pattern(regexp = Constants.PANNUMBER_PATTERN, message = Constants.INVALID_PANNUMBER_PATTERN_MESSAGE)
+    @NotBlank
     private String panNumber;
-    @Pattern(regexp = "^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][0-9](Z)[0-9]$", message = "GST number should be in valid format...(12ABCDE1234A1Z1)")
-    @NotBlank(message = "GST number is mandatory")
+    @Pattern(regexp = Constants.GST_NUMBER_PATTERN, message = Constants.INVALID_GST_NUMBER_PATTERN_MESSAGE)
+    @NotBlank
     private String gstNumber;
     @NotEmpty
     @Valid

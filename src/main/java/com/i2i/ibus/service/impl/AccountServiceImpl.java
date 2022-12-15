@@ -10,11 +10,16 @@ import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.Account;
 import com.i2i.ibus.repository.AccountRepository;
 import com.i2i.ibus.service.AccountService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
+ *  A service class that implements the AccountService interface and uses the AccountRepository to save an Account
+ *  object. It provides the implementation for all the methods.
+ *
  * @author Ragul
  * @version 1.0
  * @since Dec 12 2022
@@ -29,6 +34,7 @@ public class AccountServiceImpl implements AccountService {
         this.accountRepository = accountRepository;
         this.passwordEncoder = passwordEncoder;
     }
+    private Logger logger = LogManager.getLogger(AccountServiceImpl.class);
 
 
     @Override

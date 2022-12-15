@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Handles all exceptions thrown by the application and returns a 400 error with the message from the exception
+ *
  * @author Ragul
  * @version 1.0
  * @since Nov 30 2022
@@ -34,7 +36,8 @@ public class IBusExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException exception,
-                                                                  HttpHeaders headers, HttpStatus status, WebRequest request) {
+                                                                  HttpHeaders headers, HttpStatus status,
+                                                                  WebRequest request) {
         List<String> errors = new ArrayList<String>();
         for (FieldError error : exception.getBindingResult().getFieldErrors()) {
             errors.add(error.getField() + ": " + error.getDefaultMessage());

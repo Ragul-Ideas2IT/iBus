@@ -6,7 +6,6 @@
 package com.i2i.ibus.model;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
 
@@ -16,13 +15,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
+ * JPA entity class that represents a user with getters and setters
+ *
  * @author Ragul
  * @version 1.0
  * @since Nov 28 2022
  */
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Where(clause = "is_deleted = false")
 public class User {

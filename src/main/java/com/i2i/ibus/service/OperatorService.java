@@ -11,6 +11,8 @@ import com.i2i.ibus.model.Operator;
 import java.util.List;
 
 /**
+ * A service Interface contains all the business logic related to the Operator
+ *
  * @author Ragul
  * @version 1.0
  * @since Nov 29 2022

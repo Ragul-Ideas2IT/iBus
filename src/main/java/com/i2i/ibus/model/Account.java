@@ -6,35 +6,28 @@
 package com.i2i.ibus.model;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 /**
+ * JPA entity class that represents an account with getters and setters
+ *
  * @author Ragul
  * @version 1.0
  * @since Dec 12 2022
  */
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
-@Table
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String mailId;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "role")
-    private Role role;
+    private String role;
     private String password;
 }

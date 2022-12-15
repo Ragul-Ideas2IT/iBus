@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 /**
+ * Creating a repository for the Operator model which extends JPA repository
+ *
  * @author Ragul
  * @version 1.0
  * @since Nov 29 2022

@@ -6,7 +6,6 @@
 package com.i2i.ibus.security;
 
 import com.i2i.ibus.model.Account;
-import com.i2i.ibus.model.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +14,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * It implements the UserDetails interface and returns the account details
+ *
  * @author Ragul
  * @version 1.0
  * @since Dec 12 2022
@@ -31,8 +32,7 @@ public class AccountDetails implements UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Role role = account.getRole();
-        return List.of(new SimpleGrantedAuthority(role.getName()));
+        return List.of(new SimpleGrantedAuthority(account.getRole()));
     }
 
     /**

@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
+ * The SecurityConfiguration class is used to configure the security of the application
  * @author Ragul
  * @version 1.0
  * @since Dec 12 2022

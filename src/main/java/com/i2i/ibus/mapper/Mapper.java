@@ -35,6 +35,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ *  Mapper class contains methods that convert objects from DTO to Entity or vice-versa
+ *
  * @author Ragul
  * @version 1.0
  * @since Dec 05 2022
