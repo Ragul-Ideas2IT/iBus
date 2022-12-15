@@ -5,6 +5,9 @@
  */
 package com.i2i.ibus.service;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import com.i2i.ibus.dto.BookingDto;
 import com.i2i.ibus.dto.CancellationDto;
 import com.i2i.ibus.model.Booking;
@@ -12,9 +15,6 @@ import com.i2i.ibus.model.BookingDetail;
 import com.i2i.ibus.model.Bus;
 import com.i2i.ibus.model.Schedule;
 import com.i2i.ibus.model.User;
-
-import java.time.LocalDate;
-import java.util.List;
 
 /**
  * Used to manipulate the Booking details in the application. Operators are
@@ -148,24 +148,10 @@ public interface BookingService {
     void deleteBooking(int bookingId);
 
     /**
-     * Method is used to validate the user with the given id(userId)
-     *
-     * @param id The id of the user to validate.
-     */
-    void validateUser(int id);
-
-    /**
-     * Method is used to Validate the bus with the given id(busId).
-     *
-     * @param id The id of the bus to be validated.
-     */
-    void validateBus(int id);
-
-    /**
      * Methos is used to Validate a bookingId present or not.
      *
      * @param id The id of the booking to be validated.
-     * @return
+     * @return Booking
      */
     Booking validateBooking(int id);
 
@@ -186,12 +172,20 @@ public interface BookingService {
      */
     void validateBookingDetails(List<BookingDetail> bookingDetails, int busId);
 
-    /*
+    /**
      * Get all bookings for a id(bus).
      *
-     * @param userId The id of the user who made the booking.
-     *
+     * @param busId The id of the bus who made the booking.
      * @return A list of BookingDto objects.
      */
     List<BookingDto> getByBusId(int busId);
+
+    /**
+     * Get all bookings for a id(bus) and Travel date.
+     *
+     * @param busId The id of the bus who made the booking.
+     * @param travel date This date is booking taravel date.
+     * @return A list of BookingDto objects.
+     */
+    List<BookingDto> getByBusIdAndTravelDate(int busId, LocalDate date);
 }

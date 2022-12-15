@@ -111,7 +111,7 @@ public class SeatServiceImpl implements SeatService {
 	Seat seat = null;
 
 	try {
-	    if (!seatRepository.findBySeatNumberAndBusIdAndNotId(seatDto.getSeatNumber(), seatDto.getBusId(), seatId)
+	    if (!seatRepository.findBySeatNumberAndBusIdAndIdNot(seatDto.getSeatNumber(), seatDto.getBusId(), seatId)
 		    .isPresent()) {
 		seatDto.setId(seatId);
 		seatDto.setBus(busService.getById(seatDto.getBusId()));

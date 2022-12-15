@@ -40,7 +40,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     private BookingService bookingService;
     private PaymentRepository paymentRepository;
-    private Logger logger = LogManager.getLogger(PaymentController.class);
+    private Logger logger = LogManager.getLogger(PaymentServiceImpl.class);
 
     /**
      * Create a new payment repository and booking repository to initialing the
@@ -72,13 +72,12 @@ public class PaymentServiceImpl implements PaymentService {
             logger.error(Constants.CVV_NUMBER_MANDATORY_MESSAGE + Constants.BOOKING_ID + paymentDto.getBookingId());
             throw new IBusException(Constants.CVV_NUMBER_MANDATORY_MESSAGE);
         }
-        if (booking.getPaymentStatus().equalsIgnoreCase(Constants.SUCCESS)) {
+        if (booking.getStatus().equalsIgnoreCase(Constants.CONFIRMED)) {
             logger.error(Constants.ALREADY_PAYMENT_SUCCEED_MESSAGE + Constants.BOOKING_ID
         	    + paymentDto.getBookingId());
             throw new IBusException(Constants.ALREADY_PAYMENT_SUCCEED_MESSAGE);
         }
         if (booking.getTotalFare() != paymentDto.getAmount()) {
-            booking.setPaymentStatus(Constants.DECLINED);
             payment.setStatus(Constants.UNPAID);
             paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
             logger.error(Constants.INVALID_PAYMENT_MESSAGE + booking.getTotalFare() + Constants.BOOKING_ID
@@ -86,14 +85,13 @@ public class PaymentServiceImpl implements PaymentService {
             throw new IBusException(Constants.INVALID_PAYMENT_MESSAGE + booking.getTotalFare());
         }
         if (5 < Duration.between(booking.getDateTime(), LocalDateTime.now()).toMinutes()) {
-            booking.setPaymentStatus(Constants.DECLINED);
-            payment.setStatus(Constants.UNPAID);
+            payment.setStatus(Constants.DECLINED);
             paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
             logger.error(Constants.EXPIRED_PAYMENT_TIME_MESSAGE);
             throw new IBusException(Constants.EXPIRED_PAYMENT_TIME_MESSAGE);
         } else {
             payment.setStatus(Constants.PAID);
-            booking.setPaymentStatus(Constants.SUCCESS);
+            booking.setStatus(Constants.CONFIRMED);
             paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
         }
         return paymentDto;

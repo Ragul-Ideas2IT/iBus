@@ -5,22 +5,23 @@
  */
 package com.i2i.ibus.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.i2i.ibus.constants.Constants;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 
 import javax.validation.Valid;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.i2i.ibus.constants.Constants;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * BookingDTO are used to get the request from the server and send the response
@@ -34,7 +35,6 @@ import java.util.List;
  */
 @Setter
 @Getter
-@NoArgsConstructor
 public class BookingDto {
 
     @JsonProperty(access = Access.READ_ONLY)
@@ -47,21 +47,19 @@ public class BookingDto {
     @JsonProperty(access = Access.READ_ONLY)
     private double totalFare;
     @NotBlank
-    @Pattern(regexp = Constants.PLACENAME_PATTERN, message = Constants.INVALID_PICKUP_POINT_MESSAGE)
+    @Pattern(regexp = Constants.PLACE_NAME_PATTERN, message = Constants.INVALID_PICKUP_POINT_MESSAGE)
     private String pickUpPoint;
     @NotBlank
-    @Pattern(regexp = Constants.PLACENAME_PATTERN, message = Constants.INVALID_DROP_POINT_MESSAGE)
+    @Pattern(regexp = Constants.PLACE_NAME_PATTERN, message = Constants.INVALID_DROP_POINT_MESSAGE)
     private String dropPoint;
     @NotBlank
-    @Pattern(regexp = Constants.PLACENAME_PATTERN, message = Constants.INVALID_SOURCE_PATTERN_MESSAGE)
+    @Pattern(regexp = Constants.PLACE_NAME_PATTERN, message = Constants.INVALID_SOURCE_PATTERN_MESSAGE)
     private String source;
     @NotBlank
-    @Pattern(regexp = Constants.PLACENAME_PATTERN, message = Constants.INVALID_SOURCE_PATTERN_MESSAGE)
+    @Pattern(regexp = Constants.PLACE_NAME_PATTERN, message = Constants.INVALID_SOURCE_PATTERN_MESSAGE)
     private String destination;
     @JsonProperty(access = Access.READ_ONLY)
     private String status;
-    @JsonProperty(access = Access.READ_ONLY)
-    private String paymentStatus;
     @FutureOrPresent
     private LocalTime travelTime;
     @NotBlank

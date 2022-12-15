@@ -9,6 +9,7 @@ import com.i2i.ibus.model.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -29,4 +30,14 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
      * @return A list of Booking objects
      */
     List<Booking> findAllByUserId(int userId);
+    
+    /**
+     * Find all bookings for a given user.
+     *
+     * @param userId The id of the user whose bookings you want to find.
+     * @return A list of Booking objects
+     */
+    List<Booking> findAllByBusId(int busId);
+
+    List<Booking> findAllByBusIdAndTravelDate(int busId, LocalDate travelDate);
 }

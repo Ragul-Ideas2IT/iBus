@@ -5,6 +5,19 @@
  */
 package com.i2i.ibus.service.impl;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.i2i.ibus.constants.Constants;
 import com.i2i.ibus.dto.BookingDto;
 import com.i2i.ibus.dto.CancellationDto;
@@ -19,24 +32,12 @@ import com.i2i.ibus.model.Seat;
 import com.i2i.ibus.model.Stop;
 import com.i2i.ibus.model.User;
 import com.i2i.ibus.repository.BookingRepository;
-import com.i2i.ibus.repository.BusRepository;
-import com.i2i.ibus.repository.ScheduleRepository;
-import com.i2i.ibus.repository.SeatRepository;
-import com.i2i.ibus.repository.StopRepository;
-import com.i2i.ibus.repository.UserRepository;
 import com.i2i.ibus.service.BookingService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import com.i2i.ibus.service.BusService;
+import com.i2i.ibus.service.ScheduleService;
+import com.i2i.ibus.service.SeatService;
+import com.i2i.ibus.service.StopService;
+import com.i2i.ibus.service.UserService;
 
 
 /**
@@ -53,24 +54,24 @@ import java.util.Optional;
 public class BookingServiceImpl implements BookingService {
 
     private BookingRepository bookingRepository;
-    private BusRepository busRepository;
-    private ScheduleRepository scheduleRepository;
-    private SeatRepository seatRepository;
-    private UserRepository userRepository;
-    private StopRepository stopRepository;
+    private BusService busService;
+    private ScheduleService scheduleService;
+    private SeatService seatService;
+    private UserService userService;
+    private StopService stopService;
 
     private Logger logger = LogManager.getLogger(BookingServiceImpl.class);
 
     @Autowired
-    public BookingServiceImpl(BookingRepository bookingRepository, StopRepository StopRepository,
-                              BusRepository busRepository, ScheduleRepository ScheduleRepository,
-                              UserRepository userRepository, SeatRepository seatRepository) {
+    public BookingServiceImpl(BookingRepository bookingRepository, StopService stopService,
+                              BusService busService, ScheduleService scheduleService,
+                              UserService userService, SeatService seatService) {
         this.bookingRepository = bookingRepository;
-        this.busRepository = busRepository;
-        this.userRepository = userRepository;
-        this.scheduleRepository = ScheduleRepository;
-        this.seatRepository = seatRepository;
-        this.stopRepository = StopRepository;
+        this.busService = busService;
+        this.userService = userService;
+        this.scheduleService = scheduleService;
+        this.seatService = seatService;
+        this.stopService = stopService;
     }
 
     /**
@@ -85,8 +86,7 @@ public class BookingServiceImpl implements BookingService {
         validateBookingDetails(booking.getBookingDetails(), bookingDto.getBusId());
         booking.setTotalFare(calculateFare(booking.getBookingDetails(), bookingDto.getBusId()));
         booking.setDateTime(LocalDateTime.now());
-        booking.setPaymentStatus(Constants.UNPAID);
-        booking.setStatus(Constants.UPCOMING);
+        booking.setStatus(Constants.NOT_CONFIRMED);
         setSeatStatus(booking);
         booking.setUser(getUserById(bookingDto.getUserId()));
         bookingRepository.save(booking);
@@ -129,7 +129,6 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     public List<BookingDto> getByUserId(int userId) {
-        validateUser(userId);
         List<Booking> bookings = bookingRepository.findAllByUserId(userId);
         List<BookingDto> bookingsDto = new ArrayList<BookingDto>();
         if (!bookings.isEmpty()) {
@@ -149,8 +148,7 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     public Bus getBusById(int id) {
-        validateBus(id);
-        return busRepository.findById(id).get();
+        return Mapper.toBus(busService.getById(id));
     }
 
     /**
@@ -158,8 +156,8 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     public User getUserById(int id) {
-        validateUser(id);
-        return userRepository.findById(id).get();
+        return Mapper.toUser(userService.getUserDtoById(id));
+        
     }
 
     /**
@@ -167,10 +165,10 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     public Schedule getScheduleByTravelDate(Bus bus, LocalDate travelDate) {
-        Optional<Schedule> schedule = scheduleRepository.findByBusIdAndDepartureDate(bus.getId(), travelDate);
+        Optional<Schedule> schedule = scheduleService.findByBusIdAndDepartureDate(bus.getId(), travelDate);
         if (!schedule.isPresent()) {
-            logger.error(Constants.INVALID_BUSDEPATURE_DATE.concat(Constants.BUS_ID) + bus.getId());
-            throw new IBusException(Constants.INVALID_BUSDEPATURE_DATE);
+            logger.error(Constants.INVALID_BUS_DEPARTURE_DATE.concat(Constants.BUS_ID) + bus.getId());
+            throw new IBusException(Constants.INVALID_BUS_DEPARTURE_DATE);
         }
         return schedule.get();
     }
@@ -203,7 +201,7 @@ public class BookingServiceImpl implements BookingService {
         double fare = 0;
 
         for (BookingDetail bookingDetail : bookingDetails) {
-            fare += seatRepository.findBySeatNumberAndBusId(bookingDetail.getSeatNumber(), busId).get().getFare();
+            fare += seatService.findBySeatNumberAndBusId(bookingDetail.getSeatNumber(), busId).get().getFare();
         }
         return fare;
     }
@@ -213,7 +211,7 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     public Booking cancelBooking(Booking booking) {
-        if (booking.getPaymentStatus().equals(Constants.UNPAID)) {
+        if (booking.getStatus().equals("Not confirmed")) {
             booking.getCancellation().setRefundAmount(0);
             booking.getCancellation().setRefundStatus(Constants.NOT_PAID);
         } else {
@@ -232,13 +230,29 @@ public class BookingServiceImpl implements BookingService {
         return booking;
     }
 
-    /*
-     * @Override
+    /**
+     * {@inheritDoc}
      */
     @Override
     public List<BookingDto> getByBusId(int busId) {
-        validateUser(busId);
-        List<Booking> bookings = bookingRepository.findAllByUserId(busId);
+        List<Booking> bookings = bookingRepository.findAllByBusId(busId);
+        List<BookingDto> bookingsDto = new ArrayList<BookingDto>();
+        if (!bookings.isEmpty()) {
+
+            for (Booking booking : bookings) {
+                completeBooking(booking.getId());
+                bookingsDto.add(Mapper.toBookingDto(booking));
+            }
+        }
+        return bookingsDto;
+    }
+    
+    /**
+     * {@inheritDoc} 
+     */
+    @Override
+    public List<BookingDto> getByBusIdAndTravelDate(int busId, LocalDate date) {
+        List<Booking> bookings = bookingRepository.findAllByBusIdAndTravelDate(busId, date);
         List<BookingDto> bookingsDto = new ArrayList<BookingDto>();
         if (!bookings.isEmpty()) {
 
@@ -268,10 +282,10 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     public void setSeatStatus(Booking booking) {
-        if (booking.getPaymentStatus().equals(Constants.SUCCESS)) {
+        if (booking.getStatus().equals(Constants.CONFIRMED)) {
 
             for (BookingDetail bookingDetail : booking.getBookingDetails()) {
-                Seat seat = seatRepository
+                Seat seat = seatService
                         .findBySeatNumberAndBusId(bookingDetail.getSeatNumber(), booking.getBus().getId()).get();
                 seat.setOccupied(true);
             }
@@ -302,37 +316,13 @@ public class BookingServiceImpl implements BookingService {
      * {@inheritDoc}
      */
     @Override
-    public void validateUser(int id) {
-        Optional<User> user = userRepository.findById(id);
-        if (!user.isPresent()) {
-            logger.error(Constants.USER_NOT_EXIST.concat(Constants.USER_ID) + id);
-            throw new IBusException(Constants.USER_NOT_EXIST);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void validateBus(int id) {
-        Optional<Bus> bus = busRepository.findById(id);
-        if (!bus.isPresent()) {
-            logger.error(Constants.BUSID_NOT_EXIST.concat(Constants.BUS_ID) + id);
-            throw new IBusException(Constants.BUSID_NOT_EXIST);
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Booking validateBooking(int id) {
         Booking booking;
         try {
             booking = bookingRepository.findById(id).orElseThrow();
-        } catch (NoSuchElementException noBookigFound) {
-            logger.error(Constants.BUSID_NOT_EXIST.concat(Constants.BOOKING_ID) + id);
-            throw new IBusException(Constants.BUSID_NOT_EXIST);
+        } catch (NoSuchElementException exception) {
+            logger.error(Constants.BUS_ID_NOT_EXIST.concat(Constants.BOOKING_ID) + id);
+            throw new IBusException(Constants.BUS_ID_NOT_EXIST);
         }
         return booking;
     }
@@ -342,9 +332,9 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     public void validateStops(Booking booking, int busId) {
-        Optional<Stop> dropOff = stopRepository.findAllByBusIdAndCityAndStopName(busId, booking.getDestination(),
+        Optional<Stop> dropOff = stopService.findAllByBusIdAndCityAndStopName(busId, booking.getDestination(),
                 booking.getDropPoint());
-        Optional<Stop> pickUp = stopRepository.findAllByBusIdAndCityAndStopName(busId, booking.getSource(),
+        Optional<Stop> pickUp = stopService.findAllByBusIdAndCityAndStopName(busId, booking.getSource(),
                 booking.getPickUpPoint());
         if (booking.getSource().equals(booking.getDestination())) {
             logger.error(Constants.SAME_SOURCE_AND_DESTINATION.concat(Constants.BUS_ID) + busId);
@@ -366,7 +356,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public void validateBookingDetails(List<BookingDetail> bookingDetails, int busId) {
         for (BookingDetail bookingDetail : bookingDetails) {
-            Optional<Seat> seat = seatRepository.findBySeatNumberAndBusId(bookingDetail.getSeatNumber(), busId);
+            Optional<Seat> seat = seatService.findBySeatNumberAndBusId(bookingDetail.getSeatNumber(), busId);
 
             if (!seat.isPresent()) {
                 logger.error(Constants.SEAT_NOT_AVAILABLE.concat(bookingDetail.getSeatNumber()));

@@ -37,7 +37,7 @@ import com.i2i.ibus.service.ScheduleService;
  * @since Nov 29 2022
  */
 @RestController
-@RequestMapping("api/v1/buses/schedule")
+@RequestMapping("api/v1/buses/schedules")
 public class ScheduleController {
 
     private ScheduleService scheduleService;
