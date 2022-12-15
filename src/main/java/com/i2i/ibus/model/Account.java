@@ -5,7 +5,9 @@
  */
 package com.i2i.ibus.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -30,4 +32,10 @@ public class Account {
     private String mailId;
     private String role;
     private String password;
+
+    public Account(String mailId, String role, String password) {
+        this.mailId = mailId;
+        this.role = role;
+        this.password = password;
+    }
 }

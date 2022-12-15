@@ -5,6 +5,7 @@
  */
 package com.i2i.ibus.controller;
 
+import com.i2i.ibus.constants.Constants;
 import com.i2i.ibus.dto.MessageDto;
 import com.i2i.ibus.dto.UserDto;
 import com.i2i.ibus.service.UserService;
@@ -24,6 +25,9 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
+ * Controller class that handles the requests that are related to the users that are sent to the
+ * endpoint and passes the DTO to the {@code UserService} and receive the response from the {@code UserService}
+ *
  * @author Ragul
  * @version 1.0
  * @since Nov 29 2022
@@ -98,6 +102,6 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.OK)
     private MessageDto deleteUser(@PathVariable int id) {
         userService.deleteUserById(id);
-        return new MessageDto("200", "Deleted Successfully");
+        return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
     }
 }

@@ -5,8 +5,7 @@
  */
 package com.i2i.ibus.service.impl;
 
-import com.i2i.ibus.dto.AccountDto;
-import com.i2i.ibus.mapper.Mapper;
+import com.i2i.ibus.constants.Constants;
 import com.i2i.ibus.model.Account;
 import com.i2i.ibus.repository.AccountRepository;
 import com.i2i.ibus.service.AccountService;
@@ -38,9 +37,9 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public Account addAccount(AccountDto accountDto) {
-        accountDto.setPassword(passwordEncoder.encode(accountDto.getPassword()));
-        Account account = Mapper.toAccount(accountDto);
+    public Account addAccount(Account account) {
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
+        logger.info(Constants.CREATE_MESSAGE.concat(account.getMailId()));
         return accountRepository.save(account);
     }
 }

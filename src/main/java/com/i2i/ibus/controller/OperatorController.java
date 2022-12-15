@@ -6,6 +6,7 @@
 
 package com.i2i.ibus.controller;
 
+import com.i2i.ibus.constants.Constants;
 import com.i2i.ibus.dto.MessageDto;
 import com.i2i.ibus.dto.OperatorDto;
 import com.i2i.ibus.service.OperatorService;
@@ -25,6 +26,9 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
+ * Controller class that handles the requests that are related to the operators that are sent to the
+ * endpoint and passes the DTO to the {@code OperatorService} and receive the response from the {@code OperatorService}
+ *
  * @author  Ragul
  * @version 1.0
  * @since   Nov 29 2022
@@ -98,7 +102,7 @@ public class OperatorController {
     @ResponseStatus(value = HttpStatus.OK)
     private MessageDto deleteOperator(@PathVariable int id) {
         operatorService.deleteOperatorById(id);
-        return new MessageDto("200", "Deleted Successfully");
+        return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
     }
 
 }
