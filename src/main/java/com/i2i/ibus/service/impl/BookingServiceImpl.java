@@ -138,6 +138,8 @@ public class BookingServiceImpl implements BookingService {
                 completeBooking(booking.getId());
                 bookingsDto.add(Mapper.toBookingDto(booking));
             }
+        } else {
+            logger.info(Constants.BOOKING_NOT_EXIST.concat(Constants.USER_ID) + userId);
         }
         return bookingsDto;
     }

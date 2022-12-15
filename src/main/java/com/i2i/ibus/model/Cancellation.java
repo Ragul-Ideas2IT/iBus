@@ -17,6 +17,8 @@ import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 /**
+ * Cancellation is used to connect the database, and to cancel the bus bookings.
+ * 
  * @author Esakkiraja E
  * @version 1.0
  * @since Nov 29 2022

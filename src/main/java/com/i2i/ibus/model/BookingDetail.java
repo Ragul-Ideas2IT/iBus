@@ -5,11 +5,6 @@
  */
 package com.i2i.ibus.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.Where;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,14 +12,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.hibernate.annotations.Where;
+
+import lombok.Getter;
+import lombok.Setter;
+
 /**
+ * Booking detail used to connect the database, to save the passenger details and
+ * to get the passenger details.
+ * 
  * @author Tamilmani
  * @version 1.0
- * @since Nov 30 2022
+ * @since Nov 29 2022
  */
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Where(clause = "is_deleted = false")
 public class BookingDetail {

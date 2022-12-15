@@ -158,4 +158,5 @@ public class Constants {
     public static final String INVALID_SEAT_NUMBER_PATTERN_MESSAGE = "Given seat number is not vaild (eg: LLS1,LUS1,RLS1,RUS2)";
     public static final String INVALID_SEAT_GENDER_PATTERN_MESSAGE = "Given seat gender is not vaild (eg: male,female or other)";
     public static final String INVALID_STOP_PATTERN_MESSAGE = "Given stop is not vaild (eg: guindy)";
+    public static final String PAYMENT_DETAILS_GET_MESSAGE= "Payment details are getting successfully between the given two dates.";
 }
