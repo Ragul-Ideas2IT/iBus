@@ -33,11 +33,11 @@ public class UserDto {
     @Pattern(regexp = Constants.NAME_PATTERN, message = Constants.INVALID_NAME_PATTERN_MESSAGE)
     @NotBlank
     private String name;
-    @Pattern(regexp = Constants.PHONENUMBER_PATTERN, message = Constants.INVALID_PHONENUMBER_PATTERN_MESSAGE)
+    @Pattern(regexp = Constants.PHONE_NUMBER_PATTERN, message = Constants.INVALID_PHONE_NUMBER_PATTERN_MESSAGE)
     @NotBlank
     private String phoneNumber;
     @NotBlank
-    @Email(message = Constants.INVALID_EMAILID_PATTERN_MESSAGE)
+    @Email(message = Constants.INVALID_EMAIL_ID_PATTERN_MESSAGE)
     private String mailId;
     @Pattern(regexp = Constants.GENDER_PATTERN, message = Constants.INVALID_GENDER_PATTERN_MESSAGE)
     @NotBlank

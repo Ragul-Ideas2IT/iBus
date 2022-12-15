@@ -51,8 +51,8 @@ public class OperatorServiceImpl implements OperatorService {
     public Operator validateOperator(int id) {
         Optional<Operator> operator = operatorRepository.findById(id);
         if (operator.isEmpty()) {
-            logger.error(id + Constants.OPERATORID_NOT_EXIST);
-            throw new IBusException(Constants.OPERATORID_NOT_EXIST);
+            logger.error(id + Constants.OPERATOR_ID_NOT_EXIST);
+            throw new IBusException(Constants.OPERATOR_ID_NOT_EXIST);
         }
         return operator.get();
     }

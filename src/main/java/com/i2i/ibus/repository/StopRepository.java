@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * Bus Ticket Booking Application
  * Used to save and retrieve the bus stop details.
  *
  * @author Ananth.
@@ -73,6 +74,6 @@ public interface StopRepository extends JpaRepository<Stop, Integer> {
      * @param id       given by the operator.
      * @return the bus details if found or else nothing.
      */
-    Optional<Stop> findByBusIdAndCityAndLandMarkAndStopNameAndIdNot(int busId, String city, String landMark, String stopName,
-                                                                    int id);
+    Optional<Stop> findByBusIdAndCityAndLandMarkAndStopNameAndIdNot(int busId, String city, String landMark,
+	    String stopName, int id);
 }

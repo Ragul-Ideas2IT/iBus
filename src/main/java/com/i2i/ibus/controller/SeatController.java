@@ -28,16 +28,13 @@ import com.i2i.ibus.service.SeatService;
 import javax.validation.Valid;
 
 /**
- * <h1>Bus Ticket Booking Application
- * <h1>
- * <p>
+ * Bus Ticket Booking Application
  * Used to manipulate the Bus seat details in the application. Operators are
  * manipulate the bus seat details.
- * <p>
  *
- * @author  Ananth.
+ * @author Ananth.
  * @version 1.0.
- * @since   Nov 29 2022
+ * @since Nov 29 2022
  */
 @RestController
 @RequestMapping("api/v1/buses/seats")
@@ -64,7 +61,7 @@ public class SeatController {
     }
 
     /**
-     * It returns a list of all seats in a bus
+     * Returns a list of all seats in a bus
      *
      * @param busId The id of the bus whose seats are to be fetched.
      * @return A list of seats for a specific bus.
@@ -102,7 +99,7 @@ public class SeatController {
     }
 
     /**
-     * It deletes a seat deatils.
+     * Deletes a seat deatils.
      *
      * @param seatId The id of the seat to be deleted.
      * @return Deleted message when the bus seat details are deleted.

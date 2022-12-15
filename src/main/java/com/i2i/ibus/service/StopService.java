@@ -5,16 +5,15 @@
 package com.i2i.ibus.service;
 
 import com.i2i.ibus.dto.StopDto;
+import com.i2i.ibus.model.Stop;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
- * <h1>Bus Ticket Booking Application
- * <h1>
- * <p>
+ * Bus Ticket Booking Application
  * Used to manipulate the Bus stop details in the application. Operators are
  * manipulate the bus stop details.
- * <p>
  *
  * @author Ananth.
  * @version 1.0.
@@ -32,7 +31,7 @@ public interface StopService {
     StopDto addStop(StopDto stopDto);
 
     /**
-     * It returns a list of stops for a given bus id
+     * Returns a list of stops for a given bus id
      *
      * @param busId The id of the bus whose stops are to be fetched.
      * @return A list of stops for a given bus id.
@@ -50,10 +49,12 @@ public interface StopService {
     StopDto updateStop(StopDto stopDto, int StopId);
 
     /**
-     * It deletes the stop with the given id.
+     * Deletes the stop with the given id.
      *
      * @param StopId The id of the stop to be deleted.
      * @return MessageDto
      */
     void deleteStop(int StopId);
+
+    Optional<Stop> findAllByBusIdAndCityAndStopName(int busId, String city, String stopName);
 }

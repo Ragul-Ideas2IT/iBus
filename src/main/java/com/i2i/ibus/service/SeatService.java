@@ -5,16 +5,15 @@
 package com.i2i.ibus.service;
 
 import com.i2i.ibus.dto.SeatDto;
+import com.i2i.ibus.model.Seat;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
- * <h1>Bus Ticket Booking Application
- * <h1>
- * <p>
+ * Bus Ticket Booking Application
  * Used to manipulate the Bus schedule details in the application. Operators are
  * manipulate the bus schedule details.
- * <p>
  *
  * @author Ananth.
  * @version 1.0.
@@ -32,7 +31,7 @@ public interface SeatService {
     SeatDto addSeat(SeatDto seatDto);
 
     /**
-     * It returns a list of all seats in a bus
+     * Returns a list of all seats in a bus
      *
      * @param busId The id of the bus whose seats are to be fetched.
      * @return A list of seats for a specific bus.
@@ -58,9 +57,19 @@ public interface SeatService {
     SeatDto updateSeat(SeatDto seatDto, int seatId);
 
     /**
-     * It deletes a seat deatils.
+     * Deletes a seat deatils.
      *
      * @param seatId The id of the seat to be deleted.
      */
     void deleteSeat(int seatId);
+
+    /**
+     * Used to get the seat details by the seatNumber and budId. The seat were
+     * given to the booking repository for validation process.
+     * 
+     * @param seatNumber from the booking user
+     * @param busId      from the booking user
+     * @return returns the seat or else nothing.
+     */
+    Optional<Seat> findBySeatNumberAndBusId(String seatNumber, int busId);
 }

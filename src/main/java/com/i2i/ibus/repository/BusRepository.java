@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * Bus Ticket Booking Application
  * Used to save and retrive the bus details.
  *
  * @author Ananth.
@@ -41,7 +42,7 @@ public interface BusRepository extends JpaRepository<Bus, Integer> {
     Optional<Bus> findByBusNumberAndIdNot(String busNumber, int id);
 
     /**
-     * used to get the bus details by given operator id.
+     * Used to get the bus details by given operator id.
      *
      * @param operatorId given by the operator.
      * @return the list of bus details associated to that given operator id.

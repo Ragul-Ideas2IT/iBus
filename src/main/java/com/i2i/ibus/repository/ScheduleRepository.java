@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * Bus Ticket Booking Application
  * Used to save and retrieve the bus details.
  *
  * @author Ananth.
@@ -40,7 +41,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
      * @return return the bus details from the given matched details.
      */
     List<Schedule> findByDepartureDateAndSourceAndDestination(LocalDate departureDate, String source,
-                                                              String destination);
+	    String destination);
 
     /**
      * Used to get the bus details from the given bus id and departure date.
