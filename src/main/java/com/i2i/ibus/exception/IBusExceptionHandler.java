@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ */
 package com.i2i.ibus.exception;
 
 import com.i2i.ibus.dto.MessageDto;
@@ -17,9 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author  Ragul
+ * @author Ragul
  * @version 1.0
- * @since   Nov 30 2022
+ * @since Nov 30 2022
  */
 @RestControllerAdvice
 public class IBusExceptionHandler extends ResponseEntityExceptionHandler {

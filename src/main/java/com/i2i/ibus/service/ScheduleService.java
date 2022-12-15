@@ -1,16 +1,20 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.i2i.ibus.service;
-
-import java.time.LocalDate;
-import java.util.List;
 
 import com.i2i.ibus.dto.ScheduleDto;
 import com.i2i.ibus.model.Schedule;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * <h1>Bus Ticket Booking Application
  * <h1>
  * <p>
- * Used to manipulate the Bus schhedule details in the application. Operators
+ * Used to manipulate the Bus schedule details in the application. Operators
  * are manipulate the bus details.
  * <p>
  *

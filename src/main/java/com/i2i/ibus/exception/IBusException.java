@@ -1,14 +1,17 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ */
 package com.i2i.ibus.exception;
 
 /**
- * IBusException is a
- * subclass of RuntimeException that is thrown when an error occurs in
+ * IBusException is a subclass of RuntimeException that is thrown when an error occurs in
  * the IBus
  *
- * @author  Ragul
+ * @author Ragul
  * @version 1.0
- * 
- * @since   Nov 28 2022
+ * @since Nov 28 2022
  */
 public class IBusException extends RuntimeException {
     /**
@@ -19,6 +22,6 @@ public class IBusException extends RuntimeException {
      * @param message the String that contains a detailed message
      */
     public IBusException(String message) {
-	super(message);
+        super(message);
     }
 }

@@ -5,8 +5,10 @@
  */
 package com.i2i.ibus.controller;
 
-import java.util.List;
-
+import com.i2i.ibus.constants.Constants;
+import com.i2i.ibus.dto.MessageDto;
+import com.i2i.ibus.dto.PaymentDto;
+import com.i2i.ibus.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,20 +20,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.i2i.ibus.constants.Constants;
-import com.i2i.ibus.dto.MessageDto;
-import com.i2i.ibus.dto.PaymentDto;
-import com.i2i.ibus.service.PaymentService;
-
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * The payment details are passed to the payment service for validation to store
  * the details in the database, otherwise it throws {@code IBusException}.
  *
- * @author Tamilmani K
+ * @author  Tamilmani K
  * @version 1.0
- * @created Nov 29 2022
+ * @since   Nov 29 2022
  *
  */
 @RestController

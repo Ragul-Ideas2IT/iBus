@@ -1,7 +1,13 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ */
 package com.i2i.ibus.controller;
 
-import java.util.List;
-
+import com.i2i.ibus.dto.MessageDto;
+import com.i2i.ibus.dto.UserDto;
+import com.i2i.ibus.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,11 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.i2i.ibus.dto.MessageDto;
-import com.i2i.ibus.dto.UserDto;
-import com.i2i.ibus.service.UserService;
-
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author Ragul

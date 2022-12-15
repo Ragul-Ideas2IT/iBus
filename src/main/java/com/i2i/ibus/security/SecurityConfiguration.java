@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ */
 package com.i2i.ibus.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
- * SecurityConfiguration Configuration class for Security
- *
- * @author Ragul_V
+ * @author Ragul
+ * @version 1.0
+ * @since Dec 12 2022
  */
 @Configuration
 @EnableWebSecurity
@@ -40,31 +45,54 @@ public class SecurityConfiguration {
             throws Exception {
         httpSecurity.csrf().disable().authorizeRequests()
                 .antMatchers("/api/v1/accounts").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/v1/users").hasAuthority("user")
-                .antMatchers(HttpMethod.GET,"/api/v1/users").hasAuthority("user")
-                .antMatchers(HttpMethod.PUT,"/api/v1/users/{id}").hasAuthority("user")
-                .antMatchers(HttpMethod.DELETE,"/api/v1/users/{id}").hasAuthority("user")
+                .antMatchers(HttpMethod.POST, "/api/v1/users").hasAuthority("user")
+                .antMatchers(HttpMethod.GET, "/api/v1/users").hasAuthority("user")
+                .antMatchers(HttpMethod.PUT, "/api/v1/users/{id}").hasAuthority("user")
+                .antMatchers(HttpMethod.DELETE, "/api/v1/users/{id}").hasAuthority("user")
                 .antMatchers("/api/v1/operators/**").hasAuthority("operator")
                 .antMatchers("/api/v1/buses/**").hasAuthority("operator")
-                .antMatchers(HttpMethod.POST,"/api/v1/bookings/**").hasAuthority("user")
-                .antMatchers(HttpMethod.GET,"/api/v1/bookings/users/**").hasAuthority("user")
-                .antMatchers(HttpMethod.GET,"/api/v1/bookings/{id}").hasAnyAuthority("user", "operator")
-                .antMatchers(HttpMethod.DELETE,"/api/v1/bookings/**").hasAnyAuthority("user", "operator")
-                .antMatchers(HttpMethod.GET,"/api/v1/bookings/buses/**").hasAuthority("operator")
+                .antMatchers(HttpMethod.POST, "/api/v1/bookings/**").hasAuthority("user")
+                .antMatchers(HttpMethod.GET, "/api/v1/bookings/users/**").hasAuthority("user")
+                .antMatchers(HttpMethod.GET, "/api/v1/bookings/{id}")
+                        .hasAnyAuthority("user", "operator")
+                .antMatchers(HttpMethod.DELETE, "/api/v1/bookings/**")
+                        .hasAnyAuthority("user", "operator")
+                .antMatchers(HttpMethod.GET, "/api/v1/bookings/buses/**").hasAuthority("operator")
                 .antMatchers("/api/v1/payments/**").hasAuthority("user")
                 .and().authorizeRequests().anyRequest().authenticated()
                 .and().httpBasic();
         return httpSecurity.build();
     }
 
+    /**
+     * > This function is used to create an AuthenticationManager bean that is used to authenticate the user credentials
+     *
+     * @param authenticationConfiguration This is the bean that is created by the @EnableAuthorizationServer annotation.
+     * @return An AuthenticationManager
+     */
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    /**
+     * This function is called by the Spring Security framework to configure the authentication manager.
+     * The authentication manager is responsible for authenticating users. The authentication manager is configured
+     * to use the account detail
+     * service and the password encoder.
+     *
+     * @param authenticationManagerBuilder This is the object that will be used to configure the authentication manager.
+     */
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder.userDetailsService(accountDetailService).passwordEncoder(passwordEncoder());
     }
+
+    /**
+     * The password encoder is a function that takes a password and returns a hash of that password
+     *
+     * @return A new instance of BCryptPasswordEncoder.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

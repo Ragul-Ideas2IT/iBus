@@ -4,18 +4,17 @@
  */
 package com.i2i.ibus.service;
 
-import java.util.List;
-
 import com.i2i.ibus.dto.PaymentDto;
+
+import java.util.List;
 
 /**
  * The validated payment details are passed to the payment repository to store
  * the details in the database, otherwise it throws {@code IBusException}.
- * 
+ *
  * @author Tamilmani K
  * @version 1.0
- * @created Nov 29 2022
- *
+ * @since Nov 29 2022
  */
 public interface PaymentService {
 
@@ -27,7 +26,7 @@ public interface PaymentService {
      * @param bookingId  Id for get the booking to map the details.
      * @param paymentDto The payment details for validation.
      * @return A PaymentDto If the payment details are validated successfully, it
-     *         returns paymentDto.
+     * returns paymentDto.
      */
     PaymentDto createPayment(int bookingId, PaymentDto paymentDto);
 

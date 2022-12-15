@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ */
 package com.i2i.ibus.controller;
 
 import java.util.List;
@@ -30,9 +35,9 @@ import javax.validation.Valid;
  * manipulate the bus seat details.
  * <p>
  *
- * @author Ananth.
+ * @author  Ananth.
  * @version 1.0.
- * @since Nov 29 2022
+ * @since   Nov 29 2022
  */
 @RestController
 @RequestMapping("api/v1/buses/seats")

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ */
 package com.i2i.ibus.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -6,10 +11,13 @@ import lombok.Setter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
+/**
+ * @author Ragul
+ * @version 1.0
+ * @since Dec 12 2022
+ */
 @Getter
 @Setter
 public class AccountDto {

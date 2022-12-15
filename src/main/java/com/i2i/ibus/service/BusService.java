@@ -1,8 +1,13 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ */
 package com.i2i.ibus.service;
 
-import java.util.List;
-
 import com.i2i.ibus.dto.BusDto;
+
+import java.util.List;
 
 /**
  * <h1>Bus Ticket Booking Application

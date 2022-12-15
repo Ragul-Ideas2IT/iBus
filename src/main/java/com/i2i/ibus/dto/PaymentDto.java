@@ -5,18 +5,17 @@
  */
 package com.i2i.ibus.dto;
 
-import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.i2i.ibus.constants.Constants;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import lombok.Getter;
-import lombok.Setter;
+import java.time.LocalDateTime;
 
 /**
  * PaymentDTO are used to get the request from the server and send the response
@@ -25,7 +24,7 @@ import lombok.Setter;
  * 
  * @author Tamilmani K
  * @version 1.0
- * @created Nov 29 2022
+ * @since Nov 29 2022
  *
  */
 @Getter
