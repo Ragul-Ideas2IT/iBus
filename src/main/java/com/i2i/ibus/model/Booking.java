@@ -25,7 +25,8 @@ import java.time.LocalTime;
 import java.util.List;
 
 /**
- * It present Booking details.
+ * Booking used to connect the database, to save the user booking details and to
+ * get the user booking details.
  *
  * @author Esakkiraja E
  * @version 1.0

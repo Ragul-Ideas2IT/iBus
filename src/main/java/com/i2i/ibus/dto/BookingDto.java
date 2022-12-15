@@ -23,7 +23,12 @@ import java.time.LocalTime;
 import java.util.List;
 
 /**
+ * BookingDTO are used to get the request from the server and send the response
+ * to the server in the type of BookingDto object. It contains the
+ * attributes. Here, the pattern of the attributes are specified.
+ * 
  * @author Esakkiraja E
+ * 
  * @version 1.0
  * @since Nov 29 2022
  */
@@ -42,16 +47,16 @@ public class BookingDto {
     @JsonProperty(access = Access.READ_ONLY)
     private double totalFare;
     @NotBlank
-    @Pattern(regexp = Constants.NAME_PATTERN)
+    @Pattern(regexp = Constants.PLACENAME_PATTERN, message = Constants.INVALID_PICKUP_POINT_MESSAGE)
     private String pickUpPoint;
     @NotBlank
-    @Pattern(regexp = Constants.NAME_PATTERN)
+    @Pattern(regexp = Constants.PLACENAME_PATTERN, message = Constants.INVALID_DROP_POINT_MESSAGE)
     private String dropPoint;
     @NotBlank
-    @Pattern(regexp = Constants.NAME_PATTERN)
+    @Pattern(regexp = Constants.PLACENAME_PATTERN, message = Constants.INVALID_SOURCE_PATTERN_MESSAGE)
     private String source;
     @NotBlank
-    @Pattern(regexp = Constants.NAME_PATTERN)
+    @Pattern(regexp = Constants.PLACENAME_PATTERN, message = Constants.INVALID_SOURCE_PATTERN_MESSAGE)
     private String destination;
     @JsonProperty(access = Access.READ_ONLY)
     private String status;

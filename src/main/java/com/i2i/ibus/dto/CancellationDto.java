@@ -13,6 +13,8 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 /**
+ * Cancellation is used to cancel the booking for user.
+ * 
  * @author Esakkiraja E
  * @version 1.0
  * @since Nov 29 2022

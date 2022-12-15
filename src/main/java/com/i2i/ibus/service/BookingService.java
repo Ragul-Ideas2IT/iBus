@@ -27,7 +27,7 @@ import java.util.List;
 public interface BookingService {
 
     /**
-     * Add a booking for a user.
+     * Method is used to add a bus booking for a user.
      *
      * @param bookingDto This is the object that contains the details of the
      *                   booking.
@@ -43,7 +43,8 @@ public interface BookingService {
     List<BookingDto> getAllBookings();
 
     /**
-     * Get booking details for a bookingId returns a booking details.
+     * Method is used to get booking details for a bookingId returns a booking
+     * details.
      *
      * @param id The id of the booking you want to retrieve.
      * @return A BookingDto object.
@@ -51,8 +52,8 @@ public interface BookingService {
     BookingDto getById(int id);
 
     /**
-     * Get all bookings for a user and
-     * return list of bookingsDto.
+     * Method is used to get all booking details for a userId and return list of
+     * bookingsDto.
      *
      * @param userId The id of the user who made the booking.
      * @return A list of BookingDto objects.
@@ -60,8 +61,8 @@ public interface BookingService {
     List<BookingDto> getByUserId(int userId);
 
     /**
-     * The method used to get bus details and
-     * returns a Bus object with the given id(bus).
+     * The method used to check bus details and returns a Bus object with the given
+     * id(bus).
      *
      * @param id The id of the bus you want to get.
      * @return A bus object
@@ -69,8 +70,8 @@ public interface BookingService {
     Bus getBusById(int id);
 
     /**
-     * The method used to get user details and
-     * returns a User object with the given id(user).
+     * The method used to check user details and returns a User object with the
+     * given id(user).
      *
      * @param id The id of the user to be retrieved.
      * @return A User object
@@ -78,17 +79,17 @@ public interface BookingService {
     User getUserById(int id);
 
     /**
-     * Get the bus history for a bus on a given travel date.
+     * Method is used to get the bus departure date for a bus schedule and check the
+     * booking travel date.
      *
-     * @param bus        The bus object that you want to get the history for.
+     * @param bus        The bus object that you want to get the schedule for.
      * @param travelDate The date of travel
      * @return A Schedule object
      */
     Schedule getScheduleByTravelDate(Bus bus, LocalDate travelDate);
 
-
     /**
-     * Cancels a booking and returns a cancellation DTO.
+     * Method is used to cancels a booking and returns a cancellation DTO.
      *
      * @param bookingId The id of the booking to be cancelled.
      * @return A BookingCancellationDto object.
@@ -96,16 +97,17 @@ public interface BookingService {
     CancellationDto cancel(int bookingId);
 
     /**
-     * Given a list of booking details and a bus id, calculate the fare for the bus.
+     * Method is used to calculate the seat fare for the bus.
      *
      * @param bookingDetails List of BookingDetail objects.
-     * @param busId          The id of the bus for which the fare is to be calculated.
+     * @param busId          The id of the bus for which the fare is to be
+     *                       calculated.
      * @return A double value
      */
     double calculateFare(List<BookingDetail> bookingDetails, int busId);
 
     /**
-     * Method is used to Cancel a booking and calculate the refund amount.
+     * Method is used to cancel a bus booking and calculate the refund amount.
      *
      * @param booking The booking to be cancelled. details.
      * @return A Cancellation object.
@@ -133,7 +135,7 @@ public interface BookingService {
      *
      * @param Schedule The Schedule object that contains the time of the bus.
      * @return The difference of time between the current time and the time the bus
-     * was last seen.
+     *         was last seen.
      */
 
     long calculateDifferenceOfTime(Schedule Schedule);
@@ -176,7 +178,8 @@ public interface BookingService {
     void validateStops(Booking booking, int busId);
 
     /**
-     * Method is used to check the seat availablity and check the gender of bookingDetails.
+     * Method is used to check the seat availablity and check the gender of
+     * bookingDetails.
      *
      * @param bookingDetails
      * @param busId
