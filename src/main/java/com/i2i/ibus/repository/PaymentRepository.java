@@ -4,29 +4,27 @@
  */
 package com.i2i.ibus.repository;
 
-import java.util.List;
-
+import com.i2i.ibus.model.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.i2i.ibus.model.Payment;
+import java.util.List;
 
 /**
  * Interfaces for Payment repository to extends Jpa repositories for connecting
  * with databases declaring custom methods.
- * 
+ *
  * @author Tamilmani K
  * @version 1.0
- * @created Nov 29 2022
- *
+ * @since Nov 29 2022
  */
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 
     /**
      * Find all payments by booking id.
-     * 
-     * @param bookingId Id for getting the all payments for the particular booking
+     *
+     * @param bookingId id for getting the all payments for the particular booking
      *                  id.
      * @return List<Payment> returns the list of payment details.
      */
@@ -34,7 +32,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
 
     /**
      * Delete the all payments by booking id.
-     * 
+     *
      * @param bookingId Id for delete the all payments for the particular booking
      *                  id.
      */

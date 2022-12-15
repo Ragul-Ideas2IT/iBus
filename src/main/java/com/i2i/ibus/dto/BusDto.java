@@ -1,24 +1,27 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ */
 package com.i2i.ibus.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.i2i.ibus.constants.Constants;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Used to get the bus details from the operators.
- * 
+ *
  * @author Ananth.
  * @version 1.0.
- * 
  * @since Nov 29 2022
- *
  */
 @Getter
 @Setter

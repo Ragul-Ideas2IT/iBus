@@ -1,7 +1,14 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ */
 package com.i2i.ibus.controller;
 
-import java.util.List;
-
+import com.i2i.ibus.constants.Constants;
+import com.i2i.ibus.dto.MessageDto;
+import com.i2i.ibus.dto.StopDto;
+import com.i2i.ibus.service.StopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.i2i.ibus.constants.Constants;
-import com.i2i.ibus.dto.MessageDto;
-import com.i2i.ibus.dto.StopDto;
-import com.i2i.ibus.service.StopService;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * <h1>Bus Ticket Booking Application
@@ -40,11 +44,11 @@ public class StopController {
 
     @Autowired
     private StopController(StopService stopService) {
-	this.stopService = stopService;
+        this.stopService = stopService;
     }
 
     /**
-     * Used to add bus stop deatils given by operators.
+     * Used to add bus stop details given by operators.
      *
      * @param stopDto stop details given by operators to add.
      * @param busId   The id of the bus to which the stop is to be added.
@@ -53,7 +57,7 @@ public class StopController {
     @PostMapping
     private ResponseEntity<StopDto> addStop(@RequestBody @Valid StopDto stopDto) {
 
-	return new ResponseEntity<StopDto>(stopService.addStop(stopDto), HttpStatus.CREATED);
+        return new ResponseEntity<StopDto>(stopService.addStop(stopDto), HttpStatus.CREATED);
     }
 
     /**
@@ -65,33 +69,32 @@ public class StopController {
     @GetMapping("/{busId}")
     private ResponseEntity<List<StopDto>> getStopsByBusId(@PathVariable int busId) {
 
-	return new ResponseEntity<List<StopDto>>(stopService.getStopsByBusId(busId), HttpStatus.OK);
+        return new ResponseEntity<List<StopDto>>(stopService.getStopsByBusId(busId), HttpStatus.OK);
     }
 
     /**
      * Update the stop details
      *
      * @param stopDto given by operators will be used to update the stop.
-     * @param StopId  The id of the stop to be updated.
-     * @param busId   The id of the bus that the stop is associated with.
+     * @param stopId  The id of the stop to be updated.
      * @return returns the updated stop details.
      */
     @PutMapping("/{stopId}")
     private ResponseEntity<StopDto> updateStop(@RequestBody @Valid StopDto stopDto, @PathVariable int stopId) {
 
-	return new ResponseEntity<StopDto>(stopService.updateStop(stopDto, stopId), HttpStatus.OK);
+        return new ResponseEntity<StopDto>(stopService.updateStop(stopDto, stopId), HttpStatus.OK);
     }
 
     /**
      * It deletes the stop with the given id.
      *
-     * @param StopId The id of the stop to be deleted.
+     * @param stopId The id of the stop to be deleted.
      * @return MessageDto
      */
     @DeleteMapping("/{stopId}")
     private MessageDto deleteStop(@PathVariable int stopId) {
 
-	stopService.deleteStop(stopId);
-	return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
+        stopService.deleteStop(stopId);
+        return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
     }
 }

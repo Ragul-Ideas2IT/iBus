@@ -1,11 +1,16 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ */
 package com.i2i.ibus.service.impl;
 
 import com.i2i.ibus.dto.OperatorDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.Operator;
-import com.i2i.ibus.service.OperatorService;
 import com.i2i.ibus.repository.OperatorRepository;
+import com.i2i.ibus.service.OperatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +18,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @author  Ragul
+ * @author Ragul
  * @version 1.0
- * @since   Nov 29 2022
+ * @since Nov 29 2022
  */
 @Service
 public class OperatorServiceImpl implements OperatorService {
@@ -29,8 +34,6 @@ public class OperatorServiceImpl implements OperatorService {
 
     /**
      * {@inheritDoc}
-     *
-     * @return
      */
     @Override
     public Operator validateOperator(int id) {
@@ -46,9 +49,15 @@ public class OperatorServiceImpl implements OperatorService {
      */
     @Override
     public void validateMailIdPhoneNoAndGstNumber(String mailId, String phoneNumber, String gstNumber) {
-        operatorRepository.findByMailId(mailId).orElseThrow(() -> new IBusException("Mail Id already exists"));
-        operatorRepository.findByPhoneNumber(phoneNumber).orElseThrow(() -> new IBusException("Phone Number already exists"));
-        operatorRepository.findByGstNumber(gstNumber).orElseThrow(() -> new IBusException("GST number already exists"));
+        if (operatorRepository.findByMailId(mailId).isPresent()) {
+            throw new IBusException("Mail Id already exists");
+        }
+        if (operatorRepository.findByPhoneNumber(phoneNumber).isPresent()) {
+            throw new IBusException("Phone Number already exists");
+        }
+        if (operatorRepository.findByGstNumber(gstNumber).isPresent()) {
+            throw new IBusException("GST number already exists");
+        }
     }
 
     /**
@@ -57,9 +66,15 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     public void validateMailIdPhoneNoAndGstNumberForUpdate(String mailId, String phoneNumber, String gstNumber,
                                                            int id) {
-        operatorRepository.findByMailIdAndIdNot(mailId, id).orElseThrow(() -> new IBusException("Mail Id already exists"));
-        operatorRepository.findByPhoneNumberAndIdNot(phoneNumber, id).orElseThrow(() -> new IBusException("Phone Number already exists"));
-        operatorRepository.findByGstNumberAndIdNot(gstNumber, id).orElseThrow(() -> new IBusException("GST number already exists"));
+        if (operatorRepository.findByMailIdAndIdNot(mailId, id).isPresent()) {
+            throw new IBusException("Mail Id already exists");
+        }
+        if (operatorRepository.findByPhoneNumberAndIdNot(phoneNumber, id).isPresent()) {
+            throw new IBusException("Phone Number already exists");
+        }
+        if (operatorRepository.findByGstNumberAndIdNot(gstNumber, id).isPresent()) {
+            throw new IBusException("GST number already exists");
+        }
     }
 
     /**

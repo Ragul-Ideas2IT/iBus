@@ -125,7 +125,7 @@ public class Constants {
 
     // Same data provided messages.
     public static final String SAME_SOURCE_AND_DESTINATION = "Source and destination are same";
-    public static final String SAME_DEPATURE_AND_ARRIVAL_DATETIME = "Departue and arrival date and time not to be same";
+    public static final String SAME_DEPARTURE_AND_ARRIVAL_DATETIME = "Departure and arrival date and time not to be same";
 
     //other messges.
     public static final String BOOKING_CANCELLED = "Booking is cancelled";
@@ -133,4 +133,8 @@ public class Constants {
     public static final String BUS_ID = "Bus Id :";
     public static final String REFUND_AMOUNT = "Refund amount :";
     public static final String USER_ID = "User Id :";
+    public static final String BOOKING_CANCELLED_MESSAGE = "Booking Cancelled :(";
+    public static final String NOT_PAID = "Not Paid";
+    public static final String SEAT_ALREADY_BOOKED = "Seat already booked";
+    public static final String SEAT_NOT_AVAILABLE = "Seat is not available";
 }

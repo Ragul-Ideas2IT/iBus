@@ -1,7 +1,14 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ */
 package com.i2i.ibus.controller;
 
-import java.util.List;
-
+import com.i2i.ibus.constants.Constants;
+import com.i2i.ibus.dto.BusDto;
+import com.i2i.ibus.dto.MessageDto;
+import com.i2i.ibus.service.BusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.i2i.ibus.constants.Constants;
-import com.i2i.ibus.dto.BusDto;
-import com.i2i.ibus.dto.MessageDto;
-import com.i2i.ibus.service.BusService;
-
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * <h1>Bus Ticket Booking Application
@@ -29,9 +32,9 @@ import javax.validation.Valid;
  * manipulate the bus details.
  * <p>
  *
- * @author Ananth.
+ * @author  Ananth.
  * @version 1.0.
- * @since Nov 29 2022
+ * @since   Nov 29 2022
  */
 @RestController
 @RequestMapping("api/v1/buses")
@@ -41,7 +44,7 @@ public class BusController {
 
     @Autowired
     private BusController(BusService busService) {
-	this.busService = busService;
+        this.busService = busService;
     }
 
     /**
@@ -53,7 +56,7 @@ public class BusController {
     @PostMapping
     private ResponseEntity<BusDto> addBus(@RequestBody @Valid BusDto busDto) {
 
-	return new ResponseEntity<BusDto>(busService.addBus(busDto), HttpStatus.CREATED);
+        return new ResponseEntity<BusDto>(busService.addBus(busDto), HttpStatus.CREATED);
     }
 
     /**
@@ -64,7 +67,7 @@ public class BusController {
     @GetMapping
     private ResponseEntity<List<BusDto>> getAllBuses() {
 
-	return new ResponseEntity<List<BusDto>>(busService.getAllBuses(), HttpStatus.OK);
+        return new ResponseEntity<List<BusDto>>(busService.getAllBuses(), HttpStatus.OK);
     }
 
     /**
@@ -76,7 +79,7 @@ public class BusController {
     @GetMapping("/operators/{operatorId}")
     private ResponseEntity<List<BusDto>> getByOperatorId(@PathVariable int operatorId) {
 
-	return new ResponseEntity<List<BusDto>>(busService.getAllByOperatorId(operatorId), HttpStatus.OK);
+        return new ResponseEntity<List<BusDto>>(busService.getAllByOperatorId(operatorId), HttpStatus.OK);
     }
 
     /**
@@ -88,20 +91,20 @@ public class BusController {
     @GetMapping("/{busId}")
     private ResponseEntity<BusDto> getById(@PathVariable int busId) {
 
-	return new ResponseEntity<BusDto>(busService.getById(busId), HttpStatus.OK);
+        return new ResponseEntity<BusDto>(busService.getById(busId), HttpStatus.OK);
     }
 
     /**
      * Used to update the bus details.
      *
-     * @param busDto     The bus deatils that we want to update.
-     * @param busId      The id of the bus to be updated.
+     * @param busDto The bus deatils that we want to update.
+     * @param busId  The id of the bus to be updated.
      * @return the updated bus details.
      */
     @PutMapping("/{busId}")
     private ResponseEntity<BusDto> updateBus(@RequestBody @Valid BusDto busDto, @PathVariable int busId) {
 
-	return new ResponseEntity<BusDto>(busService.updateBus(busDto, busId), HttpStatus.OK);
+        return new ResponseEntity<BusDto>(busService.updateBus(busDto, busId), HttpStatus.OK);
     }
 
     /**
@@ -113,7 +116,7 @@ public class BusController {
     @DeleteMapping("/{busId}")
     private MessageDto deleteBus(@PathVariable int busId) {
 
-	busService.deleteBus(busId);
-	return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
+        busService.deleteBus(busId);
+        return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
     }
 }

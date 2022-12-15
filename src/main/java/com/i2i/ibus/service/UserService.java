@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.i2i.ibus.service;
 
 import com.i2i.ibus.dto.UserDto;
@@ -49,7 +53,7 @@ public interface UserService {
     /**
      * It updates the user with the given id with the given userDto
      *
-     * @param id The id of the user to be updated.
+     * @param id      The id of the user to be updated.
      * @param userDto The userDto object that contains the updated user details.
      * @return UserDto
      */

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ */
 package com.i2i.ibus.service.impl;
 
 import com.i2i.ibus.dto.UserDto;
@@ -28,8 +33,6 @@ public class UserServiceImpl implements UserService {
 
     /**
      * {@inheritDoc}
-     *
-     * @return
      */
     @Override
     public User validateUser(int id) {
@@ -65,7 +68,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void validateMailIdForUpdate(String mailId, int id) {
-       Optional<User> user = userRepository.findByMailIdAndIdNot(mailId, id);
+        Optional<User> user = userRepository.findByMailIdAndIdNot(mailId, id);
         if (user.isPresent()) {
             throw new IBusException("Mail Id already exists");
         }

@@ -1,7 +1,9 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ */
 package com.i2i.ibus.service;
-
-import java.time.LocalDate;
-import java.util.List;
 
 import com.i2i.ibus.dto.BookingDto;
 import com.i2i.ibus.dto.CancellationDto;
@@ -11,13 +13,15 @@ import com.i2i.ibus.model.Bus;
 import com.i2i.ibus.model.Schedule;
 import com.i2i.ibus.model.User;
 
+import java.time.LocalDate;
+import java.util.List;
+
 /**
  * Used to manipulate the Booking details in the application. Operators are
  * manipulate the booking details.
- * 
+ *
  * @author Esakkiraja E
  * @version 1.0
- *
  * @since Nov 29 2022
  */
 public interface BookingService {
@@ -25,8 +29,6 @@ public interface BookingService {
     /**
      * Add a booking for a user.
      *
-     * @param userId     The id of the user who is booking the ticket.
-     * @param busId      The id of the bus that the user wants to book.
      * @param bookingDto This is the object that contains the details of the
      *                   booking.
      * @return BookingDto
@@ -49,7 +51,7 @@ public interface BookingService {
     BookingDto getById(int id);
 
     /**
-     * Get all bookings for a user and 
+     * Get all bookings for a user and
      * return list of bookingsDto.
      *
      * @param userId The id of the user who made the booking.
@@ -58,7 +60,7 @@ public interface BookingService {
     List<BookingDto> getByUserId(int userId);
 
     /**
-     * The method used to get bus details and 
+     * The method used to get bus details and
      * returns a Bus object with the given id(bus).
      *
      * @param id The id of the bus you want to get.
@@ -78,17 +80,18 @@ public interface BookingService {
     /**
      * Get the bus history for a bus on a given travel date.
      *
-     * @param bus  The bus object that you want to get the history for.
+     * @param bus        The bus object that you want to get the history for.
      * @param travelDate The date of travel
      * @return A Schedule object
      */
     Schedule getScheduleByTravelDate(Bus bus, LocalDate travelDate);
 
+
     /**
-     * Method is used to Cancel a booking.
+     * Cancels a booking and returns a cancellation DTO.
      *
-     * @param bookingId The booking id of the booking that is being cancelled.
-     * @return
+     * @param bookingId The id of the booking to be cancelled.
+     * @return A BookingCancellationDto object.
      */
     CancellationDto cancel(int bookingId);
 
@@ -96,7 +99,7 @@ public interface BookingService {
      * Given a list of booking details and a bus id, calculate the fare for the bus.
      *
      * @param bookingDetails List of BookingDetail objects.
-     * @param busId The id of the bus for which the fare is to be calculated.
+     * @param busId          The id of the bus for which the fare is to be calculated.
      * @return A double value
      */
     double calculateFare(List<BookingDetail> bookingDetails, int busId);
@@ -130,7 +133,7 @@ public interface BookingService {
      *
      * @param Schedule The Schedule object that contains the time of the bus.
      * @return The difference of time between the current time and the time the bus
-     *         was last seen.
+     * was last seen.
      */
 
     long calculateDifferenceOfTime(Schedule Schedule);
@@ -160,7 +163,7 @@ public interface BookingService {
      * Methos is used to Validate a bookingId present or not.
      *
      * @param id The id of the booking to be validated.
-     * @return 
+     * @return
      */
     Booking validateBooking(int id);
 
@@ -174,7 +177,7 @@ public interface BookingService {
 
     /**
      * Method is used to check the seat availablity and check the gender of bookingDetails.
-     * 
+     *
      * @param bookingDetails
      * @param busId
      */
@@ -184,7 +187,7 @@ public interface BookingService {
      * Get all bookings for a id(bus).
      *
      * @param userId The id of the user who made the booking.
-     * 
+     *
      * @return A list of BookingDto objects.
      */
     List<BookingDto> getByBusId(int busId);

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ */
 package com.i2i.ibus.service;
 
 import com.i2i.ibus.dto.SeatDto;
@@ -47,8 +51,8 @@ public interface SeatService {
      * Used to update seat details.
      *
      * @param seatDto seat details given by operators will be updated.
-     * @param seatId The id of the seat you want to update.
-     * @param busId The id of the bus that the seat belongs to.
+     * @param seatId  The id of the seat you want to update.
+     * @param busId   The id of the bus that the seat belongs to.
      * @return the update seat details.
      */
     SeatDto updateSeat(SeatDto seatDto, int seatId);

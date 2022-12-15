@@ -1,18 +1,24 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ */
 package com.i2i.ibus.security;
 
 import com.i2i.ibus.model.Account;
 import com.i2i.ibus.model.Role;
-import com.i2i.ibus.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+/**
+ * @author Ragul
+ * @version 1.0
+ * @since Dec 12 2022
+ */
 public class AccountDetails implements UserDetails {
     private final Account account;
 

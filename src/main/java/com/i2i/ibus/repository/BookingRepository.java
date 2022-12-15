@@ -1,28 +1,32 @@
+/*
+ * Copyright (c) 2022, Ideas2It and/or its affiliates. All rights reserved.
+ * IDEAS2IT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ */
 package com.i2i.ibus.repository;
 
-import java.util.List;
-
+import com.i2i.ibus.model.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.i2i.ibus.model.Booking;
+import java.util.List;
 
 /**
- * Used to save and retirve the booking Details.
- * 
+ * Used to save and retrieve the booking Details.
+ *
  * @author Esakkiraja E
  * @version 1.0
- *
  * @since Nov 29 2022
  */
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
-    
-    /** 
-     * method used to find all user by userId
-     * 
-     * @param userId 
-     * @return a list of  Bookings.
+
+
+    /**
+     * Find all bookings for a given user.
+     *
+     * @param userId The id of the user whose bookings you want to find.
+     * @return A list of Booking objects
      */
     List<Booking> findAllByUserId(int userId);
 }
