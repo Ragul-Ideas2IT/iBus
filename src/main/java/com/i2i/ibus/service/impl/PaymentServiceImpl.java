@@ -4,6 +4,16 @@
  */
 package com.i2i.ibus.service.impl;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.i2i.ibus.constants.Constants;
 import com.i2i.ibus.controller.PaymentController;
 import com.i2i.ibus.dto.PaymentDto;
@@ -13,17 +23,8 @@ import com.i2i.ibus.model.Booking;
 import com.i2i.ibus.model.Payment;
 import com.i2i.ibus.repository.BookingRepository;
 import com.i2i.ibus.repository.PaymentRepository;
+import com.i2i.ibus.service.BookingService;
 import com.i2i.ibus.service.PaymentService;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * The validated payment details are passed to the payment repository to store
@@ -37,21 +38,21 @@ import java.util.NoSuchElementException;
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
+    private BookingService bookingService;
     private PaymentRepository paymentRepository;
-    private BookingRepository bookingRepository;
     private Logger logger = LogManager.getLogger(PaymentController.class);
 
     /**
      * Create a new payment repository and booking repository to initialing the
      * specified targets to connect the database.
      *
+     * @param bookingService To get the booking details.
      * @param paymentRepository To save, read and delete the payment details.
-     * @param bookingRepository To save, read and delete the booking details.
      */
     @Autowired
-    private PaymentServiceImpl(PaymentRepository paymentRepository, BookingRepository bookingRepository) {
-        this.paymentRepository = paymentRepository;
-        this.bookingRepository = bookingRepository;
+    private PaymentServiceImpl(BookingService bookingService, PaymentRepository paymentRepository) {
+	this.bookingService = bookingService;
+	this.paymentRepository = paymentRepository;
     }
 
     /**
@@ -59,8 +60,7 @@ public class PaymentServiceImpl implements PaymentService {
      */
     @Override
     public PaymentDto createPayment(PaymentDto paymentDto) {
-        Booking booking = bookingRepository.findById(paymentDto.getBookingId())
-                .orElseThrow(() -> new IBusException(Constants.BOOKING_NOT_EXIST));
+        Booking booking = bookingService.validateBooking(paymentDto.getBookingId());
         Payment payment = Mapper.toPayment(paymentDto);
         payment.setTime(LocalDateTime.now());
         payment.setBooking(booking);
@@ -104,13 +104,8 @@ public class PaymentServiceImpl implements PaymentService {
      */
     @Override
     public List<PaymentDto> getByBookingId(int bookingId) {
-	try {
-	    bookingRepository.findById(bookingId).orElseThrow();
-	} catch (NoSuchElementException noBookingFound) {
-	    logger.error(Constants.BOOKING_NOT_EXIST + Constants.BOOKING_ID + bookingId, noBookingFound);
-	    throw new IBusException(Constants.BOOKING_NOT_EXIST);
-	}
-        return Mapper.toPaymentDtos(paymentRepository.findAllByBookingId(bookingId));
+	bookingService.validateBooking(bookingId);
+	return Mapper.toPaymentDtos(paymentRepository.findAllByBookingId(bookingId));
     }
 
     /**
