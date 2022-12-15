@@ -6,10 +6,11 @@
 
 package com.i2i.ibus.controller;
 
-import com.i2i.ibus.dto.BookingDto;
-import com.i2i.ibus.dto.CancellationDto;
-import com.i2i.ibus.dto.MessageDto;
-import com.i2i.ibus.service.BookingService;
+import java.time.LocalDate;
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,8 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.util.List;
+import com.i2i.ibus.constants.Constants;
+import com.i2i.ibus.dto.BookingDto;
+import com.i2i.ibus.dto.CancellationDto;
+import com.i2i.ibus.dto.MessageDto;
+import com.i2i.ibus.service.BookingService;
 
 /**
  * class for booking that creates, displays and deletes the bookings.
@@ -51,7 +55,7 @@ public class BookingController {
      */
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    private BookingDto book( @RequestBody BookingDto bookingDto) {
+    private BookingDto book(@RequestBody BookingDto bookingDto) {
 	return bookingService.book(bookingDto);
     }
 
@@ -112,7 +116,7 @@ public class BookingController {
     @ResponseStatus(value = HttpStatus.OK)
     private MessageDto deleteBooking(@PathVariable int id) {
 	bookingService.deleteBooking(id);
-	return new MessageDto("200", "Booking deleted sucessfully");
+	return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
     }
 
     /**
@@ -125,5 +129,19 @@ public class BookingController {
     @ResponseStatus(value = HttpStatus.OK)
     private CancellationDto cancel(@PathVariable @Valid int bookingId) {
 	return bookingService.cancel(bookingId);
+    }
+
+    /**
+     * Get all booking for id(bus) and travel date. This function returns a list of
+     * bookingDto
+     *
+     * @param busId
+     * @param travelDate
+     * @return A list of BookingDto objects.
+     */
+    @GetMapping("/buses/{busId}/date/{travelDate}")
+    @ResponseStatus(value = HttpStatus.OK)
+    private List<BookingDto> getByBusIdAndTravelDate(@PathVariable int busId, LocalDate travelDate) {
+	return bookingService.getByBusIdAndTravelDate(busId, travelDate);
     }
 }

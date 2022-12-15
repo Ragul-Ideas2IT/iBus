@@ -5,10 +5,10 @@
  */
 package com.i2i.ibus.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.Where;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -19,10 +19,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
+
+import org.hibernate.annotations.Where;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Booking used to connect the database, to save the user booking details and to
@@ -35,7 +36,6 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@NoArgsConstructor
 @Where(clause = "is_deleted = false")
 public class Booking {
 
@@ -49,7 +49,6 @@ public class Booking {
     private String pickUpPoint;
     private String dropPoint;
     private String status;
-    private String paymentStatus;
     private LocalTime travelTime;
     private LocalDate travelDate;
     private boolean isDeleted;
