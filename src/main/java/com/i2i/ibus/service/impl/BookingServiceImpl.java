@@ -38,8 +38,6 @@ import com.i2i.ibus.repository.BookingRepository;
 
 
 /**
- * <h1> BUS BOOKING APPLICATION</h1>
- * <p>
  * Used to manipulate the Booking details in the application. Operators are
  * manipulate the booking details.
  *
@@ -86,7 +84,6 @@ public class BookingServiceImpl implements BookingService {
         booking.setTotalFare(calculateFare(booking.getBookingDetails(), bookingDto.getBusesId()));
         booking.setDateTime(LocalDateTime.now());
         booking.setStatus(Constants.NOT_CONFIRMED);
-        setSeatStatus(booking);
         booking.setUser(getUserById(bookingDto.getUsersId()));
         bookingRepository.save(booking);
         logger.info(Constants.CREATE_MESSAGE.concat(Constants.BOOKING_ID) + booking.getId());
@@ -119,7 +116,6 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingDto getById(int id) {
         Booking booking = bookingRepository.findById(id).get();
-        setSeatStatus(booking);
         return Mapper.toBookingDto(booking);
     }
 
@@ -132,7 +128,6 @@ public class BookingServiceImpl implements BookingService {
         List<BookingDto> bookingsDto = new ArrayList<BookingDto>();
         if (!bookings.isEmpty()) {
             for (Booking booking : bookings) {
-                setSeatStatus(booking);
                 bookingsDto.add(Mapper.toBookingDto(booking));
             }
         } else {
@@ -238,6 +233,7 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingDto> getByBusId(int busId) {
         List<Booking> bookings = bookingRepository.findAllByBusId(busId);
         List<BookingDto> bookingsDto = new ArrayList<BookingDto>();
+        System.out.println(bookings);
         if (!bookings.isEmpty()) {
 
             for (Booking booking : bookings) {
@@ -253,7 +249,6 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingDto> getByBusIdAndTravelDate(int busId, LocalDate date) {
         List<Booking> bookings = bookingRepository.findAllByTravelDateAndBusId(date, busId);
-        System.out.println(bookings);
         List<BookingDto> bookingsDto = new ArrayList<BookingDto>();
         if (!bookings.isEmpty()) {
 
@@ -261,7 +256,6 @@ public class BookingServiceImpl implements BookingService {
                 bookingsDto.add(Mapper.toBookingDto(booking));
             }
         }
-        System.out.println(bookingsDto);
         return bookingsDto;
     }
 
@@ -276,6 +270,7 @@ public class BookingServiceImpl implements BookingService {
                 Seat seat = seatService
                         .findBySeatNumberAndBusId(bookingDetail.getSeatNumber(), booking.getBus().getId()).get();
                 seat.setOccupied(true);
+                seatService.updateSeat(Mapper.toSeatDto(seat), seat.getId());
             }
         }
     }
@@ -309,8 +304,8 @@ public class BookingServiceImpl implements BookingService {
         try {
             booking = bookingRepository.findById(id).orElseThrow();
         } catch (NoSuchElementException exception) {
-            logger.error(Constants.BUS_ID_NOT_EXIST.concat(Constants.BOOKING_ID) + id);
-            throw new IBusException(Constants.BUS_ID_NOT_EXIST);
+            logger.error(Constants.BOOKING_NOT_EXIST.concat(Constants.BOOKING_ID) + id);
+            throw new IBusException(Constants.BOOKING_NOT_EXIST);
         }
         return booking;
     }

@@ -5,11 +5,10 @@
  */
 package com.i2i.ibus.controller;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import javax.validation.Valid;
-
+import com.i2i.ibus.constants.Constants;
+import com.i2i.ibus.dto.MessageDto;
+import com.i2i.ibus.dto.ScheduleDto;
+import com.i2i.ibus.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +19,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.i2i.ibus.constants.Constants;
-import com.i2i.ibus.dto.MessageDto;
-import com.i2i.ibus.dto.ScheduleDto;
-import com.i2i.ibus.service.ScheduleService;
+import javax.validation.Valid;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Bus Ticket Booking Application
@@ -45,7 +42,7 @@ public class ScheduleController {
 
     @Autowired
     private ScheduleController(ScheduleService scheduleService) {
-	this.scheduleService = scheduleService;
+        this.scheduleService = scheduleService;
     }
 
     /**
@@ -56,7 +53,7 @@ public class ScheduleController {
      */
     @PostMapping
     private ResponseEntity<ScheduleDto> addSchedule(@RequestBody @Valid ScheduleDto scheduleDto) {
-	return new ResponseEntity<ScheduleDto>(scheduleService.addSchedule(scheduleDto), HttpStatus.CREATED);
+        return new ResponseEntity<ScheduleDto>(scheduleService.addSchedule(scheduleDto), HttpStatus.CREATED);
     }
 
     /**
@@ -67,7 +64,7 @@ public class ScheduleController {
     @GetMapping
     private ResponseEntity<List<ScheduleDto>> getAllSchedules() {
 
-	return new ResponseEntity<List<ScheduleDto>>(scheduleService.getAllSchedules(), HttpStatus.OK);
+        return new ResponseEntity<List<ScheduleDto>>(scheduleService.getAllSchedules(), HttpStatus.OK);
     }
 
     /**
@@ -79,7 +76,7 @@ public class ScheduleController {
     @GetMapping("/{busId}")
     private ResponseEntity<List<ScheduleDto>> getSchedulesByBusId(@PathVariable int busId) {
 
-	return new ResponseEntity<List<ScheduleDto>>(scheduleService.getSchedulesByBusId(busId), HttpStatus.OK);
+        return new ResponseEntity<List<ScheduleDto>>(scheduleService.getSchedulesByBusId(busId), HttpStatus.OK);
     }
 
     /**
@@ -92,11 +89,11 @@ public class ScheduleController {
      * @return A list of ScheduleDto objects.
      */
     @GetMapping("{departureDate}/{source}/{destination}")
-    private ResponseEntity<List<ScheduleDto>> getByDepartureDate(@PathVariable LocalDate departureDate,
-	    @PathVariable String source, @PathVariable String destination) {
-
-	return new ResponseEntity<List<ScheduleDto>>(
-		scheduleService.getByDepartureDate(departureDate, source, destination), HttpStatus.OK);
+    private ResponseEntity<List<ScheduleDto>> getByDepartureDate(@PathVariable String departureDate,
+                                                                 @PathVariable String source,
+                                                                 @PathVariable String destination) {
+        return new ResponseEntity<List<ScheduleDto>>(
+                scheduleService.getByDepartureDate(LocalDate.parse(departureDate), source, destination), HttpStatus.OK);
     }
 
     /**
@@ -108,9 +105,9 @@ public class ScheduleController {
      */
     @PutMapping("/{scheduleId}")
     private ResponseEntity<ScheduleDto> updateSchedule(@RequestBody @Valid ScheduleDto scheduleDto,
-	    @PathVariable int scheduleId) {
+                                                       @PathVariable int scheduleId) {
 
-	return new ResponseEntity<ScheduleDto>(scheduleService.updateSchedule(scheduleDto, scheduleId), HttpStatus.OK);
+        return new ResponseEntity<ScheduleDto>(scheduleService.updateSchedule(scheduleDto, scheduleId), HttpStatus.OK);
     }
 
     /**
@@ -122,7 +119,7 @@ public class ScheduleController {
     @DeleteMapping("/{scheduleId}")
     private MessageDto deleteSchedule(@PathVariable int scheduleId) {
 
-	scheduleService.deleteSchedule(scheduleId);
-	return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
+        scheduleService.deleteSchedule(scheduleId);
+        return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
     }
 }
