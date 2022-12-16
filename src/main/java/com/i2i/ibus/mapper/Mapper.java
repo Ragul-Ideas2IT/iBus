@@ -5,29 +5,8 @@
  */
 package com.i2i.ibus.mapper;
 
-import com.i2i.ibus.dto.AddressDto;
-import com.i2i.ibus.dto.BookingDetailDto;
-import com.i2i.ibus.dto.BookingDto;
-import com.i2i.ibus.dto.BusDto;
-import com.i2i.ibus.dto.CancellationDto;
-import com.i2i.ibus.dto.OperatorDto;
-import com.i2i.ibus.dto.PaymentDto;
-import com.i2i.ibus.dto.ScheduleDto;
-import com.i2i.ibus.dto.SeatDto;
-import com.i2i.ibus.dto.StopDto;
-import com.i2i.ibus.dto.UserDto;
-import com.i2i.ibus.model.Account;
-import com.i2i.ibus.model.Address;
-import com.i2i.ibus.model.Booking;
-import com.i2i.ibus.model.BookingDetail;
-import com.i2i.ibus.model.Bus;
-import com.i2i.ibus.model.Cancellation;
-import com.i2i.ibus.model.Operator;
-import com.i2i.ibus.model.Payment;
-import com.i2i.ibus.model.Schedule;
-import com.i2i.ibus.model.Seat;
-import com.i2i.ibus.model.Stop;
-import com.i2i.ibus.model.User;
+import com.i2i.ibus.dto.*;
+import com.i2i.ibus.model.*;
 import org.modelmapper.ModelMapper;
 
 import java.util.List;
@@ -331,4 +310,25 @@ public class Mapper {
         return mapper.map(cancellation, CancellationDto.class);
     }
 
+
+    /**
+     * It takes a NotificationDto object and returns a Notification object.
+     *
+     * @param notificationDto The notificationDto object that we want to convert to a Notification object.
+     * @return A Notification object
+     */
+    public static Notification toNotification(NotificationDto notificationDto) {
+        return mapper.map(notificationDto, Notification.class);
+    }
+
+
+    /**
+     * It takes a notification object and returns a NotificationDto object
+     *
+     * @param notification The Notification object that we want to convert to a NotificationDto object.
+     * @return A NotificationDto object
+     */
+    public static NotificationDto toNotificationDto(Notification notification) {
+        return mapper.map(notification, NotificationDto.class);
+    }
 }

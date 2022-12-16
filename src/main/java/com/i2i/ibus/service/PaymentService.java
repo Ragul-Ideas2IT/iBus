@@ -5,6 +5,8 @@
 package com.i2i.ibus.service;
 
 import com.i2i.ibus.dto.PaymentDto;
+import com.i2i.ibus.exception.IBusException;
+import com.i2i.ibus.model.Payment;
 
 import java.util.List;
 
@@ -29,6 +31,46 @@ public interface PaymentService {
      *         returns paymentDto.
      */
     PaymentDto createPayment(PaymentDto paymentDto);
+
+    /**
+     * This function validate the cancellation status of the booking. If the
+     * booking is cancelled then the payment is cancelled, it throws
+     * {@link IBusException}.
+     *
+     * @param payment To get the cancellation status of the booking.
+     * @return PaymentDto.
+     */
+    PaymentDto validateBookingCancellationStatus(Payment payment);
+
+    /**
+     * This function validate the booking status. If the booking status is
+     * confirmed then the payment is cancelled, it throws
+     * {@link IBusException}.
+     *
+     * @param payment To get the booking status.
+     * @return PaymentDto.
+     */
+    PaymentDto validateBookingStatus(Payment payment);
+
+    /**
+     * This function validate the amount to the booking total fare.
+     * If the amount is invalid, then it throws {@link IBusException}.
+     *
+     * @param payment To get the amount of the payment and total fare
+     *               of the booking.
+     * @return PaymentDto.
+     */
+    PaymentDto validateBookingTotalFare(Payment payment);
+
+    /**
+     * This function compare the time of the booking and payment time.
+     * If the time difference is more than 5 minutes, then it throws
+     * {@link IBusException}.
+     *
+     * @param payment To get the time of the booking and the payment time.
+     * @return PaymentDto.
+     */
+    PaymentDto validatePaymentTime(Payment payment);
 
     /**
      * Get all payments for a booking. If the booking aren't found it throw

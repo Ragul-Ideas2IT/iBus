@@ -7,21 +7,20 @@ package com.i2i.ibus.service.impl;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.NoSuchElementException;
 
+import com.i2i.ibus.dto.NotificationDto;
+import com.i2i.ibus.service.NotificationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.i2i.ibus.constants.Constants;
-import com.i2i.ibus.controller.PaymentController;
 import com.i2i.ibus.dto.PaymentDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.mapper.Mapper;
 import com.i2i.ibus.model.Booking;
 import com.i2i.ibus.model.Payment;
-import com.i2i.ibus.repository.BookingRepository;
 import com.i2i.ibus.repository.PaymentRepository;
 import com.i2i.ibus.service.BookingService;
 import com.i2i.ibus.service.PaymentService;
@@ -39,6 +38,7 @@ import com.i2i.ibus.service.PaymentService;
 public class PaymentServiceImpl implements PaymentService {
 
     private BookingService bookingService;
+    private NotificationService notificationService;
     private PaymentRepository paymentRepository;
     private Logger logger = LogManager.getLogger(PaymentServiceImpl.class);
 
@@ -47,11 +47,14 @@ public class PaymentServiceImpl implements PaymentService {
      * specified targets to connect the database.
      *
      * @param bookingService To get the booking details.
+     * @param notificationService To save the notified messages.
      * @param paymentRepository To save, read and delete the payment details.
      */
     @Autowired
-    private PaymentServiceImpl(BookingService bookingService, PaymentRepository paymentRepository) {
+    private PaymentServiceImpl(BookingService bookingService, NotificationService notificationService,
+                               PaymentRepository paymentRepository) {
 	this.bookingService = bookingService;
+    this.notificationService = notificationService;
 	this.paymentRepository = paymentRepository;
     }
 
@@ -64,37 +67,85 @@ public class PaymentServiceImpl implements PaymentService {
         Payment payment = Mapper.toPayment(paymentDto);
         payment.setTime(LocalDateTime.now());
         payment.setBooking(booking);
-        if (booking.getCancellation() != null) {
-            logger.error(Constants.PAYMENT_CANCEL_MESSAGE + Constants.BOOKING_ID + paymentDto.getBookingId());
+        validateBookingCancellationStatus(payment);
+        validateBookingStatus(payment);
+        validateBookingTotalFare(payment);
+        validatePaymentTime(payment);
+        payment.setStatus(Constants.PAID);
+        payment.setMessage(Constants.PAID_MESSAGE);
+        booking.setStatus(Constants.CONFIRMED);
+        payment = paymentRepository.save(payment);
+        notificationService.addNotification(new NotificationDto(payment.getId(), Constants.BOOKING_SUCCESSFULLY,
+                Constants.PAYMENT));
+        return Mapper.toPaymentDto(payment);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PaymentDto validateBookingCancellationStatus(Payment payment) {
+        if (payment.getBooking().getCancellation() != null) {
+            payment.setMessage(Constants.PAYMENT_CANCEL_MESSAGE);
+            payment = paymentRepository.save(payment);
+            logger.error(Constants.PAYMENT_CANCEL_MESSAGE + Constants.PAYMENT_ID + payment.getId());
+            notificationService.addNotification(new NotificationDto(payment.getId(), Constants.PAYMENT_CANCEL_MESSAGE,
+                    Constants.PAYMENT));
             throw new IBusException(Constants.PAYMENT_CANCEL_MESSAGE);
         }
-        if (0 == paymentDto.getCvvNumber()) {
-            logger.error(Constants.CVV_NUMBER_MANDATORY_MESSAGE + Constants.BOOKING_ID + paymentDto.getBookingId());
-            throw new IBusException(Constants.CVV_NUMBER_MANDATORY_MESSAGE);
-        }
-        if (booking.getStatus().equalsIgnoreCase(Constants.CONFIRMED)) {
-            logger.error(Constants.ALREADY_PAYMENT_SUCCEED_MESSAGE + Constants.BOOKING_ID
-        	    + paymentDto.getBookingId());
+        return Mapper.toPaymentDto(payment);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PaymentDto validateBookingStatus(Payment payment){
+        if (payment.getBooking().getStatus().equalsIgnoreCase(Constants.CONFIRMED)) {
+            payment.setMessage(Constants.ALREADY_PAYMENT_SUCCEED_MESSAGE);
+            payment = paymentRepository.save(payment);
+            logger.error(Constants.ALREADY_PAYMENT_SUCCEED_MESSAGE + Constants.PAYMENT_ID
+                    + payment.getId());
+            notificationService.addNotification(new NotificationDto(payment.getId(),
+                    Constants.ALREADY_PAYMENT_SUCCEED_MESSAGE, Constants.PAYMENT));
             throw new IBusException(Constants.ALREADY_PAYMENT_SUCCEED_MESSAGE);
         }
-        if (booking.getTotalFare() != paymentDto.getAmount()) {
+        return Mapper.toPaymentDto(payment);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PaymentDto validateBookingTotalFare(Payment payment) {
+        if (payment.getBooking().getTotalFare() != payment.getAmount()) {
             payment.setStatus(Constants.UNPAID);
-            paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
-            logger.error(Constants.INVALID_PAYMENT_MESSAGE + booking.getTotalFare() + Constants.BOOKING_ID
-        	    + paymentDto.getBookingId());
-            throw new IBusException(Constants.INVALID_PAYMENT_MESSAGE + booking.getTotalFare());
+            payment.setMessage(Constants.INVALID_PAYMENT_MESSAGE);
+            payment = paymentRepository.save(payment);
+            logger.info(Constants.INVALID_PAYMENT_MESSAGE + Constants.PAYMENT_ID + payment.getId()
+                    + Constants.AMOUNT + payment.getAmount());
+            notificationService.addNotification(new NotificationDto(payment.getId(), Constants.INVALID_PAYMENT_MESSAGE,
+                    Constants.PAYMENT));
+            throw new IBusException(Constants.INVALID_PAYMENT_MESSAGE + payment.getBooking().getTotalFare());
         }
-        if (5 < Duration.between(booking.getDateTime(), LocalDateTime.now()).toMinutes()) {
+        return Mapper.toPaymentDto(payment);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PaymentDto validatePaymentTime(Payment payment) {
+        if (5 < Duration.between(payment.getBooking().getDateTime(), LocalDateTime.now()).toMinutes()) {
             payment.setStatus(Constants.DECLINED);
-            paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
-            logger.error(Constants.EXPIRED_PAYMENT_TIME_MESSAGE);
+            payment.setMessage(Constants.EXPIRED_PAYMENT_TIME_MESSAGE);
+            payment = paymentRepository.save(payment);
+            logger.error(Constants.EXPIRED_PAYMENT_TIME_MESSAGE + Constants.PAYMENT_ID + payment.getId());
+            notificationService.addNotification(new NotificationDto(payment.getId(),
+                    Constants.EXPIRED_PAYMENT_TIME_MESSAGE, Constants.PAYMENT));
             throw new IBusException(Constants.EXPIRED_PAYMENT_TIME_MESSAGE);
-        } else {
-            payment.setStatus(Constants.PAID);
-            booking.setStatus(Constants.CONFIRMED);
-            paymentDto = Mapper.toPaymentDto(paymentRepository.save(payment));
         }
-        return paymentDto;
+        return Mapper.toPaymentDto(payment);
     }
 
     /**
