@@ -56,7 +56,7 @@ public class ScheduleDto {
     private LocalTime actualDepartureTime;
     private LocalTime actualArrivingTime;
     @JsonProperty(access = Access.WRITE_ONLY)
-    private int busId;
+    private int busesId;
     @JsonProperty(access = Access.READ_ONLY)
     private String status;
 

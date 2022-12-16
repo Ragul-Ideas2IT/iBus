@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
 
 import lombok.Getter;
@@ -29,6 +30,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Where(clause = "is_deleted = false")
 public class Payment {
 

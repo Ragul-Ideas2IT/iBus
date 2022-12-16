@@ -55,7 +55,7 @@ public class BusServiceImpl implements BusService {
 	BusDto busDTO = null;
 
 	try {
-	    busDto.setOperator(operatorService.getOperatorDtoById (busDto.getOperatorId()));
+	    busDto.setOperator(operatorService.getOperatorDtoById (busDto.getOperatorsId()));
 	    Bus bus = Mapper.toBus(busDto);
 
 	    if (!busRepository.findByBusNumber(busDto.getBusNumber()).isPresent()) {
@@ -127,7 +127,7 @@ public class BusServiceImpl implements BusService {
 
 	try {
 	    busDto.setId(busId);
-	    busDto.setOperator(operatorService.getOperatorDtoById (busDto.getOperatorId()));
+	    busDto.setOperator(operatorService.getOperatorDtoById (busDto.getOperatorsId()));
 	    Bus bus = Mapper.toBus(busDto);
 
 	    if (!busRepository.findByBusNumberAndIdNot(busDto.getBusNumber(), busDto.getId()).isPresent()) {

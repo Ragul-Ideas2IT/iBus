@@ -56,8 +56,8 @@ public class SeatServiceImpl implements SeatService {
 	Seat seat = null;
 
 	try {
-	    if (!seatRepository.findBySeatNumberAndBusId(seatDto.getSeatNumber(), seatDto.getBusId()).isPresent()) {
-		seatDto.setBus(busService.getById(seatDto.getBusId()));
+	    if (!seatRepository.findBySeatNumberAndBusId(seatDto.getSeatNumber(), seatDto.getBusesId()).isPresent()) {
+		seatDto.setBus(busService.getById(seatDto.getBusesId()));
 		seat = seatRepository.save(Mapper.toSeat(seatDto));
 		logger.info(Constants.CREATE_MESSAGE + Constants.SEAT_ID + seat.getId());
 	    } else {
@@ -65,7 +65,7 @@ public class SeatServiceImpl implements SeatService {
 		throw new IBusException(seatDto.getSeatNumber().concat(Constants.ALREADY_EXIST));
 	    }
 	} catch (NoSuchElementException exception) {
-	    logger.error(Constants.BUS_ID + seatDto.getBusId() + Constants.NOT_EXIST);
+	    logger.error(Constants.BUS_ID + seatDto.getBusesId() + Constants.NOT_EXIST);
 	    throw new IBusException(Constants.BUS_ID_NOT_EXIST);
 	}
 	return Mapper.toSeatDto(seat);
@@ -111,10 +111,10 @@ public class SeatServiceImpl implements SeatService {
 	Seat seat = null;
 
 	try {
-	    if (!seatRepository.findBySeatNumberAndBusIdAndIdNot(seatDto.getSeatNumber(), seatDto.getBusId(), seatId)
+	    if (!seatRepository.findBySeatNumberAndBusIdAndIdNot(seatDto.getSeatNumber(), seatDto.getBusesId(), seatId)
 		    .isPresent()) {
 		seatDto.setId(seatId);
-		seatDto.setBus(busService.getById(seatDto.getBusId()));
+		seatDto.setBus(busService.getById(seatDto.getBusesId()));
 		seat = seatRepository.save(Mapper.toSeat(seatDto));
 		logger.info(Constants.CREATE_MESSAGE + Constants.SEAT_ID + seat.getId());
 	    } else {
@@ -122,7 +122,7 @@ public class SeatServiceImpl implements SeatService {
 		throw new IBusException(seatDto.getSeatNumber().concat(Constants.ALREADY_EXIST));
 	    }
 	} catch (NoSuchElementException exception) {
-	    logger.error(Constants.BUS_ID + seatDto.getBusId() + Constants.ALREADY_EXIST);
+	    logger.error(Constants.BUS_ID + seatDto.getBusesId() + Constants.ALREADY_EXIST);
 	    throw new IBusException(Constants.BUS_ID_NOT_EXIST);
 	}
 	return Mapper.toSeatDto(seat);

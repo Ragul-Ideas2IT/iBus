@@ -41,9 +41,10 @@ public class BookingDto {
     private int id;
     @NotBlank
     @JsonProperty(access = Access.WRITE_ONLY)
-    private int busId;
+    private int busesId;
+    @JsonProperty(access = Access.WRITE_ONLY)
     @NotBlank
-    private int userId;
+    private int usersId;
     @JsonProperty(access = Access.READ_ONLY)
     private double totalFare;
     @NotBlank

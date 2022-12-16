@@ -20,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
 
 import lombok.Getter;
@@ -36,6 +37,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Where(clause = "is_deleted = false")
 public class Booking {
 

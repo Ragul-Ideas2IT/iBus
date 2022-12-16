@@ -42,14 +42,6 @@ public class PaymentServiceImpl implements PaymentService {
     private PaymentRepository paymentRepository;
     private Logger logger = LogManager.getLogger(PaymentServiceImpl.class);
 
-    /**
-     * Create a new payment repository and booking repository to initialing the
-     * specified targets to connect the database.
-     *
-     * @param bookingService To get the booking details.
-     * @param notificationService To save the notified messages.
-     * @param paymentRepository To save, read and delete the payment details.
-     */
     @Autowired
     private PaymentServiceImpl(BookingService bookingService, NotificationService notificationService,
                                PaymentRepository paymentRepository) {
@@ -75,7 +67,7 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setMessage(Constants.PAID_MESSAGE);
         booking.setStatus(Constants.CONFIRMED);
         payment = paymentRepository.save(payment);
-        notificationService.addNotification(new NotificationDto(payment.getId(), Constants.BOOKING_SUCCESSFULLY,
+        notificationService.addNotification(new NotificationDto(payment.getId(), Constants.PAID_MESSAGE,
                 Constants.PAYMENT));
         return Mapper.toPaymentDto(payment);
     }

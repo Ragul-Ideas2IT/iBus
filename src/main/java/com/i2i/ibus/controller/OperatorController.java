@@ -45,7 +45,7 @@ public class OperatorController {
     }
 
     /**
-     * > The function creates a new operator and returns the created operator
+     * Creates a new operator and returns the created operator
      *
      * @param operatorDto The object that will be created.
      * @return OperatorDto
@@ -57,7 +57,7 @@ public class OperatorController {
     }
 
     /**
-     * > This function returns a list of all the operators in the database
+     * Returns a list of all the operators in the database
      *
      * @return A list of OperatorDto objects.
      */
@@ -68,7 +68,7 @@ public class OperatorController {
     }
 
     /**
-     * > This function returns an OperatorDto object with the given id
+     * Returns an OperatorDto object with the given id
      *
      * @param id The id of the operator to be retrieved.
      * @return OperatorDto
@@ -80,7 +80,7 @@ public class OperatorController {
     }
 
     /**
-     * It updates the operator by id.
+     * Updates the operator by id.
      *
      * @param id          The id of the operator to be updated.
      * @param operatorDto The object that will be used to update the operator.
@@ -93,7 +93,7 @@ public class OperatorController {
     }
 
     /**
-     * It deletes the operator with the given id.
+     * Deletes the operator with the given id.
      *
      * @param id The id of the operator to be deleted.
      * @return A MessageDto object with a status code and a message.

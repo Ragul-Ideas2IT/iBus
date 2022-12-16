@@ -46,5 +46,5 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
      * @param travelDate Date to find the list of booking of the bus.
      * @return list of Booking.
      */
-    List<Booking> findAllByBusIdAndTravelDate(int busId, LocalDate travelDate);
+    List<Booking> findAllByTravelDateAndBusId(LocalDate travelDate, int busId);
 }

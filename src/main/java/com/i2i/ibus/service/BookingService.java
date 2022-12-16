@@ -6,6 +6,7 @@
 package com.i2i.ibus.service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import com.i2i.ibus.dto.BookingDto;
@@ -86,7 +87,7 @@ public interface BookingService {
      * @param travelDate The date of travel
      * @return A Schedule object
      */
-    Schedule getScheduleByTravelDate(Bus bus, LocalDate travelDate);
+    Schedule getScheduleByTravelDate(Bus bus, LocalDate travelDate, LocalTime travelTime);
 
     /**
      * Method is used to cancels a booking and returns a cancellation DTO.
@@ -113,13 +114,6 @@ public interface BookingService {
      * @return A Cancellation object.
      */
     Booking cancelBooking(Booking booking);
-
-    /**
-     * Method is used to Checking the booking status.
-     *
-     * @param id The id of the booking to be completed.
-     */
-    void completeBooking(int id);
 
     /**
      * Method is used to sets the seat status of a booking.
@@ -184,7 +178,7 @@ public interface BookingService {
      * Get all bookings for a id(bus) and Travel date.
      *
      * @param busId The id of the bus who made the booking.
-     * @param travel date This date is booking taravel date.
+     * @param date date This date is booking taravel date.
      * @return A list of BookingDto objects.
      */
     List<BookingDto> getByBusIdAndTravelDate(int busId, LocalDate date);

@@ -44,7 +44,7 @@ public class UserController {
     }
 
     /**
-     * The function is a POST request that returns a UserDto object
+     * Creates a new user details and returns the created user
      *
      * @param userDto The object that will be created.
      * @return UserDto
@@ -57,7 +57,7 @@ public class UserController {
 
 
     /**
-     * This function returns a list of all the users in the database
+     * Returns a list of all the users in the database
      *
      * @return A list of UserDto objects.
      */
@@ -68,7 +68,7 @@ public class UserController {
     }
 
     /**
-     * This function returns a UserDto object with the id specified in the URL
+     * Returns a UserDto object with the id specified in the URL
      *
      * @param id The id of the user to be retrieved.
      * @return UserDto
@@ -80,7 +80,7 @@ public class UserController {
     }
 
     /**
-     * It updates the user with the given id with the given userDto.
+     * Updates the user with the given id with the given userDto.
      *
      * @param id      The id of the user to be updated.
      * @param userDto The user object that will be updated.
@@ -93,7 +93,7 @@ public class UserController {
     }
 
     /**
-     * It deletes a user by id.
+     * Deletes a user by id.
      *
      * @param id The id of the user to be deleted.
      * @return A MessageDto object with a status code and a message.

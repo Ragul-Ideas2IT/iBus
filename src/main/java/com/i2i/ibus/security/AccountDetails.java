@@ -21,9 +21,11 @@ import java.util.List;
  * @since Dec 12 2022
  */
 public class AccountDetails implements UserDetails {
-    private final Account account;
+    private Account account;
 
     public AccountDetails(Account account) {
+        System.out.println("Account details");
+        System.out.println(account.getMailId());
         this.account = account;
     }
 
@@ -32,6 +34,7 @@ public class AccountDetails implements UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        System.out.println(account.getRole());
         return List.of(new SimpleGrantedAuthority(account.getRole()));
     }
 

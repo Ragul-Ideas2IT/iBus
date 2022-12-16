@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.i2i.ibus.constants.Constants;
@@ -51,7 +52,6 @@ public class ScheduleController {
      * Used to add the bus schedule details from the operators.
      *
      * @param scheduleDto given by the operator.
-     * @param busId       The id of the bus that the schedule is being added to.
      * @return the added bus schedule.
      */
     @PostMapping
@@ -71,7 +71,7 @@ public class ScheduleController {
     }
 
     /**
-     * Returns a list of bus histories for a given bus id
+     * Returns a list of Schedules for a given bus id
      *
      * @param busId The id of the bus whose schedule you want to see.
      * @return A list of ScheduleDto objects.
@@ -91,7 +91,7 @@ public class ScheduleController {
      * @param destination   The destination of the bus.
      * @return A list of ScheduleDto objects.
      */
-    @GetMapping("/{departureDate}/{source}/{destination}")
+    @GetMapping("{departureDate}/{source}/{destination}")
     private ResponseEntity<List<ScheduleDto>> getByDepartureDate(@PathVariable LocalDate departureDate,
 	    @PathVariable String source, @PathVariable String destination) {
 

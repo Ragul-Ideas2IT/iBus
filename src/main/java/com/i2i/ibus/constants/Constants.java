@@ -179,4 +179,5 @@ public class Constants {
     public static final String SEAT_NUMBER = " SEAT NUMBER : ";
     public static final String STOP_ID = " STOP ID : ";
     public static final String USER_ID = " USER ID : ";
+    public static final String DUPLICATE_SCHEDULE = "Schedule entries are already exist";
 }

@@ -44,7 +44,7 @@ public class SeatDto {
     @Min(value = 0)
     private double fare;
     @JsonProperty(access = Access.WRITE_ONLY)
-    private int busId;
+    private int busesId;
     @JsonProperty(access = Access.READ_ONLY)
     private boolean isOccupied;
 }

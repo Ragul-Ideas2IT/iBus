@@ -23,6 +23,7 @@ import javax.persistence.Id;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 public class Notification {
 
