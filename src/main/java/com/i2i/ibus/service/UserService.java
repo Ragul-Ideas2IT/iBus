@@ -19,7 +19,7 @@ import java.util.List;
 public interface UserService {
 
     /**
-     * This method is used to validate the user. If the user is not present, it will throw an exception.
+     * Validate the user. If the user is not present, it will throw an exception.
      *
      * @param id The id of the user to validate.
      * @return A User object.
@@ -27,14 +27,14 @@ public interface UserService {
     User validateUser(int id);
 
     /**
-     * This method is used to validate the mail id. If the mail id is already present, it will throw an exception.
+     * Validate the mail id. If the mail id is already present, it will throw an exception.
      *
      * @param mailId The mail id to be validated.
      */
     void validateMailId(String mailId);
 
     /**
-     * This method is used to validate the phone number. If the phone number is already present, it will throw an
+     * Validate the phone number. If the phone number is already present, it will throw an
      * exception.
      *
      * @param phoneNumber A string representing a phone number.
@@ -43,19 +43,20 @@ public interface UserService {
 
 
     /**
-     * This method is used to validate the mail id. If the mail id is already present, it will throw an exception.
+     * Validate the mail id. If the mail id is already present except particular object mailId, it will throw an
+     * exception.
      *
      * @param mailId The mail id to be validated.
-     * @param id The id of the user whose mail id is to be updated.
+     * @param id The id of the user whose mail id is to not be used for validation.
      */
     void validateMailIdForUpdate(String mailId, int id);
 
     /**
-     * This method is used to validate the phone number. If the phone number is already present, it will throw an
-     * exception.
+     * Validate the phone number except particular object phone number. If the phone number is
+     * already present, it will throw an exception.
      *
      * @param phoneNumber The phone number to be validated.
-     * @param id The id of the user whose phone number is being updated.
+     * @param id The id of the user whose phone number is being not validated.
      */
     void validatePhoneNoForUpdate(String phoneNumber, int id);
 
@@ -83,7 +84,7 @@ public interface UserService {
     UserDto getUserDtoById(int id);
 
     /**
-     * It updates the user with the given id with the given userDto
+     * Updates the user with the given id with the given userDto
      *
      * @param id      The id of the user to be updated.
      * @param userDto The userDto object that contains the updated user details.

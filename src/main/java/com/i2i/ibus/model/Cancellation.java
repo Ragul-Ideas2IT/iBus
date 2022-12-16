@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 @Entity
+@NoArgsConstructor
 @Where(clause = "is_deleted = false")
 public class Cancellation {
 

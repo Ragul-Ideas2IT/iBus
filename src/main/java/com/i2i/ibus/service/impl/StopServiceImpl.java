@@ -56,9 +56,9 @@ public class StopServiceImpl implements StopService {
 	Stop stop = null;
 
 	try {
-	    if (stopRepository.findByBusIdAndCityAndLandMarkAndStopName(stopDto.getBusId(), stopDto.getCity(),
+	    if (stopRepository.findByBusIdAndCityAndLandMarkAndStopName(stopDto.getBusesId(), stopDto.getCity(),
 		    stopDto.getLandMark(), stopDto.getStopName()).isEmpty()) {
-		stopDto.setBus(busService.getById(stopDto.getBusId()));
+		stopDto.setBus(busService.getById(stopDto.getBusesId()));
 		stop = stopRepository.save(Mapper.toStop(stopDto));
 		logger.info(Constants.CREATE_MESSAGE + Constants.STOP_ID + stop.getId());
 	    } else {
@@ -66,7 +66,7 @@ public class StopServiceImpl implements StopService {
 		throw new IBusException(Constants.SAME_SOURCE_AND_DESTINATION);
 	    }
 	} catch (NoSuchElementException exception) {
-	    logger.error(Constants.BUS_ID + stopDto.getBusId() + Constants.NOT_EXIST);
+	    logger.error(Constants.BUS_ID + stopDto.getBusesId() + Constants.NOT_EXIST);
 	    throw new IBusException(Constants.BUS_ID_NOT_EXIST);
 	}
 	return Mapper.toStopDto(stop);
@@ -96,10 +96,10 @@ public class StopServiceImpl implements StopService {
 	Stop stop = null;
 
 	try {
-	    if (stopRepository.findByBusIdAndCityAndLandMarkAndStopNameAndIdNot(stopDto.getBusId(), stopDto.getCity(),
+	    if (stopRepository.findByBusIdAndCityAndLandMarkAndStopNameAndIdNot(stopDto.getBusesId(), stopDto.getCity(),
 		    stopDto.getLandMark(), stopDto.getStopName(), stopId).isEmpty()) {
 		stopDto.setId(stopId);
-		stopDto.setBus(busService.getById(stopDto.getBusId()));
+		stopDto.setBus(busService.getById(stopDto.getBusesId()));
 		stop = stopRepository.save(Mapper.toStop(stopDto));
 		logger.info(Constants.CREATE_MESSAGE + Constants.STOP_ID + stop.getId());
 	    } else {
@@ -107,7 +107,7 @@ public class StopServiceImpl implements StopService {
 		throw new IBusException(Constants.SAME_SOURCE_AND_DESTINATION);
 	    }
 	} catch (NoSuchElementException exception) {
-	    logger.error(Constants.BUS_ID + stopDto.getBusId() + Constants.NOT_EXIST);
+	    logger.error(Constants.BUS_ID + stopDto.getBusesId() + Constants.NOT_EXIST);
 	    throw new IBusException(Constants.BUS_ID_NOT_EXIST);
 	}
 	return Mapper.toStopDto(stop);

@@ -50,9 +50,8 @@ public class SeatController {
     /**
      * Uses to add bus seat deatils given by the operators.
      *
-     * @param seatDto seat deatils given by the operators.
-     * @param busId   The id of the bus to which the seat is to be added.
-     * @return the saved bus seat deatils will return.
+     * @param seatDto seat details given by the operators.
+     * @return the saved bus seat details will return.
      */
     @PostMapping
     private ResponseEntity<SeatDto> addSeat(@RequestBody @Valid SeatDto seatDto) {
@@ -66,8 +65,8 @@ public class SeatController {
      * @param busId The id of the bus whose seats are to be fetched.
      * @return A list of seats for a specific bus.
      */
-    @GetMapping("/{busId}")
-    private ResponseEntity<List<SeatDto>> getAllSeats(@PathVariable int busId) {
+    @GetMapping
+    private ResponseEntity<List<SeatDto>> getAllSeats(@RequestParam int busId) {
 
 	return new ResponseEntity<List<SeatDto>>(seatService.getAllByBusId(busId), HttpStatus.OK);
     }
@@ -79,7 +78,7 @@ public class SeatController {
      * @return A Seat details is being returned.
      */
     @GetMapping("/{seatId}")
-    private ResponseEntity<SeatDto> getBySeatId(@RequestParam int seatId) {
+    private ResponseEntity<SeatDto> getBySeatId(@PathVariable int seatId) {
 
 	return new ResponseEntity<SeatDto>(seatService.getBySeatId(seatId), HttpStatus.OK);
     }

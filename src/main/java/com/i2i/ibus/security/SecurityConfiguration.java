@@ -27,16 +27,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-
-    private final AccountDetailService accountDetailService;
-
     @Autowired
-    public SecurityConfiguration(AccountDetailService accountDetailService) {
-        this.accountDetailService = accountDetailService;
-    }
+    private AccountDetailService accountDetailService;
 
     /**
-     * A function that is used to create a security filter chain.
+     * To create a security filter chain with the URL by using their authorities which is stored in account. Creating
+     * user and operator are permitted by all.
      *
      * @param httpSecurity This is the object that is used to configure the security of the application.
      * @return A SecurityFilterChain
@@ -44,19 +40,27 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity)
             throws Exception {
+        System.out.println("Filter chain");
         httpSecurity.csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/v1/operators").permitAll()
-                .antMatchers("/api/v1/users/**").hasAuthority("ROLE_USER")
-                .antMatchers("/api/v1/operators/**").hasAuthority("ROLE_OPERATOR")
+                .antMatchers(HttpMethod.POST,"/api/v1/users").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/v1/users").hasAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.GET,"/api/v1/users/{id}").hasAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.PUT,"/api/v1/users/{id}").hasAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.DELETE,"/api/v1/users/{id}").hasAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.POST,"/api/v1/operators").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/v1/operators").hasAuthority("ROLE_OPERATOR")
+                .antMatchers(HttpMethod.GET,"/api/v1/operators/{id}").hasAuthority("ROLE_OPERATOR")
+                .antMatchers(HttpMethod.PUT,"/api/v1/operators/{id}").hasAuthority("ROLE_OPERATOR")
+                .antMatchers(HttpMethod.DELETE,"/api/v1/operators/{id}").hasAuthority("ROLE_OPERATOR")
                 .antMatchers("/api/v1/buses/**").hasAuthority("ROLE_OPERATOR")
-                .antMatchers(HttpMethod.POST, "/api/v1/bookings/**").hasAuthority("ROLE_USER")
-                .antMatchers(HttpMethod.GET, "/api/v1/bookings/users/**").hasAuthority("ROLE_USER")
-                .antMatchers(HttpMethod.GET, "/api/v1/bookings/{id}")
+                .antMatchers(HttpMethod.POST,"/api/v1/bookings").hasAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.GET,"/api/v1/bookings").hasAuthority("ROLE_OPERATOR")
+                .antMatchers(HttpMethod.GET,"/api/v1/bookings/users/**").hasAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.GET,"/api/v1/bookings/buses/**").hasAuthority("ROLE_OPERATOR")
+                .antMatchers(HttpMethod.GET,"/api/v1/bookings/{id}")
                         .hasAnyAuthority("ROLE_USER", "ROLE_OPERATOR")
-                .antMatchers(HttpMethod.DELETE, "/api/v1/bookings/**")
+                .antMatchers(HttpMethod.DELETE,"/api/v1/bookings/**")
                         .hasAnyAuthority("ROLE_USER", "ROLE_OPERATOR")
-                .antMatchers(HttpMethod.GET, "/api/v1/bookings/buses/**").hasAuthority("ROLE_OPERATOR")
                 .antMatchers("/api/v1/payments/**").hasAuthority("ROLE_USER")
                 .and().authorizeRequests().anyRequest().authenticated()
                 .and().httpBasic();
@@ -64,7 +68,7 @@ public class SecurityConfiguration {
     }
 
     /**
-     * > This function is used to create an AuthenticationManager bean that is used to authenticate the user credentials
+     * Creates an AuthenticationManager bean that is used to authenticate the user credentials
      *
      * @param authenticationConfiguration This is the bean that is created by the @EnableAuthorizationServer annotation.
      * @return An AuthenticationManager
@@ -76,10 +80,8 @@ public class SecurityConfiguration {
     }
 
     /**
-     * This function is called by the Spring Security framework to configure the authentication manager.
-     * The authentication manager is responsible for authenticating users. The authentication manager is configured
-     * to use the account detail
-     * service and the password encoder.
+     * Configure the authentication manager. The authentication manager is responsible for authenticating users. The
+     * authentication manager is configured to use the account detail service and the password encoder.
      *
      * @param authenticationManagerBuilder This is the object that will be used to configure the authentication manager.
      */

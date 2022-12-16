@@ -9,6 +9,8 @@ import com.i2i.ibus.model.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * Creating a repository for the Account model which extends JPA repository
  *
@@ -17,12 +19,13 @@ import org.springframework.stereotype.Repository;
  * @since Dec 12 2022
  */
 @Repository
-public interface AccountRepository extends JpaRepository<Account, String> {
+public interface AccountRepository extends JpaRepository<Account, Integer> {
     /**
      * Find an account by mailId.
      *
      * @param mailId The mailId of the user whose account is to be found.
      * @return Account object
      */
-    Account findByMailId(String mailId);
+    Optional<Account> findByMailId(String mailId);
+
 }

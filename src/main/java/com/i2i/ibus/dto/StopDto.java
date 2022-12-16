@@ -45,7 +45,7 @@ public class StopDto {
     @NotNull
     private LocalTime departureTime;
     @JsonProperty(access = Access.WRITE_ONLY)
-    private int busId;
+    private int busesId;
     @JsonProperty(access = Access.READ_ONLY)
     private BusDto bus;
 

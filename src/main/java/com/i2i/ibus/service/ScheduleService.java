@@ -8,6 +8,7 @@ import com.i2i.ibus.dto.ScheduleDto;
 import com.i2i.ibus.model.Schedule;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,6 @@ public interface ScheduleService {
      * Used to add the bus schedule details from the operators.
      *
      * @param scheduleDto given by the operator.
-     * @param busId       The id of the bus that the schedule is being added to.
      * @return the added bus schedule.
      */
     ScheduleDto addSchedule(ScheduleDto scheduleDto);
@@ -62,7 +62,6 @@ public interface ScheduleService {
      *
      * @param scheduleDto The schedule that will be updated.
      * @param ScheduleId  The id of the bus schedule you want to update.
-     * @param busId       The id of the bus that you want to update.
      * @return the bus schedule.
      */
     ScheduleDto updateSchedule(ScheduleDto scheduleDto, int ScheduleId);
@@ -90,13 +89,21 @@ public interface ScheduleService {
     void setStatus(Schedule schedule);
 
     /**
+     * It checks if a schedule already exists in the database with the same departure date, departure time, source,
+     * destination and bus id. If it does, it throws an exception
+     *
+     * @param scheduleDto The object that contains the data that is to be validated.
+     */
+    void validateSchedule(ScheduleDto scheduleDto);
+
+    /**
      * Used to get the schedule details by the bus id and departure date. The
      * schedule were given to the booking repository for validation process.
-     * 
+     *
      * @param busId         from the booking user
      * @param departureDate from the booking user
      * @return returns the schedule or else nothing.
      */
-    Optional<Schedule> findByBusIdAndDepartureDate(int busId, LocalDate departureDate);
-
+    Optional<Schedule> findByBusIdAndDepartureDateAndDepartureTime(int busId, LocalDate departureDate,
+                                                                   LocalTime departureTime);
 }

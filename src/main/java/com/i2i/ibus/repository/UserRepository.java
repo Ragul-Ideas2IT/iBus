@@ -29,7 +29,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByMailId(String mailId);
 
     /**
-     * Find a user by phone number, and return an Optional containing the user if found, or an empty Optional if not found.
+     * Find a user by phone number, and return an Optional containing the user if found, or an empty Optional
+     * if not found.
      *
      * @param phoneNumber The phone number of the user to find.
      * @return Optional<User>

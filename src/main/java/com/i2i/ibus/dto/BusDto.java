@@ -41,7 +41,7 @@ public class BusDto {
     @Pattern(regexp = Constants.BUS_TYPE_PATTERN, message = Constants.INVALID_BUS_TYPE_PATTERN_MESSAGE)
     private String type;
     @JsonProperty(access = Access.WRITE_ONLY)
-    private int operatorId;
+    private int operatorsId;
     @JsonProperty(access = Access.READ_ONLY)
     private OperatorDto operator;
 }

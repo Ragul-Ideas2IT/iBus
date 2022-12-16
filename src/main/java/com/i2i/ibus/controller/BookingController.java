@@ -106,7 +106,7 @@ public class BookingController {
     }
 
     /**
-     * It deletes a booking with the given bookingid.
+     * It deletes a booking with the given bookingId.
      *
      * @param id The id of the booking to be deleted.
      * @return A MessageDto object with a status code and a message.
@@ -138,9 +138,11 @@ public class BookingController {
      * @param travelDate
      * @return A list of BookingDto objects.
      */
-    @GetMapping("/buses/{busId}/date/{travelDate}")
+    @GetMapping("/buses/{busId}/{travelDate}")
     @ResponseStatus(value = HttpStatus.OK)
-    private List<BookingDto> getByBusIdAndTravelDate(@PathVariable int busId, LocalDate travelDate) {
+    private List<BookingDto> getByBusIdAndTravelDate(@PathVariable int busId, @PathVariable LocalDate travelDate) {
+        System.out.println(busId);
+        System.out.println(travelDate);
 	return bookingService.getByBusIdAndTravelDate(busId, travelDate);
     }
 }

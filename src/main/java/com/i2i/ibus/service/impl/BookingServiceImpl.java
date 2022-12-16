@@ -7,6 +7,7 @@ package com.i2i.ibus.service.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,15 +79,15 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingDto book(BookingDto bookingDto) {
         Booking booking = Mapper.toBooking(bookingDto);
-        validateStops(booking, bookingDto.getBusId());
-        booking.setBus(getBusById(bookingDto.getBusId()));
-        getScheduleByTravelDate(booking.getBus(), booking.getTravelDate());
-        validateBookingDetails(booking.getBookingDetails(), bookingDto.getBusId());
-        booking.setTotalFare(calculateFare(booking.getBookingDetails(), bookingDto.getBusId()));
+        validateStops(booking, bookingDto.getBusesId());
+        booking.setBus(getBusById(bookingDto.getBusesId()));
+        getScheduleByTravelDate(booking.getBus(), booking.getTravelDate(), booking.getTravelTime());
+        validateBookingDetails(booking.getBookingDetails(), bookingDto.getBusesId());
+        booking.setTotalFare(calculateFare(booking.getBookingDetails(), bookingDto.getBusesId()));
         booking.setDateTime(LocalDateTime.now());
         booking.setStatus(Constants.NOT_CONFIRMED);
         setSeatStatus(booking);
-        booking.setUser(getUserById(bookingDto.getUserId()));
+        booking.setUser(getUserById(bookingDto.getUsersId()));
         bookingRepository.save(booking);
         logger.info(Constants.CREATE_MESSAGE.concat(Constants.BOOKING_ID) + booking.getId());
         notificationService.addNotification(new NotificationDto(booking.getId(), Constants.BOOKING_SUCCESSFULLY,
@@ -103,7 +104,6 @@ public class BookingServiceImpl implements BookingService {
         List<BookingDto> bookingsDto = new ArrayList<BookingDto>();
         if (!bookings.isEmpty()) {
             for (Booking booking : bookings) {
-                completeBooking(booking.getId());
                 bookingsDto.add(Mapper.toBookingDto(booking));
             }
         } else {
@@ -118,7 +118,6 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     public BookingDto getById(int id) {
-        completeBooking(id);
         Booking booking = bookingRepository.findById(id).get();
         setSeatStatus(booking);
         return Mapper.toBookingDto(booking);
@@ -134,7 +133,6 @@ public class BookingServiceImpl implements BookingService {
         if (!bookings.isEmpty()) {
             for (Booking booking : bookings) {
                 setSeatStatus(booking);
-                completeBooking(booking.getId());
                 bookingsDto.add(Mapper.toBookingDto(booking));
             }
         } else {
@@ -164,8 +162,9 @@ public class BookingServiceImpl implements BookingService {
      * {@inheritDoc}
      */
     @Override
-    public Schedule getScheduleByTravelDate(Bus bus, LocalDate travelDate) {
-        Optional<Schedule> schedule = scheduleService.findByBusIdAndDepartureDate(bus.getId(), travelDate);
+    public Schedule getScheduleByTravelDate(Bus bus, LocalDate travelDate, LocalTime travelTime) {
+        Optional<Schedule> schedule = scheduleService.findByBusIdAndDepartureDateAndDepartureTime(bus.getId(),
+                travelDate, travelTime);
         if (!schedule.isPresent()) {
             logger.error(Constants.INVALID_BUS_DEPARTURE_DATE.concat(Constants.BUS_ID) + bus.getId());
             throw new IBusException(Constants.INVALID_BUS_DEPARTURE_DATE);
@@ -216,7 +215,8 @@ public class BookingServiceImpl implements BookingService {
             booking.getCancellation().setRefundAmount(0);
             booking.getCancellation().setRefundStatus(Constants.NOT_PAID);
         } else {
-            long min = calculateDifferenceOfTime(getScheduleByTravelDate(booking.getBus(), booking.getTravelDate()));
+            long min = calculateDifferenceOfTime(getScheduleByTravelDate(booking.getBus(), booking.getTravelDate(),
+                    booking.getTravelTime()));
             if (min >= 600) {
                 booking.getCancellation().setRefundAmount((booking.getTotalFare() - (booking.getTotalFare() * 0.1)));
             } else {
@@ -241,7 +241,6 @@ public class BookingServiceImpl implements BookingService {
         if (!bookings.isEmpty()) {
 
             for (Booking booking : bookings) {
-                completeBooking(booking.getId());
                 bookingsDto.add(Mapper.toBookingDto(booking));
             }
         }
@@ -253,29 +252,17 @@ public class BookingServiceImpl implements BookingService {
      */
     @Override
     public List<BookingDto> getByBusIdAndTravelDate(int busId, LocalDate date) {
-        List<Booking> bookings = bookingRepository.findAllByBusIdAndTravelDate(busId, date);
+        List<Booking> bookings = bookingRepository.findAllByTravelDateAndBusId(date, busId);
+        System.out.println(bookings);
         List<BookingDto> bookingsDto = new ArrayList<BookingDto>();
         if (!bookings.isEmpty()) {
 
             for (Booking booking : bookings) {
-                completeBooking(booking.getId());
                 bookingsDto.add(Mapper.toBookingDto(booking));
             }
         }
+        System.out.println(bookingsDto);
         return bookingsDto;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void completeBooking(int id) {
-        validateBooking(id);
-        Booking booking = bookingRepository.findById(id).get();
-        if (calculateDifferenceOfTime(getScheduleByTravelDate(booking.getBus(), booking.getTravelDate())) <= 0) {
-            booking.setStatus(Constants.COMPLETED);
-        }
-        bookingRepository.save(booking);
     }
 
     /**

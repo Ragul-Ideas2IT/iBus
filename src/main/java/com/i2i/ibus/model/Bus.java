@@ -6,6 +6,7 @@
 package com.i2i.ibus.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
 
@@ -27,6 +28,7 @@ import javax.persistence.ManyToOne;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Where(clause = "is_deleted = false")
 public class Bus {
 

@@ -21,7 +21,7 @@ public interface OperatorService {
 
 
     /**
-     * This function validates the operator id and throws an exception if the operator id doesn't exist
+     * Validates the operator id and throws an exception if the operator id doesn't exist
      *
      * @param id The id of the operator to be validated.
      * @return Operator
@@ -29,7 +29,7 @@ public interface OperatorService {
     Operator validateOperator(int id);
 
     /**
-     * It validates the mail id, phone number and GST number
+     * Validates the mail id, phone number and GST number
      *
      * @param mailId      The mail id of the user.
      * @param phoneNumber The phone number of the user.
@@ -38,7 +38,7 @@ public interface OperatorService {
     void validateMailIdPhoneNoAndGstNumber(String mailId, String phoneNumber, String gstNumber);
 
     /**
-     * It validates the mailId, phoneNumber and gstNumber for update.
+     * Validates the mailId, phoneNumber and gstNumber for update.
      *
      * @param mailId      The mail id of the customer.
      * @param phoneNumber The phone number of the customer.

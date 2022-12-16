@@ -22,10 +22,7 @@ import java.util.Optional;
 public interface OperatorRepository extends JpaRepository<Operator, Integer> {
 
     /**
-     * "Find an Operator by phone number, if one exists."
-     *
-     * The Optional class is a container object which may or may not contain a non-null value. If a value is present,
-     * isPresent() will return true and get() will return the value
+     * Find an Operator by phone number, if one exists.
      *
      * @param phoneNumber The phone number of the operator to find.
      * @return Optional<Operator>

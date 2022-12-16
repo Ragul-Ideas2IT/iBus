@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,14 +42,30 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
      * @return return the bus details from the given matched details.
      */
     List<Schedule> findByDepartureDateAndSourceAndDestination(LocalDate departureDate, String source,
-	    String destination);
+                                                              String destination);
+
+    /**
+     * Find a schedule by departure date, departure time, source, destination and bus id
+     *
+     * @param departureDate The date on which the bus is scheduled to depart.
+     * @param departureTime The time at which the bus is scheduled to depart.
+     * @param source The source of the bus
+     * @param destination The destination of the bus.
+     * @param busId The id of the bus.
+     * @return Optional<Schedule>
+     */
+    Optional<Schedule> findByDepartureDateAndDepartureTimeAndSourceAndDestinationAndBusId(LocalDate departureDate,
+                                                                              LocalTime departureTime, String source,
+                                                                              String destination, int busId);
 
     /**
      * Used to get the bus details from the given bus id and departure date.
      *
      * @param busId         given by the user.
      * @param departureDate given by the user.
+     * @param departureTime given by the user.
      * @return the bus schedule details or else nothing.
      */
-    Optional<Schedule> findByBusIdAndDepartureDate(int busId, LocalDate departureDate);
+    Optional<Schedule> findByBusIdAndDepartureDateAndDepartureTime(int busId, LocalDate departureDate,
+                                                            LocalTime departureTime);
 }

@@ -17,6 +17,7 @@ import com.i2i.ibus.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -111,7 +112,7 @@ public class UserServiceImpl implements UserService {
         validateMailId(userDto.getMailId());
         validatePhoneNumber(userDto.getPhoneNumber());
         logger.info(Constants.CREATE_MESSAGE + userDto.getId());
-        accountService.addAccount(new Account(userDto.getMailId(), "ROLE_USER", userDto.getPassword()));
+        accountService.addAccount(new Account(userDto.getMailId(), Constants.ROLE_USER, userDto.getPassword()));
         User user = Mapper.toUser(userDto);
         return Mapper.toUserDto(userRepository.save(user));
     }
