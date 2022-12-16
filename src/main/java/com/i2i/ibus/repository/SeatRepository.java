@@ -45,8 +45,8 @@ public interface SeatRepository extends JpaRepository<Seat, Integer> {
      *
      * @param seatNumber given by operator.
      * @param busId      given by operator.
-     * @param seatId     given by operator.
+     * @param id     given by operator.
      * @return the bus details found or else nothing.
      */
-    Optional<Seat> findBySeatNumberAndBusIdAndIdNot(String seatNumber, int busId, int seatId);
+    Optional<Seat> findBySeatNumberAndBusIdAndIdNot(String seatNumber, int busId, int id);
 }

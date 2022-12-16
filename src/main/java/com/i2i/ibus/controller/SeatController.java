@@ -5,8 +5,10 @@
  */
 package com.i2i.ibus.controller;
 
-import java.util.List;
-
+import com.i2i.ibus.constants.Constants;
+import com.i2i.ibus.dto.MessageDto;
+import com.i2i.ibus.dto.SeatDto;
+import com.i2i.ibus.service.SeatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.i2i.ibus.constants.Constants;
-import com.i2i.ibus.dto.MessageDto;
-import com.i2i.ibus.dto.SeatDto;
-import com.i2i.ibus.service.SeatService;
-
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Bus Ticket Booking Application
@@ -44,11 +42,11 @@ public class SeatController {
 
     @Autowired
     private SeatController(SeatService seatService) {
-	this.seatService = seatService;
+        this.seatService = seatService;
     }
 
     /**
-     * Uses to add bus seat deatils given by the operators.
+     * Uses to add bus seat details given by the operators.
      *
      * @param seatDto seat details given by the operators.
      * @return the saved bus seat details will return.
@@ -56,7 +54,7 @@ public class SeatController {
     @PostMapping
     private ResponseEntity<SeatDto> addSeat(@RequestBody @Valid SeatDto seatDto) {
 
-	return new ResponseEntity<SeatDto>(seatService.addSeat(seatDto), HttpStatus.CREATED);
+        return new ResponseEntity<SeatDto>(seatService.addSeat(seatDto), HttpStatus.CREATED);
     }
 
     /**
@@ -68,7 +66,7 @@ public class SeatController {
     @GetMapping
     private ResponseEntity<List<SeatDto>> getAllSeats(@RequestParam int busId) {
 
-	return new ResponseEntity<List<SeatDto>>(seatService.getAllByBusId(busId), HttpStatus.OK);
+        return new ResponseEntity<List<SeatDto>>(seatService.getAllByBusId(busId), HttpStatus.OK);
     }
 
     /**
@@ -80,7 +78,7 @@ public class SeatController {
     @GetMapping("/{seatId}")
     private ResponseEntity<SeatDto> getBySeatId(@PathVariable int seatId) {
 
-	return new ResponseEntity<SeatDto>(seatService.getBySeatId(seatId), HttpStatus.OK);
+        return new ResponseEntity<SeatDto>(seatService.getBySeatId(seatId), HttpStatus.OK);
     }
 
     /**
@@ -93,19 +91,18 @@ public class SeatController {
     @PutMapping("/{seatId}")
     private ResponseEntity<SeatDto> updateSeat(@RequestBody @Valid SeatDto seatDto, @PathVariable int seatId) {
 
-	return new ResponseEntity<SeatDto>(seatService.updateSeat(seatDto, seatId), HttpStatus.OK);
+        return new ResponseEntity<SeatDto>(seatService.updateSeat(seatDto, seatId), HttpStatus.OK);
     }
 
     /**
-     * Deletes a seat deatils.
+     * Deletes a seat details.
      *
      * @param seatId The id of the seat to be deleted.
      * @return Deleted message when the bus seat details are deleted.
      */
     @DeleteMapping("/{seatId}")
     private MessageDto deleteSeat(@PathVariable int seatId) {
-
-	seatService.deleteSeat(seatId);
-	return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
+        seatService.deleteSeat(seatId);
+        return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
     }
 }

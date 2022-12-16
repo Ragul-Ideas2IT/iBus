@@ -22,7 +22,7 @@ import java.util.Optional;
 public interface SeatService {
 
     /**
-     * Uses to add bus seat deatils given by the operators.
+     * Uses to add bus seat details given by the operators.
      *
      * @param seatDto seat deatils given by the operators.
      * @param busId   The id of the bus to which the seat is to be added.
@@ -57,7 +57,7 @@ public interface SeatService {
     SeatDto updateSeat(SeatDto seatDto, int seatId);
 
     /**
-     * Deletes a seat deatils.
+     * Deletes a seat details.
      *
      * @param seatId The id of the seat to be deleted.
      */
@@ -72,4 +72,5 @@ public interface SeatService {
      * @return returns the seat or else nothing.
      */
     Optional<Seat> findBySeatNumberAndBusId(String seatNumber, int busId);
+
 }

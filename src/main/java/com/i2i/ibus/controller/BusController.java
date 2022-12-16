@@ -41,7 +41,7 @@ public class BusController {
 
     @Autowired
     private BusController(BusService busService) {
-	this.busService = busService;
+        this.busService = busService;
     }
 
     /**
@@ -53,7 +53,7 @@ public class BusController {
     @PostMapping
     private ResponseEntity<BusDto> addBus(@RequestBody @Valid BusDto busDto) {
 
-	return new ResponseEntity<BusDto>(busService.addBus(busDto), HttpStatus.CREATED);
+        return new ResponseEntity<BusDto>(busService.addBus(busDto), HttpStatus.CREATED);
     }
 
     /**
@@ -64,7 +64,7 @@ public class BusController {
     @GetMapping
     private ResponseEntity<List<BusDto>> getAllBuses() {
 
-	return new ResponseEntity<List<BusDto>>(busService.getAllBuses(), HttpStatus.OK);
+        return new ResponseEntity<List<BusDto>>(busService.getAllBuses(), HttpStatus.OK);
     }
 
     /**
@@ -76,7 +76,7 @@ public class BusController {
     @GetMapping("/operators/{operatorId}")
     private ResponseEntity<List<BusDto>> getByOperatorId(@PathVariable int operatorId) {
 
-	return new ResponseEntity<List<BusDto>>(busService.getAllByOperatorId(operatorId), HttpStatus.OK);
+        return new ResponseEntity<List<BusDto>>(busService.getAllByOperatorId(operatorId), HttpStatus.OK);
     }
 
     /**
@@ -88,20 +88,20 @@ public class BusController {
     @GetMapping("/{busId}")
     private ResponseEntity<BusDto> getById(@PathVariable int busId) {
 
-	return new ResponseEntity<BusDto>(busService.getById(busId), HttpStatus.OK);
+        return new ResponseEntity<BusDto>(busService.getById(busId), HttpStatus.OK);
     }
 
     /**
      * Used to update the bus details.
      *
-     * @param busDto The bus deatils that we want to update.
+     * @param busDto The bus details that we want to update.
      * @param busId  The id of the bus to be updated.
      * @return the updated bus details.
      */
     @PutMapping("/{busId}")
     private ResponseEntity<BusDto> updateBus(@RequestBody @Valid BusDto busDto, @PathVariable int busId) {
 
-	return new ResponseEntity<BusDto>(busService.updateBus(busDto, busId), HttpStatus.OK);
+        return new ResponseEntity<BusDto>(busService.updateBus(busDto, busId), HttpStatus.OK);
     }
 
     /**
@@ -113,7 +113,7 @@ public class BusController {
     @DeleteMapping("/{busId}")
     private MessageDto deleteBus(@PathVariable int busId) {
 
-	busService.deleteBus(busId);
-	return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
+        busService.deleteBus(busId);
+        return new MessageDto(Constants.EVERYTHING_IS_OK, Constants.DELETE_MESSAGE);
     }
 }
