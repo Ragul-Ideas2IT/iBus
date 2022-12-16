@@ -21,8 +21,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * PaymentDTO are used to get the request from the server and send the response
- * to the server in the type of {@link PaymentDto} object. It contains the
+ * PaymentDTO are used to get the payment details from the server and send the
+ * payment details to the server in the type of {@link PaymentDto} object. It contains the
  * attributes. Here, the pattern of the attributes are specified.
  * 
  * @author Tamilmani K
@@ -38,6 +38,7 @@ public class PaymentDto {
     @Min(value = 0)
     @JsonProperty(access = Access.WRITE_ONLY)
     int bookingId;
+    @NotNull
     @Min(value = 0)
     private double amount;
     @JsonProperty(access = Access.READ_ONLY)
@@ -45,7 +46,7 @@ public class PaymentDto {
     @NotBlank
     @Pattern(regexp = Constants.PAYMENT_TYPE_PATTERN, message = Constants.INVALID_PAYMENT_TYPE_MESSAGE)
     private String modeOfPayment;
-    @Min(0)
+    @Min(1)
     @Max(999)
     @JsonProperty(access = Access.WRITE_ONLY)
     private int cvvNumber;

@@ -9,10 +9,7 @@ import lombok.Getter;
 
 import lombok.Setter;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 
 import com.i2i.ibus.constants.Constants;
 
@@ -30,6 +27,7 @@ import com.i2i.ibus.constants.Constants;
 @Setter
 public class BookingDetailDto {
 
+    @NotNull
     @Min(value = 2)
     @Max(value = 120)
     private int age;
@@ -40,7 +38,7 @@ public class BookingDetailDto {
     @Pattern(regexp = Constants.GENDER_PATTERN, message = Constants.INVALID_GENDER_PATTERN_MESSAGE)
     private String gender;
     @NotBlank
-    @Pattern(regexp = Constants.SEAT_NUMBER_PATTERN)
+    @Pattern(regexp = Constants.SEAT_NUMBER_PATTERN, message = Constants.INVALID_SEAT_NUMBER_PATTERN_MESSAGE)
     private String seatNumber;
 
 }

@@ -49,7 +49,6 @@ public class BookingController {
     /**
      * Add a booking for a user.
      *
-     * @param userId     The id of the user who is making the booking.
      * @param bookingDto This is the object that will be sent in the request body.
      * @return BookingDto
      */

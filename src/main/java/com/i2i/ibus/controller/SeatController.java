@@ -78,7 +78,7 @@ public class SeatController {
      * @param seatId The id of the seat you want to get.
      * @return A Seat details is being returned.
      */
-    @GetMapping()
+    @GetMapping("/{seatId}")
     private ResponseEntity<SeatDto> getBySeatId(@RequestParam int seatId) {
 
 	return new ResponseEntity<SeatDto>(seatService.getBySeatId(seatId), HttpStatus.OK);
@@ -89,7 +89,6 @@ public class SeatController {
      *
      * @param seatDto seat details given by operators will be updated.
      * @param seatId  The id of the seat you want to update.
-     * @param busId   The id of the bus that the seat belongs to.
      * @return the update seat details.
      */
     @PutMapping("/{seatId}")

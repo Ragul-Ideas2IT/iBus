@@ -34,10 +34,17 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     /**
      * Find all bookings for a given user.
      *
-     * @param userId The id of the user whose bookings you want to find.
+     * @param busId The id of the user whose bookings you want to find.
      * @return A list of Booking objects
      */
     List<Booking> findAllByBusId(int busId);
 
+    /**
+     * Find all booking by bus id and travel date.
+     *
+     * @param busId Bus id to get the list of booking of the bus.
+     * @param travelDate Date to find the list of booking of the bus.
+     * @return list of Booking.
+     */
     List<Booking> findAllByBusIdAndTravelDate(int busId, LocalDate travelDate);
 }

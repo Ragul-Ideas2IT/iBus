@@ -5,6 +5,7 @@
  */
 package com.i2i.ibus.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,10 +18,11 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@AllArgsConstructor
 public class NotificationDto {
 
+    private int referenceId;
     private String message;
-    private String reference_id;
-    private boolean reference_type;
+    private String referenceType;
 
 }

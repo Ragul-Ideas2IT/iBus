@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import com.i2i.ibus.dto.NotificationDto;
+import com.i2i.ibus.service.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +34,6 @@ import com.i2i.ibus.model.Seat;
 import com.i2i.ibus.model.Stop;
 import com.i2i.ibus.model.User;
 import com.i2i.ibus.repository.BookingRepository;
-import com.i2i.ibus.service.BookingService;
-import com.i2i.ibus.service.BusService;
-import com.i2i.ibus.service.ScheduleService;
-import com.i2i.ibus.service.SeatService;
-import com.i2i.ibus.service.StopService;
-import com.i2i.ibus.service.UserService;
 
 
 /**
@@ -59,19 +55,21 @@ public class BookingServiceImpl implements BookingService {
     private SeatService seatService;
     private UserService userService;
     private StopService stopService;
-
+    private NotificationService notificationService;
     private Logger logger = LogManager.getLogger(BookingServiceImpl.class);
 
     @Autowired
     public BookingServiceImpl(BookingRepository bookingRepository, StopService stopService,
                               BusService busService, ScheduleService scheduleService,
-                              UserService userService, SeatService seatService) {
+                              UserService userService, SeatService seatService,
+                              NotificationService notificationService) {
         this.bookingRepository = bookingRepository;
         this.busService = busService;
         this.userService = userService;
         this.scheduleService = scheduleService;
         this.seatService = seatService;
         this.stopService = stopService;
+        this.notificationService = notificationService;
     }
 
     /**
@@ -91,6 +89,8 @@ public class BookingServiceImpl implements BookingService {
         booking.setUser(getUserById(bookingDto.getUserId()));
         bookingRepository.save(booking);
         logger.info(Constants.CREATE_MESSAGE.concat(Constants.BOOKING_ID) + booking.getId());
+        notificationService.addNotification(new NotificationDto(booking.getId(), Constants.BOOKING_SUCCESSFULLY,
+                Constants.BOOKING));
         return Mapper.toBookingDto(booking);
     }
 
@@ -180,15 +180,16 @@ public class BookingServiceImpl implements BookingService {
     public CancellationDto cancel(int bookingId) {
         validateBooking(bookingId);
         Booking booking = bookingRepository.findById(bookingId).get();
-
         if (booking.getCancellation() == null) {
             Cancellation cancellation = new Cancellation();
             cancellation.setDateTime(LocalDateTime.now());
             booking.setCancellation(cancellation);
             bookingRepository.save(cancelBooking(booking));
+            notificationService.addNotification(new NotificationDto(booking.getId(), Constants.BOOKING_CANCEL_MESSAGE,
+                    Constants.CANCELLED));
         } else {
-            logger.error(Constants.BOOKING_CANCELLED_MESSAGE.concat(Constants.BOOKING_ID) + bookingId);
-            throw new IBusException(Constants.BOOKING_CANCELLED_MESSAGE);
+            logger.error(Constants.BOOKING_ALREADY_CANCEL_MESSAGE.concat(Constants.BOOKING_ID) + bookingId);
+            throw new IBusException(Constants.BOOKING_ALREADY_CANCEL_MESSAGE);
         }
         return Mapper.toCancellationDto(booking.getCancellation());
     }
@@ -225,7 +226,7 @@ public class BookingServiceImpl implements BookingService {
             logger.info(Constants.REFUNDED.concat(Constants.REFUND_AMOUNT) + booking.getCancellation().getRefundAmount());
             booking.getCancellation().setRefundStatus(Constants.REFUNDED);
         }
-        logger.info(Constants.BOOKING_CANCELLED.concat(Constants.BOOKING_ID) + booking.getId());
+        logger.info(Constants.BOOKING_CANCEL_MESSAGE + Constants.BOOKING_ID + booking.getId());
         booking.getCancellation().setCancellationStatus(Constants.CANCELLED);
         return booking;
     }
