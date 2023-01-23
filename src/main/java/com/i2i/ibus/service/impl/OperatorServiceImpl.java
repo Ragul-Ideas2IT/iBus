@@ -9,7 +9,6 @@ import com.i2i.ibus.constants.Constants;
 import com.i2i.ibus.dto.OperatorDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.mapper.Mapper;
-import com.i2i.ibus.model.Account;
 import com.i2i.ibus.model.Operator;
 import com.i2i.ibus.repository.OperatorRepository;
 import com.i2i.ibus.service.AccountService;
@@ -103,7 +102,7 @@ public class OperatorServiceImpl implements OperatorService {
     public OperatorDto saveOperator(OperatorDto operatorDto) {
         validateMailIdPhoneNoAndGstNumber(operatorDto.getMailId(), operatorDto.getPhoneNumber(),
                 operatorDto.getGstNumber());
-        accountService.addAccount(new Account(operatorDto.getMailId(), Constants.ROLE_OPERATOR, operatorDto.getPassword()));
+        //accountService.addAccount(new Account(operatorDto.getMailId(), Constants.ROLE_OPERATOR, operatorDto.getPassword()));
         logger.info(Constants.CREATE_MESSAGE + operatorDto.getId());
         return Mapper.toOperatorDto(operatorRepository.save(Mapper.toOperator(operatorDto)));
     }

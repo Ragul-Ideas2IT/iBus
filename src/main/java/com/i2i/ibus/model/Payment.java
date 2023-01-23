@@ -5,19 +5,13 @@
  */
 package com.i2i.ibus.model;
 
-import java.time.LocalDateTime;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Where;
 
-import lombok.Getter;
-import lombok.Setter;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * Payment are used to connect the database, to save the payment details
@@ -41,7 +35,7 @@ public class Payment {
     private String status;
     private String modeOfPayment;
     private int cvvNumber;
-    private long cardNumber;
+    private String cardNumber;
     private String cardHolderName;
     private LocalDateTime time;
     private String message;

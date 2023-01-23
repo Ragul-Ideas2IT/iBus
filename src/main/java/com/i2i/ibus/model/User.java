@@ -5,6 +5,7 @@
  */
 package com.i2i.ibus.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +27,7 @@ import javax.persistence.Id;
 @Setter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Where(clause = "is_deleted = false")
 public class User {
 

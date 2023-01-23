@@ -38,9 +38,8 @@ public interface PaymentService {
      * {@link IBusException}.
      *
      * @param payment To get the cancellation status of the booking.
-     * @return PaymentDto.
      */
-    PaymentDto validateBookingCancellationStatus(Payment payment);
+    void validateBookingCancellationStatus(Payment payment);
 
     /**
      * This function validate the booking status. If the booking status is
@@ -48,9 +47,8 @@ public interface PaymentService {
      * {@link IBusException}.
      *
      * @param payment To get the booking status.
-     * @return PaymentDto.
      */
-    PaymentDto validateBookingStatus(Payment payment);
+    void validateBookingStatus(Payment payment);
 
     /**
      * This function validate the amount to the booking total fare.
@@ -58,9 +56,8 @@ public interface PaymentService {
      *
      * @param payment To get the amount of the payment and total fare
      *               of the booking.
-     * @return PaymentDto.
      */
-    PaymentDto validateBookingTotalFare(Payment payment);
+    void validateBookingTotalFare(Payment payment);
 
     /**
      * This function compare the time of the booking and payment time.
@@ -68,9 +65,8 @@ public interface PaymentService {
      * {@link IBusException}.
      *
      * @param payment To get the time of the booking and the payment time.
-     * @return PaymentDto.
      */
-    PaymentDto validatePaymentTime(Payment payment);
+    void validatePaymentTime(Payment payment);
 
     /**
      * Get all payments for a booking. If the booking aren't found it throw

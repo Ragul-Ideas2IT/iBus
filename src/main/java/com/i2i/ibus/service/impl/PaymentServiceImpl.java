@@ -4,18 +4,8 @@
  */
 package com.i2i.ibus.service.impl;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import com.i2i.ibus.dto.NotificationDto;
-import com.i2i.ibus.service.NotificationService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.i2i.ibus.constants.Constants;
+import com.i2i.ibus.dto.NotificationDto;
 import com.i2i.ibus.dto.PaymentDto;
 import com.i2i.ibus.exception.IBusException;
 import com.i2i.ibus.mapper.Mapper;
@@ -23,7 +13,16 @@ import com.i2i.ibus.model.Booking;
 import com.i2i.ibus.model.Payment;
 import com.i2i.ibus.repository.PaymentRepository;
 import com.i2i.ibus.service.BookingService;
+import com.i2i.ibus.service.NotificationService;
 import com.i2i.ibus.service.PaymentService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * The validated payment details are passed to the payment repository to store
@@ -76,8 +75,8 @@ public class PaymentServiceImpl implements PaymentService {
      * {@inheritDoc}
      */
     @Override
-    public PaymentDto validateBookingCancellationStatus(Payment payment) {
-        if (payment.getBooking().getCancellation() != null) {
+    public void validateBookingCancellationStatus(Payment payment) {
+        if (null != payment.getBooking().getCancellation()) {
             payment.setMessage(Constants.PAYMENT_CANCEL_MESSAGE);
             payment = paymentRepository.save(payment);
             logger.error(Constants.PAYMENT_CANCEL_MESSAGE + Constants.PAYMENT_ID + payment.getId());
@@ -85,31 +84,29 @@ public class PaymentServiceImpl implements PaymentService {
                     Constants.PAYMENT));
             throw new IBusException(Constants.PAYMENT_CANCEL_MESSAGE);
         }
-        return Mapper.toPaymentDto(payment);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public PaymentDto validateBookingStatus(Payment payment){
-        if (payment.getBooking().getStatus().equalsIgnoreCase(Constants.CONFIRMED)) {
+    public void validateBookingStatus(Payment payment){
+        if (Constants.CONFIRMED.equalsIgnoreCase(payment.getBooking().getStatus())) {
             payment.setMessage(Constants.ALREADY_PAYMENT_SUCCEED_MESSAGE);
-            payment = paymentRepository.save(payment);
+            paymentRepository.save(payment);
             logger.error(Constants.ALREADY_PAYMENT_SUCCEED_MESSAGE + Constants.PAYMENT_ID
                     + payment.getId());
             notificationService.addNotification(new NotificationDto(payment.getId(),
                     Constants.ALREADY_PAYMENT_SUCCEED_MESSAGE, Constants.PAYMENT));
             throw new IBusException(Constants.ALREADY_PAYMENT_SUCCEED_MESSAGE);
         }
-        return Mapper.toPaymentDto(payment);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public PaymentDto validateBookingTotalFare(Payment payment) {
+    public void validateBookingTotalFare(Payment payment) {
         if (payment.getBooking().getTotalFare() != payment.getAmount()) {
             payment.setStatus(Constants.UNPAID);
             payment.setMessage(Constants.INVALID_PAYMENT_MESSAGE);
@@ -120,14 +117,13 @@ public class PaymentServiceImpl implements PaymentService {
                     Constants.PAYMENT));
             throw new IBusException(Constants.INVALID_PAYMENT_MESSAGE + payment.getBooking().getTotalFare());
         }
-        return Mapper.toPaymentDto(payment);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public PaymentDto validatePaymentTime(Payment payment) {
+    public void validatePaymentTime(Payment payment) {
         if (5 < Duration.between(payment.getBooking().getDateTime(), LocalDateTime.now()).toMinutes()) {
             payment.setStatus(Constants.DECLINED);
             payment.setMessage(Constants.EXPIRED_PAYMENT_TIME_MESSAGE);
@@ -137,7 +133,6 @@ public class PaymentServiceImpl implements PaymentService {
                     Constants.EXPIRED_PAYMENT_TIME_MESSAGE, Constants.PAYMENT));
             throw new IBusException(Constants.EXPIRED_PAYMENT_TIME_MESSAGE);
         }
-        return Mapper.toPaymentDto(payment);
     }
 
     /**

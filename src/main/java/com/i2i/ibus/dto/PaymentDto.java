@@ -5,20 +5,15 @@
  */
 package com.i2i.ibus.dto;
 
-import java.time.LocalDateTime;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.i2i.ibus.constants.Constants;
-
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+
+import javax.validation.constraints.*;
+import java.time.LocalDateTime;
 
 /**
  * PaymentDTO are used to get the payment details from the server and send the
@@ -32,6 +27,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@ToString
 public class PaymentDto {
 
     @NotNull
