@@ -29,24 +29,49 @@ public interface OperatorService {
     Operator validateOperator(int id);
 
     /**
-     * Validates the mail id, phone number and GST number
+     * Validates the mail id
      *
-     * @param mailId      The mail id of the user.
-     * @param phoneNumber The phone number of the user.
-     * @param gstNumber   GST number of the user
+     * @param mailId The mail id of the user
      */
-    void validateMailIdPhoneNoAndGstNumber(String mailId, String phoneNumber, String gstNumber);
+    void validateMailId(String mailId);
 
     /**
-     * Validates the mailId, phoneNumber and gstNumber for update.
+     * Validates the Phone Number
+     *
+     * @param phoneNumber The phone number of the user.
+     */
+    void validatePhoneNumber(String phoneNumber);
+
+    /**
+     * Validates the Gst Number
+     *
+     * @param gstNumber   GST number of the user
+     */
+    void validateGstNumber(String gstNumber);
+
+    /**
+     * Validates the mailId for update.
      *
      * @param mailId      The mail id of the customer.
+     * @param id          The id of the customer.
+     */
+    void validateMailIdForUpdate(String mailId, int id);
+
+    /**
+     * Validates the phoneNumber for update.
+     *
      * @param phoneNumber The phone number of the customer.
+     * @param id          The id of the customer.
+     */
+    void validatePhoneNumberForUpdate(String phoneNumber, int id);
+
+    /**
+     * Validates the gstNumber for update.
+     *
      * @param gstNumber   GST number of the customer
      * @param id          The id of the customer.
      */
-    void validateMailIdPhoneNoAndGstNumberForUpdate(String mailId, String phoneNumber, String gstNumber,
-                                                    int id);
+    void validateGstNumberForUpdate(String gstNumber, int id);
 
     /**
      * Save an operator.

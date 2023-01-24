@@ -61,16 +61,33 @@ public class OperatorServiceImpl implements OperatorService {
      * {@inheritDoc}
      */
     @Override
-    public void validateMailIdPhoneNoAndGstNumber(String mailId, String phoneNumber, String gstNumber) {
-        if (operatorRepository.findByMailId(mailId).isPresent()) {
+    public void validateMailId(String mailId) {
+        Optional<Operator> operator = operatorRepository.findByMailId(mailId);
+        if (operator.isPresent()) {
             logger.error(Constants.MAIL_ID_ALREADY_EXISTS);
             throw new IBusException(Constants.MAIL_ID_ALREADY_EXISTS);
         }
-        if (operatorRepository.findByPhoneNumber(phoneNumber).isPresent()) {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validatePhoneNumber(String phoneNumber) {
+        Optional<Operator> operator = operatorRepository.findByPhoneNumber(phoneNumber);
+        if (operator.isPresent()) {
             logger.error(Constants.PHONE_NUMBER_ALREADY_EXISTS);
             throw new IBusException(Constants.PHONE_NUMBER_ALREADY_EXISTS);
         }
-        if (operatorRepository.findByGstNumber(gstNumber).isPresent()) {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validateGstNumber(String gstNumber) {
+        Optional<Operator> operator = operatorRepository.findByGstNumber(gstNumber);
+        if (operator.isPresent()) {
             logger.error(Constants.GST_NUMBER_ALREADY_EXISTS);
             throw new IBusException(Constants.GST_NUMBER_ALREADY_EXISTS);
         }
@@ -80,29 +97,47 @@ public class OperatorServiceImpl implements OperatorService {
      * {@inheritDoc}
      */
     @Override
-    public void validateMailIdPhoneNoAndGstNumberForUpdate(String mailId, String phoneNumber, String gstNumber,
-                                                           int id) {
-        if (operatorRepository.findByMailIdAndIdNot(mailId, id).isPresent()) {
+    public void validateMailIdForUpdate(String mailId, int id) {
+        Optional<Operator> operator = operatorRepository.findByMailIdAndIdNot(mailId, id);
+        if (operator.isPresent()) {
             logger.error(Constants.MAIL_ID_ALREADY_EXISTS);
             throw new IBusException(Constants.MAIL_ID_ALREADY_EXISTS);
         }
-        if (operatorRepository.findByPhoneNumberAndIdNot(phoneNumber, id).isPresent()) {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validatePhoneNumberForUpdate(String phoneNumber, int id) {
+        Optional<Operator> operator = operatorRepository.findByPhoneNumberAndIdNot(phoneNumber, id);
+        if (operator.isPresent()) {
             logger.error(Constants.PHONE_NUMBER_ALREADY_EXISTS);
             throw new IBusException(Constants.PHONE_NUMBER_ALREADY_EXISTS);
         }
-        if (operatorRepository.findByGstNumberAndIdNot(gstNumber, id).isPresent()) {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void validateGstNumberForUpdate(String gstNumber, int id) {
+        Optional<Operator> operator = operatorRepository.findByGstNumberAndIdNot(gstNumber, id);
+        if (operator.isPresent()) {
             logger.error(Constants.GST_NUMBER_ALREADY_EXISTS);
             throw new IBusException(Constants.GST_NUMBER_ALREADY_EXISTS);
         }
     }
+
 
     /**
      * {@inheritDoc}
      */
     @Override
     public OperatorDto saveOperator(OperatorDto operatorDto) {
-        validateMailIdPhoneNoAndGstNumber(operatorDto.getMailId(), operatorDto.getPhoneNumber(),
-                operatorDto.getGstNumber());
+        validateMailId(operatorDto.getMailId());
+        validatePhoneNumber(operatorDto.getPhoneNumber());
+        validateGstNumber(operatorDto.getGstNumber());
         accountService.addAccount(new Account(operatorDto.getMailId(), Constants.ROLE_OPERATOR, operatorDto.getPassword()));
         logger.info(Constants.CREATE_MESSAGE + operatorDto.getId());
         return Mapper.toOperatorDto(operatorRepository.save(Mapper.toOperator(operatorDto)));
@@ -131,8 +166,9 @@ public class OperatorServiceImpl implements OperatorService {
     @Override
     public OperatorDto updateOperatorById(int id, OperatorDto operatorDto) {
         validateOperator(id);
-        validateMailIdPhoneNoAndGstNumberForUpdate(operatorDto.getMailId(), operatorDto.getPhoneNumber(),
-                operatorDto.getGstNumber(), id);
+        validateMailIdForUpdate(operatorDto.getMailId(), id);
+        validatePhoneNumberForUpdate(operatorDto.getPhoneNumber(), id);
+        validateGstNumberForUpdate(operatorDto.getGstNumber(), id);
         operatorDto.setId(id);
         logger.info(Constants.UPDATE_MESSAGE + operatorDto.getId());
         return Mapper.toOperatorDto(operatorRepository.save(Mapper.toOperator(operatorDto)));

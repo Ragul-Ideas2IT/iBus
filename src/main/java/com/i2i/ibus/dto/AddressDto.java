@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.i2i.ibus.constants.Constants;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -25,6 +26,7 @@ import javax.validation.constraints.Pattern;
  */
 @Getter
 @Setter
+@ToString
 public class AddressDto {
 
     @JsonProperty(access = Access.READ_ONLY)
