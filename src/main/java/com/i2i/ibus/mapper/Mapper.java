@@ -5,9 +5,32 @@
  */
 package com.i2i.ibus.mapper;
 
-import com.i2i.ibus.dto.*;
-import com.i2i.ibus.model.*;
+import com.i2i.ibus.dto.AddressDto;
+import com.i2i.ibus.dto.BookingDetailDto;
+import com.i2i.ibus.dto.BookingDto;
+import com.i2i.ibus.dto.BusDto;
+import com.i2i.ibus.dto.CancellationDto;
+import com.i2i.ibus.dto.NotificationDto;
+import com.i2i.ibus.dto.OperatorDto;
+import com.i2i.ibus.dto.PaymentDto;
+import com.i2i.ibus.dto.ScheduleDto;
+import com.i2i.ibus.dto.SeatDto;
+import com.i2i.ibus.dto.StopDto;
+import com.i2i.ibus.dto.UserDto;
+import com.i2i.ibus.model.Address;
+import com.i2i.ibus.model.Booking;
+import com.i2i.ibus.model.BookingDetail;
+import com.i2i.ibus.model.Bus;
+import com.i2i.ibus.model.Cancellation;
+import com.i2i.ibus.model.Notification;
+import com.i2i.ibus.model.Operator;
+import com.i2i.ibus.model.Payment;
+import com.i2i.ibus.model.Schedule;
+import com.i2i.ibus.model.Seat;
+import com.i2i.ibus.model.Stop;
+import com.i2i.ibus.model.User;
 import org.modelmapper.ModelMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -72,7 +95,7 @@ public class Mapper {
     public static Operator toOperator(OperatorDto operatorDto) {
         Operator operator = mapper.map(operatorDto, Operator.class);
         operator.setAddresses(
-                operatorDto.getAddresses().stream().map(addressDto -> mapper.map(addressDto, Address.class)).toList());
+                operatorDto.getAddresses().stream().map(addressDto -> mapper.map(addressDto, Address.class)).collect(Collectors.toList()));
         return operator;
     }
 
@@ -86,7 +109,7 @@ public class Mapper {
     public static OperatorDto toOperatorDto(Operator operator) {
         OperatorDto operatorDto = mapper.map(operator, OperatorDto.class);
         operatorDto.setAddresses(
-                operator.getAddresses().stream().map(address -> mapper.map(address, AddressDto.class)).toList());
+                operator.getAddresses().stream().map(address -> mapper.map(address, AddressDto.class)).collect(Collectors.toList()));
         return operatorDto;
     }
 
@@ -97,7 +120,7 @@ public class Mapper {
      * @return A list of operators
      */
     public static List<Operator> toOperators(List<OperatorDto> operatorDtos) {
-        return operatorDtos.stream().map(operatorDto -> toOperator(operatorDto)).toList();
+        return operatorDtos.stream().map(operatorDto -> toOperator(operatorDto)).collect(Collectors.toList());
     }
 
     /**
@@ -107,7 +130,7 @@ public class Mapper {
      * @return A list of OperatorDto objects.
      */
     public static List<OperatorDto> toOperatorDTOs(List<Operator> operators) {
-        return operators.stream().map(operator -> toOperatorDto(operator)).toList();
+        return operators.stream().map(operator -> toOperatorDto(operator)).collect(Collectors.toList());
     }
 
     /**
@@ -137,7 +160,7 @@ public class Mapper {
      * @return A list of Booking objects.
      */
     public static List<Booking> toBooking(List<BookingDto> bookingDtos) {
-        return bookingDtos.stream().map(bookingDto -> toBooking(bookingDto)).toList();
+        return bookingDtos.stream().map(bookingDto -> toBooking(bookingDto)).collect(Collectors.toList());
     }
 
     /**
@@ -147,7 +170,7 @@ public class Mapper {
      * @return A list of BookingDto objects.
      */
     public static List<BookingDto> toBookingDTOs(List<Booking> bookings) {
-        return bookings.stream().map(booking -> toBookingDto(booking)).toList();
+        return bookings.stream().map(booking -> toBookingDto(booking)).collect(Collectors.toList());
     }
 
     /**
@@ -197,7 +220,7 @@ public class Mapper {
      * @return A list of BookingDetailDto objects.
      */
     public static List<BookingDetailDto> toBookingDetailDtos(List<BookingDetail> bookingDetails) {
-        return bookingDetails.stream().map(bookingDetail -> toBookingDetailDto(bookingDetail)).toList();
+        return bookingDetails.stream().map(bookingDetail -> toBookingDetailDto(bookingDetail)).collect(Collectors.toList());
     }
 
     /**
@@ -207,7 +230,7 @@ public class Mapper {
      * @return A list of BookingDetail objects.
      */
     public static List<BookingDetail> toBookingDetails(List<BookingDetailDto> bookingDetailDtos) {
-        return bookingDetailDtos.stream().map(bookingDetailDto -> toBookingDetail(bookingDetailDto)).toList();
+        return bookingDetailDtos.stream().map(bookingDetailDto -> toBookingDetail(bookingDetailDto)).collect(Collectors.toList());
     }
 
     /**
@@ -237,7 +260,7 @@ public class Mapper {
      * @return A list of PaymentDto objects.
      */
     public static List<PaymentDto> toPaymentDtos(List<Payment> payments) {
-        return payments.stream().map(payment -> toPaymentDto(payment)).toList();
+        return payments.stream().map(payment -> toPaymentDto(payment)).collect(Collectors.toList());
     }
 
     /**

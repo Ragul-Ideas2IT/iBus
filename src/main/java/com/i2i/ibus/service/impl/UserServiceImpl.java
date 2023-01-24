@@ -17,7 +17,6 @@ import com.i2i.ibus.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -130,8 +129,8 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserDto getUserDtoById(int id) {
-        validateUser(id);
-        return Mapper.toUserDto(userRepository.findById(id).get());
+//        validateUser(id);
+        return Mapper.toUserDto(validateUser(id));
     }
 
     /**

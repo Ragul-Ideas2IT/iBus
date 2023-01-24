@@ -8,6 +8,7 @@ package com.i2i.ibus.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.Entity;
@@ -24,6 +25,7 @@ import javax.persistence.Id;
  */
 @Getter
 @Setter
+@ToString
 @Entity
 @NoArgsConstructor
 @Where(clause = "is_deleted = false")

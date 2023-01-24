@@ -116,7 +116,7 @@ public interface BookingService {
     Booking cancelBooking(Booking booking);
 
     /**
-     * Method is used to sets the seat status of a booking.
+     * Method is used to set the seat status of a booking.
      *
      * @param booking The booking object that contains the seat number and the
      *                status of the seat.
@@ -124,7 +124,7 @@ public interface BookingService {
     void setSeatStatus(Booking booking);
 
     /**
-     * Method is used to calculates the difference of time between the current time
+     * Method is used to calculate the difference of time between the current time
      * and time(bus arriving time), then it convert into minutes.
      *
      * @param Schedule The Schedule object that contains the time of the bus.
