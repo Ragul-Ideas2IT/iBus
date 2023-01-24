@@ -40,7 +40,6 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity)
             throws Exception {
-        System.out.println("Filter chain");
         httpSecurity.csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/api/v1/users").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/v1/users").hasAuthority("ROLE_USER")
